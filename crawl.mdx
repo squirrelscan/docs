@@ -1,0 +1,278 @@
+---
+title: "Crawling"
+description: "How SquirrelScan crawls websites efficiently and intelligently"
+---
+
+SquirrelScan uses a smart crawling system that balances thoroughness with efficiency. This page explains how crawling works under the hood.
+
+## How It Works
+
+When you run `squirrel audit https://example.com`, the crawler:
+
+1. **Fetches robots.txt** to respect site rules
+2. **Seeds the frontier** with your starting URL
+3. **Discovers links** by parsing each page's HTML
+4. **Crawls breadth-first** to prioritize important pages
+5. **Stores everything** in a local SQLite database
+
+```
+squirrel audit https://example.com -m 100
+```
+
+## Redirect Following
+
+SquirrelScan automatically follows **both HTTP and client-side redirects** when starting an audit. This ensures you audit the correct final destination, even through complex redirect chains.
+
+### Supported Redirects
+
+- **HTTP redirects** (301, 302, 303, 307, 308) - handled by native fetch
+- **Meta refresh** - `<meta http-equiv="refresh" content="0;url=...">`
+- **JavaScript redirects** - `window.location`, `window.location.href`, `location.href`
+
+### How It Works
+
+Before crawling begins, SquirrelScan:
+
+1. Follows HTTP redirect chains automatically
+2. Fetches the target page and checks for client-side redirects
+3. Continues following redirects up to 10 hops
+4. Detects and prevents redirect loops
+5. Uses the final URL as the crawl base URL
+
+### Example: Geo-Targeted Redirects
+
+Many sites redirect based on location. SquirrelScan handles this intelligently:
+
+```bash
+squirrel audit gymshark.com
+# Following redirect: https://gymshark.com/ → https://www.gymshark.com/
+# SQUIRRELSCAN REPORT
+# https://www.gymshark.com • 50 pages • 88/100 (B)
+```
+
+Behind the scenes:
+```
+HTTP redirect:        gymshark.com → us.checkout.gymshark.com
+Client-side redirect: us.checkout.gymshark.com → www.gymshark.com
+Final crawl target:   www.gymshark.com
+```
+
+<Tip>
+The original and final URLs are stored in the crawl session for reference. This is useful for sites with A/B testing, geo-targeting, or domain migrations.
+</Tip>
+
+## Crawl Sessions
+
+Each audit creates a **crawl session** with a unique ID. Sessions are stored per-domain in `~/.squirrel/projects/<domain>/project.db`.
+
+### Session Behavior
+
+| Scenario | What Happens |
+|----------|--------------|
+| First audit | Creates new crawl session |
+| Re-run audit | Creates new session (old preserved for history) |
+| Interrupted (Ctrl+C) | Session paused, can be resumed |
+| Resume interrupted | Continues from where it left off |
+
+<Note>
+Old crawl sessions are preserved for historical comparison. Future versions will support crawl diffs to track changes over time.
+</Note>
+
+## Conditional GET (304 Caching)
+
+SquirrelScan is smart about re-crawling. When fetching a URL:
+
+1. Checks if we've seen this URL before (any previous crawl)
+2. Sends `If-None-Match` (ETag) or `If-Modified-Since` headers
+3. If server returns **304 Not Modified**, uses cached content
+4. Otherwise fetches fresh content
+
+This makes re-crawling fast - unchanged pages are nearly instant.
+
+```bash
+# First crawl: fetches all pages fresh
+squirrel audit https://example.com -m 50
+
+# Second crawl: 304s for unchanged pages, much faster
+squirrel audit https://example.com -m 100
+```
+
+## URL Normalization
+
+URLs are normalized before crawling to avoid duplicates:
+
+- Lowercased scheme and host
+- Sorted query parameters
+- Removed default ports (80, 443)
+- Removed trailing slashes
+- Decoded percent-encoding where safe
+
+### Query Parameter Handling
+
+By default, query parameters are stripped except those in your allowlist:
+
+```toml
+[crawler]
+# Keep these query params (e.g., for pagination)
+allow_query_params = ["page", "sort"]
+
+# Drop tracking params (default)
+drop_query_prefixes = ["utm_", "gclid", "fbclid"]
+```
+
+## Scope Control
+
+Control which URLs get crawled with include/exclude patterns:
+
+```toml
+[crawler]
+# Only crawl blog pages
+include = ["/blog/*"]
+
+# Skip admin and api routes
+exclude = ["/admin/*", "/api/*", "*.pdf"]
+```
+
+<Warning>
+Changing `include`, `exclude`, `allow_query_params`, or `drop_query_prefixes` creates a new crawl session since these affect which URLs are in scope.
+</Warning>
+
+### Multi-Domain Crawling
+
+By default, only the seed domain is crawled. To allow additional domains:
+
+```toml
+[project]
+domains = ["example.com", "blog.example.com", "cdn.example.com"]
+```
+
+## User-Agent
+
+By default, SquirrelScan uses a **random browser user-agent** for each crawl session. This helps avoid bot detection and ensures your audit sees the same content real users would see.
+
+### Default Behavior
+
+Each crawl session generates a random user-agent from real browser fingerprints (Chrome, Firefox, Safari, Edge) across desktop, mobile, and tablet devices. The same user-agent is used for all requests within a single crawl.
+
+### Custom User-Agent
+
+To override the random user-agent with a fixed value:
+
+```toml
+[crawler]
+# Use a specific user-agent
+user_agent = "MyBot/1.0 (+https://example.com/bot)"
+
+# Or use the SquirrelScan bot identifier
+user_agent = "SquirrelScan/2.0 (+https://squirrelscan.com/bot)"
+```
+
+<Tip>
+Set a custom `user_agent` if you need to:
+- Whitelist the crawler in your WAF or firewall
+- Test how your site responds to specific browsers
+- Identify squirrelscan requests in your server logs
+</Tip>
+
+## Rate Limiting
+
+SquirrelScan is polite by default:
+
+```toml
+[crawler]
+concurrency = 5              # Total concurrent requests
+per_host_concurrency = 2     # Max concurrent per host
+delay_ms = 100               # Base delay between requests
+per_host_delay_ms = 200      # Min delay per host
+```
+
+This prevents overloading servers while still crawling efficiently.
+
+## Robots.txt
+
+By default, SquirrelScan respects `robots.txt`:
+
+```toml
+[crawler]
+respect_robots = true  # default
+```
+
+The crawler:
+- Fetches `/robots.txt` before crawling
+- Honors `Disallow` rules for the `SquirrelScan` and `*` user agents
+- Discovers sitemaps from `Sitemap:` directives
+
+<Tip>
+Set `respect_robots = false` only for sites you own or have permission to audit fully.
+</Tip>
+
+## Data Storage
+
+Crawl data is stored in SQLite databases organized by domain:
+
+```
+~/.squirrel/projects/
+├── example-com/
+│   └── project.db      # All crawl sessions for example.com
+├── blog-example-com/
+│   └── project.db      # Separate for subdomains
+```
+
+Each database contains:
+- **crawls** - Session metadata and config
+- **pages** - HTML content, headers, timing
+- **links** - Internal and external links
+- **images** - Image metadata
+- **frontier** - URL queue state
+
+## Resuming Interrupted Crawls
+
+If a crawl is interrupted (Ctrl+C, crash, etc.), it can be resumed:
+
+```bash
+# Interrupted at 30/100 pages
+squirrel audit https://example.com -m 100
+# ^C
+
+# Resume - continues from page 31
+squirrel audit https://example.com -m 100
+```
+
+The crawler detects the incomplete session and picks up where it left off.
+
+## Fresh Crawl (--refresh)
+
+To ignore the cache and fetch all pages fresh:
+
+```bash
+squirrel audit https://example.com --refresh
+```
+
+This skips conditional GET and re-downloads everything. Useful when:
+- Debugging caching issues
+- Testing after major site changes
+- Verifying server responses
+
+## Crawler Stats
+
+After each crawl, stats are stored:
+
+| Stat | Description |
+|------|-------------|
+| `pagesTotal` | Total pages in crawl |
+| `pagesFetched` | Pages fetched fresh (200 responses) |
+| `pagesUnchanged` | Pages from cache (304 responses) |
+| `pagesFailed` | Failed fetches |
+| `pagesSkipped` | Skipped (out of scope, robots.txt) |
+| `avgLoadTimeMs` | Average page load time |
+| `bytesTotal` | Total bytes downloaded |
+
+## Timing Data
+
+Each page records timing information:
+
+- **loadTimeMs** - Total request time
+- **ttfb** - Time to first byte
+- **downloadTime** - Body download time
+
+This data feeds into performance rules like `perf/ttfb`.

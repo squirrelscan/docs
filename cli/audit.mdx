@@ -1,0 +1,197 @@
+---
+title: "squirrel audit"
+description: "Run an SEO audit on a website"
+---
+
+The `audit` command crawls a website and runs SEO rules to generate a report.
+
+## Usage
+
+```bash
+squirrel audit <url> [options]
+```
+
+## Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `url` | The URL to audit (required) |
+
+## Options
+
+| Option | Alias | Description | Default |
+|--------|-------|-------------|---------|
+| `--maxPages` | `-m` | Maximum pages to crawl | `50` |
+| `--format` | `-f` | Output format: `console`, `json`, `html` | `console` |
+| `--output` | `-o` | Output file path | auto |
+| `--refresh` | `-r` | Ignore cache, fetch all pages fresh | `false` |
+| `--verbose` | `-v` | Show progress during crawl | `false` |
+| `--debug` | | Enable debug logging | `false` |
+| `--all` | `-a` | Run all rules including LLM-based | `false` |
+
+## Examples
+
+### Basic Audit
+
+```bash
+squirrel audit https://example.com
+```
+
+### Crawl More Pages
+
+```bash
+squirrel audit https://example.com -m 200
+```
+
+### Export to JSON
+
+```bash
+squirrel audit https://example.com -f json -o report.json
+```
+
+### Generate HTML Report
+
+```bash
+squirrel audit https://example.com -f html -o report.html
+```
+
+### Fresh Crawl (Ignore Cache)
+
+```bash
+squirrel audit https://example.com --refresh
+```
+
+### Verbose Output
+
+```bash
+squirrel audit https://example.com -v
+```
+
+### Run All Rules
+
+```bash
+squirrel audit https://example.com --all
+```
+
+## Output Formats
+
+### Console (default)
+
+Human-readable output with colored issue severity:
+
+```
+SquirrelScan v2.0
+========================================
+Auditing: https://example.com
+Max pages: 50
+
+Crawled 12 pages
+
+ISSUES
+
+[high] Missing meta description
+  → /about
+  → /contact
+
+[medium] Image missing alt text
+  → /images/hero.png on /
+
+[low] Non-HTTPS link
+  → http://oldsite.com on /links
+```
+
+### JSON
+
+Machine-readable JSON for CI/CD pipelines and AI processing:
+
+```bash
+squirrel audit https://example.com -f json -o report.json
+```
+
+```json
+{
+  "url": "https://example.com",
+  "crawledAt": "2025-01-08T00:00:00Z",
+  "pages": [...],
+  "issues": [...],
+  "stats": {
+    "totalPages": 12,
+    "issueCount": { "high": 2, "medium": 3, "low": 5 }
+  }
+}
+```
+
+### HTML
+
+Visual report you can open in a browser:
+
+```bash
+squirrel audit https://example.com -f html -o report.html
+open report.html
+```
+
+## Crawl Behavior
+
+The audit command manages crawl sessions intelligently:
+
+| Scenario | Behavior |
+|----------|----------|
+| First run | Creates new crawl |
+| Re-run (completed) | New crawl, uses cache for 304s |
+| Re-run (interrupted) | Resumes from where it left off |
+| Config changed | New crawl with fresh scope |
+
+<Info>
+Changing scope-affecting config (`include`, `exclude`, `allow_query_params`, `drop_query_prefixes`) triggers a fresh crawl.
+</Info>
+
+## Caching
+
+SquirrelScan caches page content locally. On subsequent audits:
+
+- **304 Not Modified**: Uses cached content (fast)
+- **200 OK**: Fetches fresh content (slower)
+
+Use `--refresh` to bypass the cache entirely.
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| `0` | Success |
+| `1` | Error (invalid URL, crawl failed, etc.) |
+
+## Configuration
+
+The audit command respects settings from `squirrel.toml`:
+
+```toml
+[crawler]
+max_pages = 100
+delay_ms = 200
+timeout_ms = 30000
+include = ["/blog/*"]
+exclude = ["/admin/*"]
+
+[rules]
+enable = ["*"]
+disable = ["ai/*"]
+```
+
+See [Configuration](/config) for all options.
+
+## Using with AI
+
+Pipe JSON output to your LLM:
+
+```bash
+squirrel audit https://example.com -f json | claude "analyze this SEO report"
+```
+
+Or use with Claude Code's MCP integration for interactive auditing.
+
+## Related
+
+- [Crawling](/crawl) - How the crawler works
+- [Configuration](/config) - Config file options
+- [squirrel report](/cli/report) - View stored audit reports

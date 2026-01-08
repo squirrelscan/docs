@@ -1,0 +1,243 @@
+---
+title: "Configuration"
+description: "Configure squirrelscan behavior with squirrel.toml"
+---
+
+squirrelscan uses a TOML configuration file to customize crawling, analysis, and output behavior. This is optional - squirrelscan works out of the box with sensible defaults.
+
+## Config File Location
+
+squirrelscan looks for `squirrel.toml` starting from your current directory and walking up to your home directory. This means you can:
+
+- Place a config in your project root for project-specific settings
+- Place a config in `~` for global defaults
+
+To create a config file:
+
+```bash
+squirrel init
+```
+
+## Zero-Config Mode
+
+If no config file exists, squirrelscan uses defaults that work well for most sites:
+
+- Crawls up to 50 pages
+- 100ms delay between requests
+- Respects robots.txt
+- Checks external links for broken URLs (cached for 7 days)
+- Runs all rules except AI-powered ones
+
+## Config Reference
+
+### project
+
+Project-level settings for multi-domain support.
+
+```toml
+[project]
+domains = ["example.com", "blog.example.com"]
+```
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `domains` | `string[]` | `[]` | Allowed domains for crawling. Supports subdomain wildcards - `["example.com"]` allows `www.example.com`, `api.example.com`, etc. When empty, only the seed URL's host is crawled. |
+
+### crawler
+
+Controls how squirrelscan discovers and fetches pages.
+
+```toml
+[crawler]
+max_pages = 100
+concurrency = 10
+per_host_delay_ms = 500
+exclude = ["/admin/*", "*.pdf"]
+```
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `max_pages` | `number` | `50` | Maximum pages to crawl per audit |
+| `delay_ms` | `number` | `100` | Base delay between requests (ms) |
+| `timeout_ms` | `number` | `30000` | Request timeout (ms) |
+| `user_agent` | `string` | `""` | User agent (empty = random browser UA per crawl) |
+| `follow_redirects` | `boolean` | `true` | Follow HTTP 3xx redirects |
+| `concurrency` | `number` | `5` | Maximum concurrent requests globally |
+| `per_host_concurrency` | `number` | `2` | Maximum concurrent requests per host |
+| `per_host_delay_ms` | `number` | `200` | Minimum delay between requests to the same host |
+| `include` | `string[]` | `[]` | URL patterns to include. If set, overrides `domains` |
+| `exclude` | `string[]` | `[]` | URL patterns to exclude from crawling |
+| `allow_query_params` | `string[]` | `[]` | Query parameters to preserve (others may be stripped for deduplication) |
+| `drop_query_prefixes` | `string[]` | `["utm_", "gclid", "fbclid"]` | Query param prefixes to strip (tracking params) |
+| `respect_robots` | `boolean` | `true` | Obey robots.txt rules and crawl-delay |
+
+### rules
+
+Configure which SEO rules run during analysis.
+
+```toml
+[rules]
+enable = ["*"]
+disable = ["ai/*", "content/quality"]
+```
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `enable` | `string[]` | `["*"]` | Patterns of rules to enable. Supports wildcards: `*`, `seo/*`, `core/meta-title` |
+| `disable` | `string[]` | `["ai/ai-content", "ai/llm-parsability", "content/quality"]` | Patterns of rules to disable. Takes precedence over `enable` |
+
+Rule IDs follow the format `domain/rule-name`. Common domains:
+
+- `seo/*` - Meta tags, canonical, robots
+- `content/*` - Word count, headings, thin content
+- `links/*` - Broken links, redirects
+- `images/*` - Alt text, dimensions
+- `schema/*` - JSON-LD validation
+- `security/*` - HTTPS, CSP, HSTS
+- `performance/*` - Core Web Vitals hints
+- `ai/*` - LLM-powered analysis (disabled by default)
+
+### external_links
+
+Configure external link checking during audits.
+
+```toml
+[external_links]
+enabled = true
+cache_ttl_days = 7
+timeout_ms = 10000
+concurrency = 5
+```
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `enabled` | `boolean` | `true` | Enable checking external links for broken URLs (4xx/5xx) |
+| `cache_ttl_days` | `number` | `7` | How long to cache external link check results (in days). Results are shared across all site audits. |
+| `timeout_ms` | `number` | `10000` | Timeout for each external link check (ms) |
+| `concurrency` | `number` | `5` | Maximum concurrent external link checks |
+
+External link results are cached globally in `~/.squirrel/link-cache.db` to avoid re-checking the same URLs across different site audits. This dramatically speeds up subsequent audits.
+
+### output
+
+Default output settings for reports.
+
+```toml
+[output]
+format = "json"
+path = "report.json"
+```
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `format` | `"console"` \| `"json"` \| `"html"` | `"console"` | Default output format |
+| `path` | `string` | - | Default output file path |
+
+### rule_options
+
+Per-rule configuration for rules that accept options.
+
+```toml
+[rule_options.content/word-count]
+min_words = 300
+
+[rule_options.seo/meta-title]
+max_length = 70
+```
+
+Each rule documents its available options. This section is a key-value map where keys are rule IDs.
+
+## Examples
+
+### High-Volume Crawl
+
+For large sites, increase limits and be polite:
+
+```toml
+[crawler]
+max_pages = 500
+concurrency = 10
+per_host_delay_ms = 500
+respect_robots = true
+```
+
+### Multi-Domain Project
+
+Audit a main site plus its API docs and blog:
+
+```toml
+[project]
+domains = ["example.com"]
+
+[crawler]
+max_pages = 200
+```
+
+This crawls `example.com`, `www.example.com`, `docs.example.com`, `blog.example.com`, etc.
+
+### CI Pipeline
+
+Strict settings for automated checks:
+
+```toml
+[crawler]
+max_pages = 100
+timeout_ms = 10000
+
+[rules]
+enable = ["seo/*", "security/*", "links/*"]
+disable = []
+
+[output]
+format = "json"
+```
+
+### Exclude Admin Areas
+
+Skip paths you don't want crawled:
+
+```toml
+[crawler]
+exclude = [
+  "/admin/*",
+  "/api/*",
+  "/wp-admin/*",
+  "*.pdf",
+  "*?preview=*"
+]
+```
+
+### Disable External Link Checking
+
+If you want faster audits and don't need external link validation:
+
+```toml
+[external_links]
+enabled = false
+```
+
+### Aggressive External Link Checking
+
+For thorough audits with more concurrent checks:
+
+```toml
+[external_links]
+enabled = true
+cache_ttl_days = 1
+timeout_ms = 5000
+concurrency = 10
+```
+
+## Validating Config
+
+Check your config file for errors:
+
+```bash
+squirrel config validate
+```
+
+View the current effective config:
+
+```bash
+squirrel config show
+```
