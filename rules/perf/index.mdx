@@ -1,0 +1,45 @@
+---
+title: "Performance"
+description: "Page speed and loading performance"
+---
+
+Page speed and loading performance
+
+## Rules
+
+<CardGroup cols={2}>
+  <Card title="CLS Optimization Hints" icon="triangle-exclamation" href="/rules/perf/cls-hints">
+    Checks for Cumulative Layout Shift prevention
+  </Card>
+  <Card title="DOM Size" icon="triangle-exclamation" href="/rules/perf/dom-size">
+    Detects excessive DOM complexity that impacts performance
+  </Card>
+  <Card title="Font Loading" icon="triangle-exclamation" href="/rules/perf/font-loading">
+    Checks for font loading best practices
+  </Card>
+  <Card title="INP Optimization Hints" icon="circle-info" href="/rules/perf/inp-hints">
+    Checks for Interaction to Next Paint optimization
+  </Card>
+  <Card title="Lazy Loading Above Fold" icon="triangle-exclamation" href="/rules/perf/lazy-above-fold">
+    Detects lazy loading on likely above-fold images
+  </Card>
+  <Card title="LCP Optimization Hints" icon="triangle-exclamation" href="/rules/perf/lcp-hints">
+    Checks for Largest Contentful Paint optimization opportunities
+  </Card>
+  <Card title="Preconnect Hints" icon="circle-info" href="/rules/perf/preconnect">
+    Checks for preconnect hints to critical third-party origins
+  </Card>
+  <Card title="Render-Blocking Resources" icon="triangle-exclamation" href="/rules/perf/render-blocking">
+    Checks for render-blocking CSS and JavaScript
+  </Card>
+  <Card title="Time to First Byte" icon="triangle-exclamation" href="/rules/perf/ttfb">
+    Measures server response time (TTFB)
+  </Card>
+</CardGroup>
+
+## Disable All Performance Rules
+
+```toml squirrel.toml
+[rules]
+disable = ["perf/*"]
+```

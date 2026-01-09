@@ -1,0 +1,54 @@
+---
+title: "Accessibility"
+description: "Accessibility for users with disabilities"
+---
+
+Accessibility for users with disabilities
+
+## Rules
+
+<CardGroup cols={2}>
+  <Card title="ARIA Labels" icon="circle-exclamation" href="/rules/a11y/aria-labels">
+    Checks that interactive elements have accessible names
+  </Card>
+  <Card title="Color Contrast" icon="triangle-exclamation" href="/rules/a11y/color-contrast">
+    Checks for color contrast issues
+  </Card>
+  <Card title="Focus Visible" icon="triangle-exclamation" href="/rules/a11y/focus-visible">
+    Checks for focus indicator styles
+  </Card>
+  <Card title="Form Labels" icon="circle-exclamation" href="/rules/a11y/form-labels">
+    Checks that form inputs have associated labels
+  </Card>
+  <Card title="Heading Order" icon="triangle-exclamation" href="/rules/a11y/heading-order">
+    Checks that heading levels don't skip
+  </Card>
+  <Card title="Landmark Regions" icon="circle-info" href="/rules/a11y/landmark-regions">
+    Checks for proper landmark regions (main, nav, footer)
+  </Card>
+  <Card title="Link Text" icon="triangle-exclamation" href="/rules/a11y/link-text">
+    Checks for descriptive link text
+  </Card>
+  <Card title="Skip Link" icon="triangle-exclamation" href="/rules/a11y/skip-link">
+    Checks for skip-to-content link for keyboard navigation
+  </Card>
+  <Card title="Table Headers" icon="triangle-exclamation" href="/rules/a11y/table-headers">
+    Checks that data tables have proper headers
+  </Card>
+  <Card title="Touch Targets" icon="triangle-exclamation" href="/rules/a11y/touch-targets">
+    Checks for minimum touch target sizing hints
+  </Card>
+  <Card title="Video Captions" icon="triangle-exclamation" href="/rules/a11y/video-captions">
+    Checks that videos have captions or transcripts
+  </Card>
+  <Card title="Zoom Disabled" icon="circle-exclamation" href="/rules/a11y/zoom-disabled">
+    Checks if viewport meta tag disables user zoom
+  </Card>
+</CardGroup>
+
+## Disable All Accessibility Rules
+
+```toml squirrel.toml
+[rules]
+disable = ["a11y/*"]
+```

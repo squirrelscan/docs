@@ -1,9 +1,9 @@
 ---
-title: "SquirrelScan Documentation"
-description: "CLI SEO Audits for Agents & LLMs"
+title: "Introduction"
+description: "CLI Website Audits for Humans, Agents & LLMs"
 ---
 
-A command-line SEO audit tool built for developers who use AI. Run from Claude Code, use as an MCP server, or pipe to your favorite LLM.
+A comprehensive website audit tool for SEO, performance, content and more that fits into your AI workflow. Single binary, zero dependencies.
 
 <Card
   title="Quickstart"
@@ -11,48 +11,104 @@ A command-line SEO audit tool built for developers who use AI. Run from Claude C
   href="/quickstart"
   horizontal
 >
-  Install SquirrelScan and run your first audit in under 2 minutes.
+  Install squirrelscan and run your first audit in under 2 minutes.
 </Card>
 
-## Features
+## Why squirrelscan?
 
 <Columns cols={2}>
   <Card
-    title="Deep SEO Audits"
-    icon="magnifying-glass"
-  >
-    Comprehensive checks for meta tags, OpenGraph, structured data, headings, images, and more.
-  </Card>
-  <Card
-    title="Agent-Friendly Output"
+    title="AI-Native Design"
     icon="robot"
   >
-    JSON output designed for LLMs and AI agents to parse and act on.
+    Built for coding agents. LLM-optimised output works seamlessly with Claude Code, Cursor, and any AI assistant.
   </Card>
   <Card
-    title="MCP Server Mode"
-    icon="server"
+    title="Developer-First CLI"
+    icon="terminal"
   >
-    Run as an MCP server for seamless Claude Code integration.
+    Single binary, zero dependencies. Shell completions, self-update, and CI/CD compatible exit codes.
   </Card>
   <Card
-    title="Structured Reports"
-    icon="file-lines"
+    title="140+ Rules, 20 Categories"
+    icon="list-check"
   >
-    Export to JSON, HTML, or console for flexible workflows.
+    Comprehensive coverage across SEO, accessibility, performance, and security audits.
+  </Card>
+  <Card
+    title="Smart Incremental Crawling"
+    icon="gauge"
+  >
+    ETag, Last-Modified, and content hashing. Skip unchanged pages. Resume interrupted crawls.
+  </Card>
+  <Card
+    title="E-E-A-T Auditing"
+    icon="shield-check"
+  >
+    Dedicated rules for Experience, Expertise, Authority, and Trust—Google's top ranking signals.
+  </Card>
+  <Card
+    title="Multiple Output Formats"
+    icon="file-export"
+  >
+    Console, JSON, HTML reports, LLM-friendly output. Export exactly what you need.
   </Card>
 </Columns>
 
-## What Gets Checked
+## Works Where You Work
 
-- **Meta tags** - title, description, canonical, robots
-- **OpenGraph & Twitter Cards** - social sharing metadata
-- **Structured data** - JSON-LD validation and coverage
-- **Headings** - H1-H6 hierarchy and structure
-- **Links** - internal, external, and broken link detection
-- **Images** - alt text, dimensions, format optimization
-- **Security** - HTTPS, headers, CSP, HSTS
-- **Performance** - Core Web Vitals hints
+<Columns cols={2}>
+  <Card
+    title="Terminal"
+    icon="terminal"
+  >
+    Run anywhere with a single command.
+  </Card>
+  <Card
+    title="Claude Code"
+    icon="sparkles"
+  >
+    Native integration with Claude output format.
+  </Card>
+  <Card
+    title="Any Coding Agent"
+    icon="robot"
+  >
+    JSON/Markdown output for any AI tool.
+  </Card>
+  <Card
+    title="CI/CD"
+    icon="git-branch"
+  >
+    Fail pipelines on audit errors.
+  </Card>
+</Columns>
+
+## Rule Categories
+
+squirrelscan runs **140+ rules** across **20 categories**:
+
+| Category | Description |
+|----------|-------------|
+| **Accessibility** | ARIA, focus, landmarks |
+| **AI** | LLM parsability, AI content detection |
+| **Analytics** | GTM, consent mode |
+| **Content** | Quality, readability, freshness |
+| **Core SEO** | Meta tags, canonical URLs, h1, favicon |
+| **Crawl** | Robots.txt, sitemap, indexing |
+| **E-E-A-T** | Experience, expertise, trust signals |
+| **i18n** | Hreflang, lang attribute |
+| **Images** | Alt text, dimensions, formats |
+| **Legal** | Privacy, cookies, TOS |
+| **Links** | Internal, external, broken links |
+| **Local SEO** | NAP consistency, geo meta |
+| **Mobile** | Viewport, tap targets |
+| **Performance** | Core Web Vitals, LCP/CLS/INP |
+| **Schema** | JSON-LD structured data |
+| **Security** | HTTPS, CSP, headers |
+| **Social** | Open Graph, Twitter cards |
+| **URL Structure** | Length, hyphens, keywords |
+| **Video** | VideoObject schema, accessibility |
 
 ## Resources
 
@@ -69,6 +125,6 @@ A command-line SEO audit tool built for developers who use AI. Run from Claude C
     icon="globe"
     href="https://squirrelscan.com"
   >
-    Learn more about SquirrelScan.
+    Learn more about squirrelscan.
   </Card>
 </Columns>

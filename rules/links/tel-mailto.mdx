@@ -1,0 +1,42 @@
+---
+title: "Tel & Mailto Links"
+description: "Validates tel: and mailto: link formats"
+---
+
+Validates tel: and mailto: link formats
+
+| | |
+|---|---|
+| **Rule ID** | `links/tel-mailto` |
+| **Category** | [Links](/rules/links) |
+| **Scope** | Per-page |
+| **Severity** | info |
+| **Weight** | 2/10 |
+
+## Solution
+
+Tel links should use format: tel:+1234567890 (E.164 format preferred, no spaces/dashes). Mailto links should have valid email format: mailto:user@example.com. You can add subject and body parameters: mailto:user@example.com?subject=Hi&body=Hello. Invalid formats may not work on all devices.
+
+## Enable / Disable
+
+### Disable this rule
+
+```toml squirrel.toml
+[rules]
+disable = ["links/tel-mailto"]
+```
+
+### Disable all Links rules
+
+```toml squirrel.toml
+[rules]
+disable = ["links/*"]
+```
+
+### Enable only this rule
+
+```toml squirrel.toml
+[rules]
+enable = ["links/tel-mailto"]
+disable = ["*"]
+```

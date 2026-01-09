@@ -1,19 +1,46 @@
 ---
 title: "Quickstart"
-description: "Install SquirrelScan and run your first SEO audit"
+description: "Install squirrelscan and run your first SEO audit"
 ---
 
 ## Installation
 
-Install SquirrelScan with the install script:
-
-```bash
-curl -fsSL https://squirrelscan.com/install | bash
-```
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    curl -fsSL https://squirrelscan.com/install | bash
+    ```
+  </Tab>
+  <Tab title="Windows">
+    ```powershell
+    iwr -useb https://squirrelscan.com/install.ps1 | iex
+    ```
+  </Tab>
+</Tabs>
 
 This downloads the binary to `~/.local/bin/squirrel` and adds it to your PATH.
 
 <Tip>After installation, run `squirrel self doctor` to verify everything is set up correctly.</Tip>
+
+## Up and Running in 3 Steps
+
+<Steps>
+  <Step title="Install">
+    ```bash
+    curl -fsSL https://squirrelscan.com/install | bash
+    ```
+  </Step>
+  <Step title="Run audit">
+    ```bash
+    squirrel audit example.com --output claude
+    ```
+  </Step>
+  <Step title="Pipe to Claude">
+    ```bash
+    squirrel audit example.com --output claude | claude
+    ```
+  </Step>
+</Steps>
 
 ## Run Your First Audit
 
@@ -26,18 +53,24 @@ squirrel audit https://example.com
 You'll see output like:
 
 ```
-SquirrelScan v0.0.4-beta
+SquirrelScan v2.0
+========================================
+Auditing: https://example.com
+Max pages: 50
 
-Auditing https://example.com...
-├─ Crawled 12 pages
-├─ Found 3 issues
-└─ Health Score: 87/100
+Crawled 12 pages
 
 ISSUES
 
-[high] Missing meta description on /about
-[medium] Image missing alt text: /images/hero.png
-[low] Non-HTTPS link on /contact
+[high] Missing meta description
+  → /about
+  → /contact
+
+[medium] Image missing alt text
+  → /images/hero.png on /
+
+[low] Non-HTTPS link
+  → http://oldsite.com on /links
 ```
 
 ## Common Options
@@ -64,39 +97,37 @@ ISSUES
     ```
   </Step>
 
-  <Step title="Deep audit mode">
-    Enable all extended checks including external links:
+  <Step title="Fresh crawl">
+    Ignore cache and fetch all pages fresh:
     ```bash
-    squirrel audit https://example.com -d
+    squirrel audit https://example.com --refresh
     ```
   </Step>
 </Steps>
 
-## What Gets Checked
+## Output Formats
 
-| Category | Checks |
-|----------|--------|
-| **SEO** | Title, description, canonical, robots.txt, sitemap |
-| **Social** | OpenGraph, Twitter Cards |
-| **Content** | Headings, word count, thin content |
-| **Links** | Broken links, redirects, external links |
-| **Images** | Alt text, dimensions, lazy loading |
-| **Schema** | JSON-LD validation, schema types |
-| **Security** | HTTPS, CSP, HSTS, mixed content |
-| **Performance** | Preload hints, Core Web Vitals signals |
+| Format | Flag | Use Case |
+|--------|------|----------|
+| `console` | (default) | Human-readable terminal output |
+| `json` | `-f json` | CI/CD pipelines, AI processing |
+| `html` | `-f html` | Visual reports for sharing |
+| `claude` | `--output claude` | Optimized for Claude Code |
+| `llm` | `--output llm` | Generic LLM-friendly format |
 
 ## Using with Claude Code
 
-SquirrelScan is designed for AI agents. Pipe JSON output directly to your LLM:
+squirrelscan is designed for AI agents. Pipe output directly to Claude:
 
 ```bash
-squirrel audit https://example.com -f json | claude
+squirrel audit https://example.com --output claude | claude
 ```
 
-Or use it as an MCP server for Claude Code integration.
+The `--output claude` flag formats results in a way that's optimized for Claude to understand and act on.
 
 ## Next Steps
 
 - Run `squirrel --help` for all available commands
-- Check the [GitHub repo](https://github.com/squirrelscan/squirrelscan) for updates
-- Report issues on [GitHub Issues](https://github.com/squirrelscan/squirrelscan/issues)
+- See [Configuration](/configuration) to customize audit behavior
+- Check [CLI Reference](/cli/audit) for full audit options
+- View the [GitHub repo](https://github.com/squirrelscan/squirrelscan) for updates

@@ -1,0 +1,59 @@
+---
+title: "Word Count"
+description: "Checks content length for thin content issues"
+---
+
+Checks content length for thin content issues
+
+| | |
+|---|---|
+| **Rule ID** | `content/word-count` |
+| **Category** | [Content](/rules/content) |
+| **Scope** | Per-page |
+| **Severity** | warning |
+| **Weight** | 4/10 |
+
+## Solution
+
+Pages with thin content (under 300 words) often struggle to rank well. Search engines prefer comprehensive content that thoroughly covers a topic. Add more valuable, relevant content to thin pages. Aim for at least 500 words for standard pages and 1000+ for in-depth articles. Focus on quality over quantity—padding with fluff hurts user experience. Consider consolidating multiple thin pages into one comprehensive resource.
+
+## Options
+
+This rule supports the following configuration options:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `min_words` | unknown | `undefined` | Minimum word count |
+| `warn_threshold` | unknown | `undefined` | Word count for optimal content |
+
+### Configuration Example
+
+```toml squirrel.toml
+[rules."content/word-count"]
+min_words = undefined
+warn_threshold = undefined
+```
+
+## Enable / Disable
+
+### Disable this rule
+
+```toml squirrel.toml
+[rules]
+disable = ["content/word-count"]
+```
+
+### Disable all Content rules
+
+```toml squirrel.toml
+[rules]
+disable = ["content/*"]
+```
+
+### Enable only this rule
+
+```toml squirrel.toml
+[rules]
+enable = ["content/word-count"]
+disable = ["*"]
+```

@@ -1,0 +1,30 @@
+/* Custom styles to match squirrelscan.com */
+
+/* Links - use brown foreground color from website */
+a:not([class]) {
+  color: #1d1a15;
+}
+
+a:not([class]):hover {
+  color: #157123;
+}
+
+/* Prose links */
+.prose a {
+  color: #1d1a15;
+}
+
+.prose a:hover {
+  color: #157123;
+}
+
+/* Dark mode links */
+.dark a:not([class]),
+.dark .prose a {
+  color: #e8e5e0;
+}
+
+.dark a:not([class]):hover,
+.dark .prose a:hover {
+  color: #4aba5a;
+}

@@ -1,0 +1,24 @@
+---
+title: "Adblock Detection"
+description: "Detection of content blocked by ad blockers"
+---
+
+Detection of content blocked by ad blockers
+
+## Rules
+
+<CardGroup cols={2}>
+  <Card title="Adblock Element Hiding" icon="triangle-exclamation" href="/rules/adblock/element-hiding">
+    Checks for elements that would be hidden by common adblockers
+  </Card>
+  <Card title="Blocked Tracking Links" icon="circle-info" href="/rules/adblock/blocked-links">
+    Checks for links and resources pointing to blocked tracking domains
+  </Card>
+</CardGroup>
+
+## Disable All Adblock Detection Rules
+
+```toml squirrel.toml
+[rules]
+disable = ["adblock/*"]
+```

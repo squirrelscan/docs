@@ -1,12 +1,12 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
-  "name": "SquirrelScan",
+  "name": "squirrelscan",
   "description": "CLI SEO Audits for Agents & LLMs",
   "colors": {
-    "primary": "#689B6C",
-    "light": "#F5F5F0",
-    "dark": "#1F1F3D"
+    "primary": "#157123",
+    "light": "#F7F5F1",
+    "dark": "#0F1216"
   },
   "favicon": "/favicon.svg",
   "fonts": {
@@ -32,8 +32,8 @@
   "background": {
     "decoration": "grid",
     "color": {
-      "light": "#F5F5F0",
-      "dark": "#0e0e10"
+      "light": "#F7F5F1",
+      "dark": "#0F1216"
     }
   },
   "rounded": "none",
@@ -41,29 +41,276 @@
     "groups": [
       {
         "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart",
-          "configuration"
-        ]
+        "pages": ["index", "quickstart", "configuration"]
       },
       {
         "group": "CLI",
-        "pages": [
-          "cli/init",
-          "cli/config"
-        ]
+        "pages": ["cli/init", "cli/config"]
       },
       {
         "group": "Concepts",
-        "pages": [
-          "crawl"
-        ]
+        "pages": ["crawl"]
       },
       {
         "group": "CLI Reference",
+        "pages": ["cli/audit"]
+      },
+      {
+        "group": "Rules Reference",
         "pages": [
-          "cli/audit"
+          "rules/index",
+          {
+            "group": "Core SEO",
+            "pages": [
+              "rules/core/index",
+              "rules/core/meta-title",
+              "rules/core/meta-description",
+              "rules/core/canonical",
+              "rules/core/canonical-header",
+              "rules/core/h1",
+              "rules/core/robots-meta",
+              "rules/core/nosnippet",
+              "rules/core/og-tags",
+              "rules/core/twitter-cards",
+              "rules/core/favicon",
+              "rules/core/title-unique"
+            ]
+          },
+          {
+            "group": "Content",
+            "pages": [
+              "rules/content/index",
+              "rules/content/heading-hierarchy",
+              "rules/content/word-count",
+              "rules/content/duplicate-title",
+              "rules/content/duplicate-description",
+              "rules/content/keyword-stuffing",
+              "rules/content/broken-html",
+              "rules/content/reading-level",
+              "rules/content/freshness",
+              "rules/content/author-info",
+              "rules/content/meta-in-body",
+              "rules/content/mime-type"
+            ]
+          },
+          {
+            "group": "Links",
+            "pages": [
+              "rules/links/index",
+              "rules/links/internal-links",
+              "rules/links/external-links",
+              "rules/links/invalid-links",
+              "rules/links/broken-links",
+              "rules/links/broken-external-links",
+              "rules/links/redirect-chains",
+              "rules/links/nofollow-internal",
+              "rules/links/orphan-pages",
+              "rules/links/anchor-text",
+              "rules/links/https-downgrade",
+              "rules/links/tel-mailto"
+            ]
+          },
+          {
+            "group": "Images",
+            "pages": [
+              "rules/images/index",
+              "rules/images/alt-text",
+              "rules/images/dimensions",
+              "rules/images/modern-format",
+              "rules/images/srcset",
+              "rules/images/lazy-loading",
+              "rules/images/filename-quality",
+              "rules/images/svg-inline",
+              "rules/images/broken-images",
+              "rules/images/figure-figcaption",
+              "rules/images/picture-element"
+            ]
+          },
+          {
+            "group": "Structured Data",
+            "pages": [
+              "rules/schema/index",
+              "rules/schema/json-ld-valid",
+              "rules/schema/article",
+              "rules/schema/product",
+              "rules/schema/local-business",
+              "rules/schema/faq",
+              "rules/schema/breadcrumb",
+              "rules/schema/website-search",
+              "rules/schema/organization",
+              "rules/schema/video",
+              "rules/schema/review"
+            ]
+          },
+          {
+            "group": "Security",
+            "pages": [
+              "rules/security/index",
+              "rules/security/https",
+              "rules/security/hsts",
+              "rules/security/csp",
+              "rules/security/x-frame-options",
+              "rules/security/x-content-type",
+              "rules/security/referrer-policy",
+              "rules/security/permissions-policy",
+              "rules/security/mixed-content",
+              "rules/security/form-https",
+              "rules/security/new-tab"
+            ]
+          },
+          {
+            "group": "Accessibility",
+            "pages": [
+              "rules/a11y/index",
+              "rules/a11y/skip-link",
+              "rules/a11y/aria-labels",
+              "rules/a11y/form-labels",
+              "rules/a11y/color-contrast",
+              "rules/a11y/focus-visible",
+              "rules/a11y/touch-targets",
+              "rules/a11y/landmark-regions",
+              "rules/a11y/heading-order",
+              "rules/a11y/link-text",
+              "rules/a11y/table-headers",
+              "rules/a11y/video-captions",
+              "rules/a11y/zoom-disabled"
+            ]
+          },
+          {
+            "group": "Internationalization",
+            "pages": [
+              "rules/i18n/index",
+              "rules/i18n/lang-attribute",
+              "rules/i18n/hreflang"
+            ]
+          },
+          {
+            "group": "Performance",
+            "pages": [
+              "rules/perf/index",
+              "rules/perf/lcp-hints",
+              "rules/perf/cls-hints",
+              "rules/perf/inp-hints",
+              "rules/perf/font-loading",
+              "rules/perf/preconnect",
+              "rules/perf/render-blocking",
+              "rules/perf/lazy-above-fold",
+              "rules/perf/dom-size",
+              "rules/perf/ttfb"
+            ]
+          },
+          {
+            "group": "Social Media",
+            "pages": [
+              "rules/social/index",
+              "rules/social/og-image-size",
+              "rules/social/og-url-match",
+              "rules/social/social-profiles",
+              "rules/social/share-buttons"
+            ]
+          },
+          {
+            "group": "Crawlability",
+            "pages": [
+              "rules/crawl/index",
+              "rules/crawl/robots-txt",
+              "rules/crawl/sitemap-exists",
+              "rules/crawl/sitemap-valid",
+              "rules/crawl/robots-meta-conflict",
+              "rules/crawl/noindex-in-sitemap",
+              "rules/crawl/canonical-chain",
+              "rules/crawl/pagination"
+            ]
+          },
+          {
+            "group": "URL Structure",
+            "pages": [
+              "rules/url/index",
+              "rules/url/length",
+              "rules/url/slug-keywords",
+              "rules/url/hyphens",
+              "rules/url/lowercase",
+              "rules/url/trailing-slash",
+              "rules/url/parameters",
+              "rules/url/special-chars",
+              "rules/url/stop-words"
+            ]
+          },
+          {
+            "group": "Mobile",
+            "pages": [
+              "rules/mobile/index",
+              "rules/mobile/viewport",
+              "rules/mobile/viewport-zoom",
+              "rules/mobile/tap-targets",
+              "rules/mobile/font-size",
+              "rules/mobile/horizontal-scroll",
+              "rules/mobile/interstitials"
+            ]
+          },
+          {
+            "group": "Legal Compliance",
+            "pages": [
+              "rules/legal/index",
+              "rules/legal/privacy-policy",
+              "rules/legal/cookie-consent",
+              "rules/legal/terms-of-service"
+            ]
+          },
+          {
+            "group": "Local SEO",
+            "pages": [
+              "rules/local/index",
+              "rules/local/nap-consistency",
+              "rules/local/geo-meta",
+              "rules/local/service-area"
+            ]
+          },
+          {
+            "group": "Video",
+            "pages": [
+              "rules/video/index",
+              "rules/video/video-schema",
+              "rules/video/video-thumbnail",
+              "rules/video/video-accessible"
+            ]
+          },
+          {
+            "group": "Analytics",
+            "pages": [
+              "rules/analytics/index",
+              "rules/analytics/gtm-present",
+              "rules/analytics/consent-mode"
+            ]
+          },
+          {
+            "group": "E-E-A-T",
+            "pages": [
+              "rules/eeat/index",
+              "rules/eeat/author-byline",
+              "rules/eeat/content-dates",
+              "rules/eeat/author-expertise",
+              "rules/eeat/citations",
+              "rules/eeat/about-page",
+              "rules/eeat/editorial-policy",
+              "rules/eeat/contact-page",
+              "rules/eeat/physical-address",
+              "rules/eeat/privacy-policy",
+              "rules/eeat/terms-of-service",
+              "rules/eeat/trust-signals",
+              "rules/eeat/ymyl-detection",
+              "rules/eeat/disclaimers",
+              "rules/eeat/affiliate-disclosure"
+            ]
+          },
+          {
+            "group": "Adblock Detection",
+            "pages": [
+              "rules/adblock/index",
+              "rules/adblock/element-hiding",
+              "rules/adblock/blocked-links"
+            ]
+          }
         ]
       }
     ]
@@ -86,13 +333,7 @@
     }
   },
   "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "claude",
-      "mcp",
-      "cursor"
-    ]
+    "options": ["copy", "view", "claude", "mcp", "cursor"]
   },
   "footer": {
     "socials": {
