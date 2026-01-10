@@ -45,7 +45,7 @@
       },
       {
         "group": "CLI",
-        "pages": ["cli/init", "cli/config"]
+        "pages": ["cli/init", "cli/config", "cli/debug"]
       },
       {
         "group": "Concepts",
