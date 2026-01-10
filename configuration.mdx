@@ -70,6 +70,8 @@ exclude = ["/admin/*", "*.pdf"]
 | `allow_query_params` | `string[]` | `[]` | Query parameters to preserve (others may be stripped for deduplication) |
 | `drop_query_prefixes` | `string[]` | `["utm_", "gclid", "fbclid"]` | Query param prefixes to strip (tracking params) |
 | `respect_robots` | `boolean` | `true` | Obey robots.txt rules and crawl-delay |
+| `request_method` | `"standard"` \| `"browser_impersonate"` | `"browser_impersonate"` | Request method. `browser_impersonate` uses TLS fingerprint impersonation to bypass WAF detection. |
+| `impersonate_browser` | `"chrome"` \| `"firefox"` | `"chrome"` | Browser to impersonate when using `browser_impersonate` method. |
 
 ### rules
 
@@ -159,6 +161,15 @@ max_pages = 500
 concurrency = 10
 per_host_delay_ms = 500
 respect_robots = true
+```
+
+### Disable Browser Impersonation
+
+If browser impersonation causes issues or you prefer standard fetch:
+
+```toml
+[crawler]
+request_method = "standard"
 ```
 
 ### Multi-Domain Project
