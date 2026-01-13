@@ -22,7 +22,7 @@ squirrel init
 
 If no config file exists, squirrelscan uses defaults that work well for most sites:
 
-- Crawls up to 50 pages
+- Crawls up to 500 pages
 - 100ms delay between requests
 - Respects robots.txt
 - Checks external links for broken URLs (cached for 7 days)
@@ -57,7 +57,7 @@ exclude = ["/admin/*", "*.pdf"]
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| `max_pages` | `number` | `50` | Maximum pages to crawl per audit |
+| `max_pages` | `number` | `500` | Maximum pages to crawl per audit |
 | `delay_ms` | `number` | `100` | Base delay between requests (ms) |
 | `timeout_ms` | `number` | `30000` | Request timeout (ms) |
 | `user_agent` | `string` | `""` | User agent (empty = random browser UA per crawl) |
