@@ -1,0 +1,120 @@
+---
+title: "crawl"
+description: "Crawl a website without running analysis"
+---
+
+The `crawl` command crawls a website and stores the data without running audit rules. Use this to separate crawling from analysis, or to crawl first and analyze later.
+
+## Usage
+
+```bash
+squirrel crawl <url> [options]
+```
+
+## Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `url` | The URL to crawl (required) |
+
+## Options
+
+| Option | Alias | Description | Default |
+|--------|-------|-------------|---------|
+| `--maxPages` | `-m` | Maximum pages to crawl | `500` |
+| `--refresh` | `-r` | Ignore cache, fetch all pages fresh | `false` |
+| `--resume` | | Resume interrupted crawl | `false` |
+
+## Examples
+
+### Basic Crawl
+
+```bash
+squirrel crawl https://example.com
+```
+
+### Crawl More Pages
+
+```bash
+squirrel crawl https://example.com -m 1000
+```
+
+### Fresh Crawl (Ignore Cache)
+
+```bash
+squirrel crawl https://example.com --refresh
+```
+
+### Resume Interrupted Crawl
+
+```bash
+squirrel crawl https://example.com --resume
+```
+
+## Crawl Behavior
+
+The crawl command:
+- Fetches and stores HTML content for each page
+- Extracts and follows internal links
+- Respects robots.txt and sitemaps
+- Deduplicates URLs automatically
+- Caches page content locally
+
+## Output
+
+```
+Crawling: https://example.com
+Max pages: 500
+
+✓ Crawled 42 pages in 12.3s
+
+Crawl ID: a7b3c2d1
+```
+
+After crawling, use `squirrel analyze` to run audit rules on the stored data.
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| `0` | Success |
+| `1` | Error (invalid URL, crawl failed, etc.) |
+
+## Configuration
+
+The crawl command respects settings from `squirrel.toml`:
+
+```toml
+[crawler]
+max_pages = 100
+delay_ms = 200
+timeout_ms = 30000
+include = ["/blog/*"]
+exclude = ["/admin/*"]
+```
+
+See [Configuration](/configuration) for all options.
+
+## Workflow
+
+```bash
+# 1. Crawl the site
+squirrel crawl https://example.com
+
+# 2. Analyze the crawl
+squirrel analyze
+
+# 3. View the report
+squirrel report
+```
+
+This workflow is useful when:
+- You want to crawl once and analyze multiple times
+- Testing different rule configurations
+- Crawling is slow and you want to iterate on analysis
+
+## Related
+
+- [analyze](/cli/analyze) - Analyze stored crawl
+- [audit](/cli/audit) - Crawl + analyze in one command
+- [Configuration](/configuration) - Config file options

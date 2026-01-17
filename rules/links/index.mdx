@@ -17,6 +17,9 @@ Internal and external link health and structure
   <Card title="Broken Links" icon="circle-exclamation" href="/rules/links/broken-links">
     Detects links returning 404 or 5xx errors
   </Card>
+  <Card title="Dead-End Pages" icon="triangle-exclamation" href="/rules/links/dead-end-pages">
+    Pages with no outgoing internal links, potentially trapping users
+  </Card>
   <Card title="External Links" icon="circle-info" href="/rules/links/external-links">
     Reports on external link count
   </Card>
@@ -36,7 +39,7 @@ Internal and external link health and structure
     Detects pages with no internal links pointing to them
   </Card>
   <Card title="Redirect Chains" icon="triangle-exclamation" href="/rules/links/redirect-chains">
-    Detects links with multiple redirects
+    Detects URLs that redirect and links pointing to redirects
   </Card>
   <Card title="Tel & Mailto Links" icon="circle-info" href="/rules/links/tel-mailto">
     Validates tel: and mailto: link formats

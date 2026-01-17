@@ -1,21 +1,21 @@
 ---
 title: "Redirect Chains"
-description: "Detects links with multiple redirects"
+description: "Detects URLs that redirect and links pointing to redirects"
 ---
 
-Detects links with multiple redirects
+Detects URLs that redirect and links pointing to redirects
 
 | | |
 |---|---|
 | **Rule ID** | `links/redirect-chains` |
 | **Category** | [Links](/rules/links) |
-| **Scope** | Per-page |
+| **Scope** | Site-wide |
 | **Severity** | warning |
 | **Weight** | 4/10 |
 
 ## Solution
 
-Redirect chains (A→B→C) slow page loading and waste crawl budget. Each redirect loses some link equity. Maximum recommended: 2 hops. Update links to point directly to final destinations. Common causes: HTTP→HTTPS, non-www→www, old URLs. Audit and fix chains starting from the source link.
+Redirects add latency and waste crawl budget, especially when chained. Make sure every internal link hits the final destination directly, not the intermediate redirect, and consult the chain context emitted by this rule to trace multi-hop paths. Consolidate redirect rules, prefer 301s for permanent moves, and audit redirects regularly to remove legacy hops.
 
 ## Enable / Disable
 

@@ -17,6 +17,23 @@ Detects pages with no internal links pointing to them
 
 Orphan pages have no internal links and are hard for search engines to discover. They may not get indexed or rank well. Add internal links from relevant pages. Include in navigation or sidebar. Add to sitemap. Create contextual links from related content. If intentionally orphaned (e.g., landing pages), ensure they're accessible via sitemap.
 
+## Options
+
+This rule supports the following configuration options:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `minInboundLinks` | unknown | `undefined` | Minimum inbound links required (pages below this are flagged) |
+| `excludePatterns` | unknown | `undefined` | URL patterns to exclude from orphan detection |
+
+### Configuration Example
+
+```toml squirrel.toml
+[rules."links/orphan-pages"]
+minInboundLinks = undefined
+excludePatterns = undefined
+```
+
 ## Enable / Disable
 
 ### Disable this rule

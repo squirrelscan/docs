@@ -1,22 +1,84 @@
 ---
 title: "Configuration"
-description: "Configure squirrelscan behavior with squirrel.toml"
+description: "Configure squirrelscan behavior with config files and settings"
 ---
 
-squirrelscan uses a TOML configuration file to customize crawling, analysis, and output behavior. This is optional - squirrelscan works out of the box with sensible defaults.
+squirrelscan uses TOML config files and JSON settings to customize crawling, analysis, and output behavior. This is optional - squirrelscan works out of the box with sensible defaults.
 
-## Config File Location
+## Configuration Hierarchy
 
-squirrelscan looks for `squirrel.toml` starting from your current directory and walking up to your home directory. This means you can:
+squirrelscan uses a layered configuration system that merges settings from multiple sources:
 
-- Place a config in your project root for project-specific settings
-- Place a config in `~` for global defaults
+### 1. Project Config (`squirrel.toml`)
 
-To create a config file:
+Project-specific settings for crawling, rules, and output. Located in your project directory.
 
+**Priority:** Highest (overrides all other settings)
+
+**Location:** squirrelscan searches for `squirrel.toml` starting from the current directory and walking up to your home directory.
+
+**Create:**
 ```bash
 squirrel init
 ```
+
+**Scope:** Crawler settings, rule enable/disable, rule options, output format
+
+**Example locations:**
+```
+/Users/you/projects/mysite/squirrel.toml       ← Project-specific
+/Users/you/projects/squirrel.toml              ← Shared across projects in directory
+/Users/you/squirrel.toml                       ← Global fallback
+```
+
+### 2. Local Settings (`.squirrel/settings.json`)
+
+CLI behavior settings that can be scoped to a specific project directory.
+
+**Priority:** Medium (overrides user settings)
+
+**Location:** `.squirrel/settings.json` in project directory (created on demand)
+
+**Scope:** CLI settings like notifications, channel preferences
+
+**Create:**
+```bash
+squirrel self settings set notifications false --local
+```
+
+**Example:**
+```json
+{
+  "notifications": false,
+  "channel": "beta"
+}
+```
+
+### 3. User Settings (`~/.squirrel/settings.json`)
+
+Global CLI settings that apply to all projects.
+
+**Priority:** Low (defaults can override)
+
+**Location:**
+- Unix/macOS: `~/.squirrel/settings.json`
+- Windows: `%LOCALAPPDATA%\squirrel\settings.json`
+
+**Scope:** Update channel, auto-update, notifications, feedback email
+
+**Manage:**
+```bash
+squirrel self settings show
+squirrel self settings set channel beta
+```
+
+### 4. Defaults
+
+Built-in defaults when no config is provided.
+
+**Priority:** Lowest
+
+**Scope:** All settings
 
 ## Zero-Config Mode
 
@@ -25,31 +87,128 @@ If no config file exists, squirrelscan uses defaults that work well for most sit
 - Crawls up to 500 pages
 - 100ms delay between requests
 - Respects robots.txt
-- Checks external links for broken URLs (cached for 7 days)
+- Checks external links (cached for 7 days)
 - Runs all rules except AI-powered ones
+- Console output format
 
-## Config Reference
+## Using Config Files
 
-### project
+### Create Project Config
 
-Project-level settings for multi-domain support.
+Initialize a `squirrel.toml` in your current directory:
+
+```bash
+squirrel init
+```
+
+This creates a config file with all available settings and their defaults:
 
 ```toml
 [project]
-domains = ["example.com", "blog.example.com"]
+name = ""
+domains = []
+
+[crawler]
+max_pages = 500
+delay_ms = 100
+timeout_ms = 30000
+# ... all crawler options
+
+[rules]
+enable = ["*"]
+disable = ["ai/*"]
+
+[external_links]
+enabled = true
+cache_ttl_days = 7
+
+[output]
+format = "console"
+
+[rule_options]
+# Per-rule configuration
+```
+
+### Edit Config
+
+Modify values directly:
+
+```bash
+nano squirrel.toml
+```
+
+Or use the CLI:
+
+```bash
+squirrel config set crawler.max_pages 200
+```
+
+### Validate Config
+
+Check for errors:
+
+```bash
+squirrel config validate
+```
+
+View effective config:
+
+```bash
+squirrel config show
+```
+
+### Config File Discovery
+
+squirrelscan walks up from the current directory to find `squirrel.toml`:
+
+```
+Current directory: /Users/you/projects/mysite/blog
+Searches:
+  1. /Users/you/projects/mysite/blog/squirrel.toml  ← Check here first
+  2. /Users/you/projects/mysite/squirrel.toml       ← Then parent
+  3. /Users/you/projects/squirrel.toml              ← Then grandparent
+  4. /Users/you/squirrel.toml                       ← Stop at home
+```
+
+This allows you to:
+- Share config across multiple projects in a directory
+- Override parent configs in subdirectories
+- Set global defaults in your home directory
+
+## Full Config Reference
+
+### Project Settings
+
+Project-level metadata and multi-domain support.
+
+```toml
+[project]
+name = "mysite"
+domains = ["example.com"]
 ```
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| `domains` | `string[]` | `[]` | Allowed domains for crawling. Supports subdomain wildcards - `["example.com"]` allows `www.example.com`, `api.example.com`, etc. When empty, only the seed URL's host is crawled. |
+| `name` | `string` | Current directory name | Project name for local URLs (localhost, 127.0.0.1). Defaults to the current working directory name. |
+| `domains` | `string[]` | `[]` | Allowed domains for crawling. Supports subdomain wildcards - `["example.com"]` allows `www.example.com`, `api.example.com`, etc. When empty, only the seed URL's domain is crawled. |
 
-### crawler
+**Example - Multi-domain:**
+```toml
+[project]
+domains = ["example.com"]
+```
+
+Crawls: `example.com`, `www.example.com`, `docs.example.com`, `blog.example.com`
+
+---
+
+### Crawler Settings
 
 Controls how squirrelscan discovers and fetches pages.
 
 ```toml
 [crawler]
-max_pages = 100
+max_pages = 200
 concurrency = 10
 per_host_delay_ms = 500
 exclude = ["/admin/*", "*.pdf"]
@@ -60,20 +219,50 @@ exclude = ["/admin/*", "*.pdf"]
 | `max_pages` | `number` | `500` | Maximum pages to crawl per audit |
 | `delay_ms` | `number` | `100` | Base delay between requests (ms) |
 | `timeout_ms` | `number` | `30000` | Request timeout (ms) |
-| `user_agent` | `string` | `""` | User agent (empty = random browser UA per crawl) |
+| `user_agent` | `string` | `""` | Custom user agent (empty = random browser UA per crawl) |
 | `follow_redirects` | `boolean` | `true` | Follow HTTP 3xx redirects |
 | `concurrency` | `number` | `5` | Maximum concurrent requests globally |
 | `per_host_concurrency` | `number` | `2` | Maximum concurrent requests per host |
-| `per_host_delay_ms` | `number` | `200` | Minimum delay between requests to the same host |
-| `include` | `string[]` | `[]` | URL patterns to include. If set, overrides `domains` |
-| `exclude` | `string[]` | `[]` | URL patterns to exclude from crawling |
-| `allow_query_params` | `string[]` | `[]` | Query parameters to preserve (others may be stripped for deduplication) |
+| `per_host_delay_ms` | `number` | `200` | Minimum delay between requests to same host (ms) |
+| `include` | `string[]` | `[]` | URL patterns to include (glob format). When set, only matching URLs are crawled. |
+| `exclude` | `string[]` | `[]` | URL patterns to exclude from crawling (glob format) |
+| `allow_query_params` | `string[]` | `[]` | Query parameters to preserve (others stripped for deduplication) |
 | `drop_query_prefixes` | `string[]` | `["utm_", "gclid", "fbclid"]` | Query param prefixes to strip (tracking params) |
 | `respect_robots` | `boolean` | `true` | Obey robots.txt rules and crawl-delay |
+| `breadth_first` | `boolean` | `true` | Use breadth-first crawling for better site coverage |
+| `max_prefix_budget` | `number` | `0.25` | Max percentage (0-1) of crawl budget for any single path prefix |
+| `request_method` | `"standard"` \| `"browser_impersonate"` | `"browser_impersonate"` | Request method: standard fetch or browser TLS impersonation |
+| `impersonate_browser` | `string` | `"chrome_131"` | Browser to impersonate: `chrome_131`, `chrome_120`, `firefox_133`, `firefox_120`, `safari_ios_18_0` |
 
-### rules
+**URL Pattern Syntax:**
 
-Configure which SEO rules run during analysis.
+Patterns use glob syntax:
+- `*` - Match anything except `/`
+- `**` - Match anything including `/`
+- `?` - Match single character
+- `[abc]` - Match character set
+
+**Examples:**
+```toml
+[crawler]
+# Only crawl blog
+include = ["/blog/**"]
+
+# Exclude admin, API, and PDFs
+exclude = ["/admin/*", "/api/*", "*.pdf"]
+
+# Preserve specific query params
+allow_query_params = ["page", "id", "category"]
+
+# Strip all UTM and tracking params
+drop_query_prefixes = ["utm_", "gclid", "fbclid", "mc_", "_ga"]
+```
+
+---
+
+### Rules Configuration
+
+Configure which audit rules run during analysis.
 
 ```toml
 [rules]
@@ -83,21 +272,65 @@ disable = ["ai/*", "content/quality"]
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| `enable` | `string[]` | `["*"]` | Patterns of rules to enable. Supports wildcards: `*`, `seo/*`, `core/meta-title` |
-| `disable` | `string[]` | `["ai/ai-content", "ai/llm-parsability", "content/quality"]` | Patterns of rules to disable. Takes precedence over `enable` |
+| `enable` | `string[]` | `["*"]` | Patterns of rules to enable. Supports wildcards. |
+| `disable` | `string[]` | `["ai/ai-content", "ai/llm-parsability", "content/quality"]` | Patterns of rules to disable. Takes precedence over `enable`. |
 
-Rule IDs follow the format `domain/rule-name`. Common domains:
+**Rule Pattern Syntax:**
 
-- `seo/*` - Meta tags, canonical, robots
-- `content/*` - Word count, headings, thin content
-- `links/*` - Broken links, redirects
-- `images/*` - Alt text, dimensions
-- `schema/*` - JSON-LD validation
-- `security/*` - HTTPS, CSP, HSTS
-- `performance/*` - Core Web Vitals hints
-- `ai/*` - LLM-powered analysis (disabled by default)
+Rule IDs follow the format `category/rule-name`:
 
-### external_links
+- `*` - All rules
+- `core/*` - All rules in core category
+- `core/meta-title` - Specific rule
+
+**Common Categories:**
+
+- `core` - Meta tags, canonical, H1, Open Graph
+- `content` - Word count, headings, duplicates, freshness
+- `links` - Broken links, redirects, orphan pages
+- `images` - Alt text, dimensions, formats, lazy loading
+- `schema` - JSON-LD validation, structured data
+- `security` - HTTPS, HSTS, CSP, headers
+- `a11y` - Accessibility (ARIA, contrast, focus)
+- `i18n` - Internationalization (lang, hreflang)
+- `perf` - Performance hints (LCP, CLS, INP)
+- `social` - Social media (Open Graph, Twitter Cards)
+- `crawl` - Crawlability (robots, sitemaps, indexability)
+- `url` - URL structure (length, keywords, parameters)
+- `mobile` - Mobile optimization (viewport, tap targets)
+- `legal` - Legal compliance (privacy, cookies, terms)
+- `local` - Local SEO (NAP, geo tags)
+- `video` - Video optimization (schema, thumbnails)
+- `analytics` - Analytics tracking (GTM, consent)
+- `eeat` - E-E-A-T signals (author, expertise, trust)
+- `ai` - AI-powered analysis (disabled by default, requires LLM)
+
+**Examples:**
+
+Enable only specific categories:
+```toml
+[rules]
+enable = ["core/*", "links/*", "images/*"]
+disable = []
+```
+
+Disable slow or AI-powered rules:
+```toml
+[rules]
+enable = ["*"]
+disable = ["ai/*", "content/quality", "perf/*"]
+```
+
+Disable specific rules:
+```toml
+[rules]
+enable = ["*"]
+disable = ["content/word-count", "images/modern-format"]
+```
+
+---
+
+### External Links Configuration
 
 Configure external link checking during audits.
 
@@ -112,15 +345,34 @@ concurrency = 5
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | `enabled` | `boolean` | `true` | Enable checking external links for broken URLs (4xx/5xx) |
-| `cache_ttl_days` | `number` | `7` | How long to cache external link check results (in days). Results are shared across all site audits. |
+| `cache_ttl_days` | `number` | `7` | How long to cache external link check results (days). Results shared across all audits. |
 | `timeout_ms` | `number` | `10000` | Timeout for each external link check (ms) |
 | `concurrency` | `number` | `5` | Maximum concurrent external link checks |
 
-External link results are cached globally in `~/.squirrel/link-cache.db` to avoid re-checking the same URLs across different site audits. This dramatically speeds up subsequent audits.
+External link results are cached globally in `~/.squirrel/link-cache.db` to avoid re-checking the same URLs across different site audits.
 
-### output
+**Examples:**
 
-Default output settings for reports.
+Disable for faster audits:
+```toml
+[external_links]
+enabled = false
+```
+
+Aggressive checking with short cache:
+```toml
+[external_links]
+enabled = true
+cache_ttl_days = 1
+timeout_ms = 5000
+concurrency = 10
+```
+
+---
+
+### Output Settings
+
+Default output format and path for reports.
 
 ```toml
 [output]
@@ -130,32 +382,69 @@ path = "report.json"
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| `format` | `"console"` \| `"json"` \| `"html"` | `"console"` | Default output format |
-| `path` | `string` | - | Default output file path |
+| `format` | `"console"` \| `"text"` \| `"json"` \| `"html"` \| `"markdown"` \| `"llm"` | `"console"` | Default output format |
+| `path` | `string` | - | Default output file path (optional) |
 
-### rule_options
+**Formats:**
+- `console` - Colored terminal output
+- `text` - Plain text without colors
+- `json` - Machine-readable JSON
+- `html` - Interactive browser report
+- `markdown` - Markdown for docs
+- `llm` - Optimized for LLM consumption
+
+**Note:** CLI flags (`--format`, `--output`) override these defaults.
+
+---
+
+### Rule Options
 
 Per-rule configuration for rules that accept options.
 
 ```toml
-[rule_options.content/word-count]
-min_words = 300
+[rule_options."core/meta-title"]
+min_length = 30
+max_length = 60
 
-[rule_options.seo/meta-title]
-max_length = 70
+[rule_options."content/word-count"]
+min_words = 500
 ```
 
-Each rule documents its available options. This section is a key-value map where keys are rule IDs.
+Each rule documents its available options on its documentation page. This section uses dotted keys where each key is a rule ID.
 
-## Examples
+**Common Rule Options:**
+
+```toml
+# Title length
+[rule_options."core/meta-title"]
+min_length = 30
+max_length = 60
+
+# Description length
+[rule_options."core/meta-description"]
+min_length = 120
+max_length = 160
+
+# Word count
+[rule_options."content/word-count"]
+min_words = 300
+
+# Image file size
+[rule_options."images/image-file-size"]
+max_size_kb = 500
+```
+
+See individual [rule documentation](/rules) for all available options.
+
+## Configuration Examples
 
 ### High-Volume Crawl
 
-For large sites, increase limits and be polite:
+For large sites with increased politeness:
 
 ```toml
 [crawler]
-max_pages = 500
+max_pages = 1000
 concurrency = 10
 per_host_delay_ms = 500
 respect_robots = true
@@ -163,19 +452,19 @@ respect_robots = true
 
 ### Multi-Domain Project
 
-Audit a main site plus its API docs and blog:
+Audit main site plus subdomains:
 
 ```toml
 [project]
 domains = ["example.com"]
 
 [crawler]
-max_pages = 200
+max_pages = 500
 ```
 
-This crawls `example.com`, `www.example.com`, `docs.example.com`, `blog.example.com`, etc.
+Crawls: `example.com`, `www.example.com`, `docs.example.com`, `blog.example.com`
 
-### CI Pipeline
+### CI/CD Pipeline
 
 Strict settings for automated checks:
 
@@ -185,11 +474,16 @@ max_pages = 100
 timeout_ms = 10000
 
 [rules]
-enable = ["seo/*", "security/*", "links/*"]
+enable = ["core/*", "security/*", "links/*"]
 disable = []
+
+[external_links]
+enabled = true
+cache_ttl_days = 1
 
 [output]
 format = "json"
+path = "report.json"
 ```
 
 ### Exclude Admin Areas
@@ -200,44 +494,140 @@ Skip paths you don't want crawled:
 [crawler]
 exclude = [
   "/admin/*",
-  "/api/*",
   "/wp-admin/*",
+  "/api/*",
   "*.pdf",
   "*?preview=*"
 ]
 ```
 
-### Disable External Link Checking
+### Fast Local Development
 
-If you want faster audits and don't need external link validation:
+Lightweight config for quick local tests:
 
 ```toml
+[crawler]
+max_pages = 50
+concurrency = 10
+per_host_delay_ms = 0
+
 [external_links]
 enabled = false
+
+[rules]
+enable = ["core/*", "content/*"]
+disable = []
 ```
 
-### Aggressive External Link Checking
+### SEO-Focused Audit
 
-For thorough audits with more concurrent checks:
+Focus on SEO rules only:
 
 ```toml
-[external_links]
-enabled = true
-cache_ttl_days = 1
-timeout_ms = 5000
-concurrency = 10
+[rules]
+enable = ["core/*", "content/*", "schema/*", "crawl/*", "url/*"]
+disable = []
 ```
 
-## Validating Config
+### Accessibility Audit
 
-Check your config file for errors:
+Focus on accessibility:
+
+```toml
+[rules]
+enable = ["a11y/*", "mobile/*"]
+disable = []
+```
+
+### Performance Audit
+
+Focus on performance:
+
+```toml
+[rules]
+enable = ["perf/*", "images/*"]
+disable = []
+```
+
+## Managing Settings
+
+### View Current Config
+
+Show effective config (merged from all sources):
+
+```bash
+squirrel config show
+```
+
+Show config file path:
+
+```bash
+squirrel config path
+```
+
+### Modify Config
+
+Edit file directly:
+
+```bash
+nano squirrel.toml
+```
+
+Or use CLI:
+
+```bash
+squirrel config set crawler.max_pages 200
+```
+
+Preview change:
+
+```bash
+squirrel config set crawler.max_pages 200 --dry-run
+```
+
+### Validate Config
+
+Check for errors:
 
 ```bash
 squirrel config validate
 ```
 
-View the current effective config:
-
-```bash
-squirrel config show
+Output on success:
 ```
+Config valid: /path/to/squirrel.toml
+```
+
+Output on error:
+```
+Invalid config: crawler.max_pages: Expected number, received string
+```
+
+## CLI Settings vs Project Config
+
+| Setting Type | File | Scope | Managed With |
+|-------------|------|-------|--------------|
+| Project config | `squirrel.toml` | Crawler, rules, output | `squirrel init`, `squirrel config` |
+| User settings | `~/.squirrel/settings.json` | CLI behavior, updates | `squirrel self settings` |
+| Local settings | `.squirrel/settings.json` | CLI behavior (project-scoped) | `squirrel self settings --local` |
+
+**Project Config (`squirrel.toml`):**
+- Crawler settings (max pages, delays, concurrency)
+- Rule enable/disable
+- Rule options
+- Output format
+- External link checking
+
+**CLI Settings (`settings.json`):**
+- Update channel (stable/beta)
+- Auto-update preferences
+- Notification settings
+- Feedback email
+- Dismissed updates
+
+## Related
+
+- [init](/cli/init) - Create config file
+- [config](/cli/config) - Manage config
+- [self settings](/cli/self#settings) - Manage CLI settings
+- [Rules Reference](/rules) - All audit rules

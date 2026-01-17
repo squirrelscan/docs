@@ -44,16 +44,22 @@
         "pages": ["index", "quickstart", "configuration"]
       },
       {
-        "group": "CLI",
-        "pages": ["cli/init", "cli/config"]
-      },
-      {
         "group": "Concepts",
-        "pages": ["crawl"]
+        "pages": ["crawl", "reports"]
       },
       {
         "group": "CLI Reference",
-        "pages": ["cli/audit"]
+        "pages": [
+          "cli/index",
+          "cli/audit",
+          "cli/crawl",
+          "cli/analyze",
+          "cli/report",
+          "cli/init",
+          "cli/config",
+          "cli/feedback",
+          "cli/self"
+        ]
       },
       {
         "group": "Rules Reference",

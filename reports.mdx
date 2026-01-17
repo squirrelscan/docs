@@ -1,0 +1,441 @@
+---
+title: "Reports & Scoring"
+description: "Understanding audit reports and health score calculation"
+---
+
+squirrelscan generates comprehensive audit reports with a health score and detailed issue breakdown.
+
+## Health Score
+
+The health score is calculated from 0-100 based on:
+
+- **Rule weights** - Each rule has a weight (1-10) reflecting its importance
+- **Check results** - Pass/fail/warning status of each check
+- **Scoring curve** - Compresses high scores to reward perfection
+- **Penalties** - Applied for critical crawlability issues
+
+### Scoring Formula
+
+```
+Base Score = (Earned Weight / Total Weight) × 100
+Curved Score = Base Score ^ 1.5
+Final Score = Curved Score × Penalty Multipliers
+```
+
+### Penalties
+
+Critical crawlability issues reduce the final score:
+
+| Issue | Penalty | Check |
+|-------|---------|-------|
+| Missing robots.txt | -15% | `crawl/robots-txt` |
+| Robots blocks all | -50% | `crawl/robots-txt` |
+| Missing sitemap | -20% | `crawl/sitemap-exists` |
+
+Penalties are multiplicative. For example, an 80% score with missing robots.txt (-15%) and no sitemap (-20%):
+
+```
+80 × (1 - 0.15) × (1 - 0.20) = 80 × 0.85 × 0.80 = 54.4
+```
+
+### Grade Scale
+
+| Score | Grade |
+|-------|-------|
+| 90-100 | A |
+| 80-89 | B |
+| 70-79 | C |
+| 60-69 | D |
+| 0-59 | F |
+
+### Category Scores
+
+Each category (core, content, links, etc.) receives its own score:
+
+- Weighted by rule importance within category
+- Includes pass/warning/fail counts
+- Sorted by error count (most errors first)
+- Perfect categories (100%, no issues) shown last
+
+## Output Formats
+
+squirrelscan supports multiple report formats optimized for different use cases.
+
+### console (Default)
+
+Human-readable terminal output with colors and formatting.
+
+```bash
+squirrel report
+```
+
+**Output:**
+```
+================================================================================
+SQUIRRELSCAN REPORT
+https://example.com • 42 pages • 87/100 (B)
+================================================================================
+
+Health Score: 87/100 (B)
+
+Category Breakdown:
+--------------------------------------------------
+Core SEO             ██████████ 100%
+  Passed: 45 | Warnings: 0 | Failed: 0
+Links                ████████░░ 85%
+  Passed: 23 | Warnings: 5 | Failed: 3
+Images               ███████░░░ 72%
+  Passed: 15 | Warnings: 8 | Failed: 6
+
+Total: 83 passed, 13 warnings, 9 errors
+
+ISSUES
+
+Content (2 errors, 3 warnings)
+  content/word-count Word Count (warning)
+    ✗ Low word count: 150 words (min: 300) (3 pages)
+      → /blog/post-1
+      → /blog/post-2
+      → /about
+```
+
+**Features:**
+- Color-coded severity (red errors, yellow warnings)
+- Visual progress bars for category scores
+- Grouped by category
+- Shows affected pages
+
+### json
+
+Machine-readable format for CI/CD pipelines, programmatic processing, and LLM consumption.
+
+```bash
+squirrel report -f json -o report.json
+```
+
+**Structure:**
+```json
+{
+  "baseUrl": "https://example.com",
+  "crawledAt": "2026-01-17T00:00:00Z",
+  "totalPages": 42,
+  "healthScore": {
+    "overall": 87,
+    "categories": [
+      {
+        "category": "core",
+        "name": "Core SEO",
+        "score": 100,
+        "passed": 45,
+        "warnings": 0,
+        "failed": 0,
+        "total": 45
+      }
+    ],
+    "errorCount": 9,
+    "warningCount": 13,
+    "passedCount": 83
+  },
+  "ruleResults": [
+    {
+      "id": "content/word-count",
+      "name": "Word Count",
+      "category": "content",
+      "severity": "warning",
+      "checks": [
+        {
+          "name": "min-words",
+          "status": "fail",
+          "message": "Low word count: 150 words (min: 300)",
+          "pages": ["/blog/post-1", "/blog/post-2"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Use Cases:**
+- CI/CD pipeline integration
+- Fail builds on score thresholds
+- Track score trends over time
+- Feed into monitoring systems
+- LLM analysis
+
+### html
+
+Interactive HTML report that opens in a browser.
+
+```bash
+squirrel report -f html -o report.html
+open report.html
+```
+
+**Features:**
+- Visual dashboard with charts
+- Filter by category/severity
+- Sort by page/rule/severity
+- Search functionality
+- Export filtered results
+- Responsive design
+
+### markdown
+
+Markdown format for documentation and README files.
+
+```bash
+squirrel report -f markdown -o report.md
+```
+
+**Output:**
+```markdown
+# Audit Report
+
+**Site:** https://example.com
+**Pages:** 42
+**Health Score:** 87/100 (B)
+
+## Health Score
+
+Overall: **87/100** (B)
+
+### Category Breakdown
+
+| Category | Score | Passed | Warnings | Errors |
+|----------|-------|--------|----------|--------|
+| Core SEO | 100% | 45 | 0 | 0 |
+| Links | 85% | 23 | 5 | 3 |
+| Images | 72% | 15 | 8 | 6 |
+
+## Issues
+
+### Content (2 errors, 3 warnings)
+
+#### ⚠️ Word Count
+Low word count detected on 3 pages.
+```
+
+**Use Cases:**
+- Add to repository README
+- Document audit results
+- Share in pull requests
+- Include in technical specs
+
+### text
+
+Plain text format without colors or formatting (for piping and scripting).
+
+```bash
+squirrel report -f text > report.txt
+```
+
+**Use Cases:**
+- Email reports
+- Log files
+- Plain text editors
+- Grep/search processing
+
+### llm
+
+Optimized format for LLM consumption with structured context.
+
+```bash
+squirrel report -f llm -o report.txt
+```
+
+or pipe directly:
+
+```bash
+squirrel report -f llm | claude "analyze this audit and prioritize fixes"
+```
+
+**Format:**
+```
+AUDIT REPORT
+Site: https://example.com
+Pages: 42
+Health Score: 87/100 (B)
+
+CATEGORY SCORES
+- Core SEO: 100% (45 passed)
+- Links: 85% (23 passed, 5 warnings, 3 errors)
+- Images: 72% (15 passed, 8 warnings, 6 errors)
+
+ISSUES BY PRIORITY
+
+HIGH PRIORITY (9 errors)
+1. [images/alt-text] Missing alt text on 6 images
+   - /products/widget.png on /products
+   - /hero.jpg on /
+
+2. [links/broken-links] 3 broken internal links detected
+   - /old-page on /blog/post
+
+MEDIUM PRIORITY (13 warnings)
+...
+```
+
+**Features:**
+- Concise, structured format
+- Issues sorted by priority
+- Includes context for each issue
+- Optimized for LLM reasoning
+- No formatting or color codes
+
+## Filtering Reports
+
+### By Severity
+
+Show only errors:
+```bash
+squirrel report --severity error
+```
+
+Show only warnings:
+```bash
+squirrel report --severity warning
+```
+
+### By Category
+
+Filter by single category:
+```bash
+squirrel report --category core
+```
+
+Filter by multiple categories:
+```bash
+squirrel report --category core,links,images
+```
+
+**Available categories:**
+- `core` - Core SEO elements (title, meta, canonical)
+- `content` - Content quality (word count, headings, duplicates)
+- `links` - Link analysis (broken, internal, external)
+- `images` - Image optimization (alt text, formats, dimensions)
+- `schema` - Structured data (JSON-LD validation)
+- `security` - Security headers (HTTPS, CSP, HSTS)
+- `a11y` - Accessibility (ARIA, contrast, focus)
+- `i18n` - Internationalization (lang, hreflang)
+- `perf` - Performance (LCP, CLS, lazy loading)
+- `social` - Social media (Open Graph, Twitter Cards)
+- `crawl` - Crawlability (robots, sitemaps, indexability)
+- `url` - URL structure (length, keywords, parameters)
+- `mobile` - Mobile optimization (viewport, tap targets)
+- `legal` - Legal compliance (privacy, cookies, terms)
+- `local` - Local SEO (NAP, geo tags)
+- `video` - Video optimization (schema, thumbnails)
+- `analytics` - Analytics tracking (GTM, consent)
+- `eeat` - E-E-A-T signals (author, expertise, trust)
+- `adblock` - Adblock detection
+
+### Combined Filters
+
+Combine severity and category filters:
+```bash
+squirrel report --severity error --category links,images
+```
+
+## CI/CD Integration
+
+### Fail Build on Low Score
+
+```bash
+#!/bin/bash
+SCORE=$(squirrel audit https://example.com -f json | jq '.healthScore.overall')
+if [ "$SCORE" -lt 80 ]; then
+  echo "Health score too low: $SCORE/100 (minimum: 80)"
+  exit 1
+fi
+```
+
+### Fail on Errors
+
+```bash
+#!/bin/bash
+ERRORS=$(squirrel audit https://example.com -f json | jq '.healthScore.errorCount')
+if [ "$ERRORS" -gt 0 ]; then
+  echo "Audit failed with $ERRORS errors"
+  exit 1
+fi
+```
+
+### GitHub Actions Example
+
+```yaml
+name: SEO Audit
+on: [push]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: curl -fsSL https://install.squirrelscan.com | sh
+      - run: squirrel audit https://preview.example.com -f json -o report.json
+      - run: |
+          SCORE=$(jq '.healthScore.overall' report.json)
+          echo "Health Score: $SCORE/100"
+          if [ "$SCORE" -lt 80 ]; then exit 1; fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audit-report
+          path: report.json
+```
+
+## Report Storage
+
+Audit reports are stored in a local SQLite database at:
+
+```
+~/.local/share/squirrel/audits.db
+```
+
+### List Stored Audits
+
+```bash
+squirrel report --list
+```
+
+**Output:**
+```
+Recent Audits:
+================================================================================
+ID       Date                   Pages    Status
+--------------------------------------------------------------------------------
+a7b3c2d1 1/17/2026, 10:30 AM    42       complete
+  https://example.com
+5e9f1a3b 1/16/2026, 3:45 PM     38       complete
+  https://test.com
+
+Total: 2 audits
+```
+
+### View Specific Audit
+
+By ID:
+```bash
+squirrel report a7b3c2d1
+```
+
+By domain:
+```bash
+squirrel report example.com
+```
+
+### Delete Old Audits
+
+Reports are kept indefinitely. To clean up:
+
+```bash
+# Remove specific audit
+rm -rf ~/.local/share/squirrel/audits.db
+
+# This will be regenerated on next audit
+```
+
+## Related
+
+- [audit](/cli/audit) - Run new audit
+- [report](/cli/report) - Report command reference
+- [Rules Reference](/rules) - All audit rules
+- [Configuration](/configuration) - Config file options
