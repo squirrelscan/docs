@@ -10,16 +10,17 @@ squirrelscan generates comprehensive audit reports with a health score and detai
 The health score is calculated from 0-100 based on:
 
 - **Rule weights** - Each rule has a weight (1-10) reflecting its importance
-- **Check results** - Pass/fail/warning status of each check
+- **Check results** - Pass/fail/warning status of each check (warnings count as 0.5)
 - **Scoring curve** - Compresses high scores to reward perfection
-- **Penalties** - Applied for critical crawlability issues
+- **Penalties** - Applied for critical crawlability issues and high issue density
 
 ### Scoring Formula
 
 ```
 Base Score = (Earned Weight / Total Weight) × 100
-Curved Score = Base Score ^ 1.5
-Final Score = Curved Score × Penalty Multipliers
+Curved Score = Base Score ^ 1.2
+Issue Density Penalty = up to -45% when many warnings/fails (kicks in after 20+ issues)
+Final Score = Curved Score × Penalty Multipliers × Issue Density Multiplier
 ```
 
 ### Penalties
@@ -31,6 +32,7 @@ Critical crawlability issues reduce the final score:
 | Missing robots.txt | -15% | `crawl/robots-txt` |
 | Robots blocks all | -50% | `crawl/robots-txt` |
 | Missing sitemap | -20% | `crawl/sitemap-exists` |
+| High issue density | up to -45% | Any rules (applied when 20+ warnings/fails exist) |
 
 Penalties are multiplicative. For example, an 80% score with missing robots.txt (-15%) and no sitemap (-20%):
 
