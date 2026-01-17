@@ -5,14 +5,70 @@ description: "CLI Website Audits for Humans, Agents & LLMs"
 
 A comprehensive website audit tool for SEO, performance, content and more that fits into your AI workflow. Single binary, zero dependencies.
 
-<Card
-  title="Quickstart"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Install squirrelscan and run your first audit in under 2 minutes.
-</Card>
+<CardGroup cols={2}>
+  <Card
+    title="Quickstart"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Install squirrelscan and run your first audit in under 2 minutes.
+  </Card>
+  <Card
+    title="AI Agent Integration"
+    icon="sparkles"
+    href="/agents"
+  >
+    Use squirrelscan with Claude Code, Cursor, and other AI coding assistants.
+  </Card>
+</CardGroup>
+
+## Three Ways to Use squirrelscan
+
+<Tabs>
+  <Tab title="CLI for Humans">
+    Run audits directly in your terminal with beautiful, human-readable output:
+
+    ```bash
+    squirrel audit example.com
+    ```
+
+    Perfect for:
+    - Manual audits during development
+    - Quick site health checks
+    - Terminal-first workflows
+  </Tab>
+
+  <Tab title="Pipe to AI">
+    Pipe clean, LLM-optimized output to any AI assistant:
+
+    ```bash
+    squirrel audit example.com --format text | claude
+    ```
+
+    Perfect for:
+    - Ad-hoc AI assistance with audits
+    - Custom AI workflows and scripts
+    - Agents without skill support
+  </Tab>
+
+  <Tab title="AI Agent Skills">
+    Install the skill for fully autonomous AI workflows:
+
+    ```bash
+    npx skills install squirrelscan/skills
+    ```
+
+    Then prompt your AI agent:
+    ```
+    Use the audit-website skill to audit this site and fix all issues
+    ```
+
+    Perfect for:
+    - Autonomous fixing of SEO/accessibility issues
+    - Multi-step AI workflows with plan mode
+    - Continuous monitoring and regression detection
+  </Tab>
+</Tabs>
 
 ## Why squirrelscan?
 
@@ -68,19 +124,31 @@ A comprehensive website audit tool for SEO, performance, content and more that f
     title="Claude Code"
     icon="sparkles"
   >
-    Native integration with Claude output format.
+    Install the audit-website skill for autonomous workflows.
   </Card>
   <Card
-    title="Any Coding Agent"
+    title="Cursor"
+    icon="code"
+  >
+    Native skill integration with composer mode.
+  </Card>
+  <Card
+    title="Any AI Agent"
     icon="robot"
   >
-    JSON/Markdown output for any AI tool.
+    Pipe text/JSON/markdown to any LLM.
   </Card>
   <Card
     title="CI/CD"
     icon="git-branch"
   >
-    Fail pipelines on audit errors.
+    Fail pipelines on audit errors with exit codes.
+  </Card>
+  <Card
+    title="Shell Scripts"
+    icon="file-code"
+  >
+    Integrate into your automation workflows.
   </Card>
 </Columns>
 

@@ -22,25 +22,34 @@ This downloads the binary to `~/.local/bin/squirrel` and adds it to your PATH.
 
 <Tip>After installation, run `squirrel self doctor` to verify everything is set up correctly.</Tip>
 
-## Up and Running in 3 Steps
+## Three Ways to Use squirrelscan
 
-<Steps>
-  <Step title="Install">
+<Tabs>
+  <Tab title="CLI for Humans">
+    Run audits directly with human-readable terminal output:
     ```bash
-    curl -fsSL https://squirrelscan.com/install | bash
+    squirrel audit example.com
     ```
-  </Step>
-  <Step title="Run audit">
+  </Tab>
+  <Tab title="Pipe to AI">
+    Pipe results to Claude or other AI assistants:
     ```bash
-    squirrel audit example.com --output claude
+    squirrel audit example.com --format text | claude
     ```
-  </Step>
-  <Step title="Pipe to Claude">
+  </Tab>
+  <Tab title="AI Agent Skill">
+    Install the skill for autonomous AI workflows:
     ```bash
-    squirrel audit example.com --output claude | claude
+    npx skills install squirrelscan/skills
     ```
-  </Step>
-</Steps>
+    Then prompt your AI agent:
+    ```
+    Use the audit-website skill to audit this site and fix all issues
+    ```
+  </Tab>
+</Tabs>
+
+<Info>See [AI Agent Integration](/agents) for detailed guidance on using squirrelscan with Claude Code, Cursor, and other AI coding assistants.</Info>
 
 ## Run Your First Audit
 
@@ -110,20 +119,36 @@ ISSUES
 | Format | Flag | Use Case |
 |--------|------|----------|
 | `console` | (default) | Human-readable terminal output |
-| `json` | `-f json` | CI/CD pipelines, AI processing |
+| `json` | `-f json` | CI/CD pipelines, programmatic processing |
 | `html` | `-f html` | Visual reports for sharing |
-| `claude` | `--output claude` | Optimized for Claude Code |
-| `llm` | `--output llm` | Generic LLM-friendly format |
+| `markdown` | `-f markdown` | Documentation, AI agents |
+| `text` | `-f text` | Clean output for piping to LLMs |
 
-## Using with Claude Code
+## Using with AI Agents
 
-squirrelscan is designed for AI agents. Pipe output directly to Claude:
+squirrelscan is designed for AI workflows. Two primary methods:
+
+### 1. Install the Skill (Recommended)
 
 ```bash
-squirrel audit https://example.com --output claude | claude
+npx skills install squirrelscan/skills
 ```
 
-The `--output claude` flag formats results in a way that's optimized for Claude to understand and act on.
+Then use with Claude Code, Cursor, or any skill-compatible agent:
+
+```
+Use the audit-website skill to audit example.com and fix all issues
+```
+
+### 2. Pipe Output to AI
+
+```bash
+squirrel audit example.com --format text | claude
+```
+
+The `--format text` flag provides clean, LLM-optimized output that works with any AI assistant.
+
+<Tip>See [AI Agent Integration](/agents) for advanced workflows including plan mode, subagents, and continuous monitoring.</Tip>
 
 ## Next Steps
 
