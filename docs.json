@@ -1,8 +1,8 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
+  "theme": "aspen",
   "name": "squirrelscan",
-  "description": "CLI SEO Audits for Agents & LLMs",
+  "description": "CLI Website Audits for Agents & LLMs",
   "colors": {
     "primary": "#157123",
     "light": "#F7F5F1",
@@ -41,7 +41,7 @@
     "groups": [
       {
         "group": "Getting Started",
-        "pages": ["index", "quickstart", "configuration"]
+        "pages": ["index", "quickstart"]
       },
       {
         "group": "Concepts",
@@ -317,6 +317,19 @@
               "rules/adblock/blocked-links"
             ]
           }
+        ]
+      },
+      {
+        "group": "Configuration",
+        "pages": [
+          "configuration/index",
+          "configuration/project",
+          "configuration/crawler",
+          "configuration/rules",
+          "configuration/external-links",
+          "configuration/output",
+          "configuration/rule-options",
+          "configuration/examples"
         ]
       }
     ]
