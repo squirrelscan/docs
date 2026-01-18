@@ -22,8 +22,6 @@ drop_query_prefixes = ["utm_", "gclid", "fbclid"]
 respect_robots = true
 breadth_first = true
 max_prefix_budget = 0.25
-request_method = "browser_impersonate"
-impersonate_browser = "chrome_131"
 user_agent = ""
 follow_redirects = true
 ```
@@ -514,78 +512,6 @@ With `max_prefix_budget = 0.25` and `max_pages = 500`:
 
 ## Request Configuration
 
-### `request_method`
-
-**Type:** `"standard"` | `"browser_impersonate"`
-**Default:** `"browser_impersonate"`
-
-Request method for fetching pages.
-
-**Options:**
-
-**`"browser_impersonate"` (default):**
-- Uses TLS fingerprinting to appear as a real browser
-- Better success rate with bot protection
-- Bypasses basic bot detection
-- Slightly slower
-
-**`"standard"`:**
-- Standard HTTP fetch
-- Faster
-- May be blocked by aggressive bot protection
-
-**Examples:**
-
-Use standard for local development:
-```toml
-[crawler]
-request_method = "standard"
-```
-
-Use browser impersonation (default):
-```toml
-[crawler]
-request_method = "browser_impersonate"
-impersonate_browser = "chrome_131"
-```
-
----
-
-### `impersonate_browser`
-
-**Type:** `"chrome_131"` | `"chrome_120"` | `"firefox_133"` | `"firefox_120"` | `"safari_ios_18_0"`
-**Default:** `"chrome_131"`
-
-Browser to impersonate when using `request_method = "browser_impersonate"`.
-
-**Options:**
-
-- `"chrome_131"` - Chrome 131 (latest)
-- `"chrome_120"` - Chrome 120
-- `"firefox_133"` - Firefox 133 (latest)
-- `"firefox_120"` - Firefox 120
-- `"safari_ios_18_0"` - Safari on iOS 18
-
-**Examples:**
-
-Impersonate Firefox:
-```toml
-[crawler]
-request_method = "browser_impersonate"
-impersonate_browser = "firefox_133"
-```
-
-Impersonate mobile Safari:
-```toml
-[crawler]
-request_method = "browser_impersonate"
-impersonate_browser = "safari_ios_18_0"
-```
-
-**Note:** Only applies when `request_method = "browser_impersonate"`.
-
----
-
 ### `user_agent`
 
 **Type:** `string`
@@ -689,7 +615,6 @@ max_pages = 50
 delay_ms = 0
 per_host_delay_ms = 0
 concurrency = 10
-request_method = "standard"
 respect_robots = false
 ```
 
@@ -703,8 +628,6 @@ per_host_delay_ms = 500
 concurrency = 5
 per_host_concurrency = 2
 respect_robots = true
-request_method = "browser_impersonate"
-impersonate_browser = "chrome_131"
 ```
 
 ### High-Volume Crawl
