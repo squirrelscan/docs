@@ -231,9 +231,9 @@ concurrency = 15
    - Slower but more reliable
 
 3. **User agent**
-   - Uses configured crawler user agent
-   - Browser impersonation if enabled
-   - Respects `request_method` setting
+   - Uses browser-like headers and user agent
+   - Detects WAF/bot protection (Cloudflare, Akamai, etc.)
+   - WAF-blocked 403s reported separately from broken links
 
 ### Status Detection
 
@@ -441,16 +441,14 @@ curl -I https://example.com  # Test external access
 
 ### False positives (working links marked broken)
 
-**Cause:** Some sites block HEAD requests or require browser user agents
+**Cause:** Some sites block HEAD requests or use WAF/bot protection
 
-**Solution:** External link checker automatically falls back to GET requests
+**Solution:** External link checker automatically:
+- Falls back to GET requests when HEAD fails
+- Detects WAF/bot protection (Cloudflare, Akamai, etc.)
+- Reports WAF-blocked 403s as "unverifiable" (not broken)
 
-Verify crawler user agent:
-```toml
-[crawler]
-request_method = "browser_impersonate"
-impersonate_browser = "chrome_131"
-```
+If a site truly blocks bot traffic, the link will be reported as WAF-blocked with the provider name.
 
 ---
 
@@ -502,7 +500,6 @@ name = "mysite"
 
 [crawler]
 max_pages = 500
-request_method = "browser_impersonate"
 
 [external_links]
 # Enable external link validation

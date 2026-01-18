@@ -39,8 +39,6 @@ drop_query_prefixes = ["utm_", "gclid", "fbclid"]
 respect_robots = true
 breadth_first = true
 max_prefix_budget = 0.25
-request_method = "browser_impersonate"
-impersonate_browser = "chrome_131"
 
 [rules]
 enable = ["*"]
@@ -602,8 +600,6 @@ per_host_delay_ms = 100
 breadth_first = true
 max_prefix_budget = 0.15  # Prevent blog dominance
 
-request_method = "browser_impersonate"
-
 [rules]
 enable = ["*"]
 disable = [
@@ -647,7 +643,6 @@ delay_ms = 0          # No delay
 timeout_ms = 5000
 concurrency = 10
 respect_robots = false  # Local testing
-request_method = "standard"  # Faster
 
 [rules]
 enable = ["core/*", "links/*", "content/*"]
@@ -675,7 +670,6 @@ squirrel audit http://localhost:3000
 - No delays (localhost is fast)
 - Disables security checks (localhost is HTTP)
 - No external link checking
-- Standard requests (faster)
 - Console output for quick feedback
 
 ---
@@ -827,9 +821,6 @@ drop_query_prefixes = ["utm_", "gclid", "fbclid", "mc_", "_ga"]
 respect_robots = true
 breadth_first = true
 max_prefix_budget = 0.2
-
-request_method = "browser_impersonate"
-impersonate_browser = "chrome_131"
 follow_redirects = true
 
 [rules]
@@ -878,7 +869,7 @@ exclude_patterns = [
 - Quality content thresholds
 - HTML report for sharing
 - Respects robots.txt
-- Browser impersonation for reliability
+- Browser-like headers for better compatibility
 
 ---
 
