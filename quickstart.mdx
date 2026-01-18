@@ -32,9 +32,10 @@ This downloads the binary to `~/.local/bin/squirrel` and adds it to your PATH.
     ```
   </Tab>
   <Tab title="Pipe to AI">
-    Pipe results to Claude or other AI assistants:
+    Export reports to Claude or other AI assistants:
     ```bash
-    squirrel audit example.com --format text | claude
+    squirrel audit example.com
+    squirrel report <audit-id> --format llm | claude
     ```
   </Tab>
   <Tab title="AI Agent Skill">
@@ -121,8 +122,14 @@ ISSUES
 | `console` | (default) | Human-readable terminal output |
 | `json` | `-f json` | CI/CD pipelines, programmatic processing |
 | `html` | `-f html` | Visual reports for sharing |
-| `markdown` | `-f markdown` | Documentation, AI agents |
-| `text` | `-f text` | Clean output for piping to LLMs |
+| `markdown` | `-f markdown` | Documentation, GitHub |
+| `text` | `-f text` | Plain text output |
+| `llm` | `-f llm` | Compact AI-optimized (40% smaller than XML) |
+| `xml` | `-f xml` | Verbose structured XML for enterprise |
+
+<Note>
+The `llm`, `xml`, and `markdown` formats are only available via `squirrel report <audit-id> --format <format>`, not directly during audit.
+</Note>
 
 ## Using with AI Agents
 
@@ -143,10 +150,14 @@ Use the audit-website skill to audit example.com and fix all issues
 ### 2. Pipe Output to AI
 
 ```bash
-squirrel audit example.com --format text | claude
+# Run audit first
+squirrel audit example.com
+
+# Export in LLM-optimized format and pipe to Claude
+squirrel report <audit-id> --format llm | claude "analyze and prioritize fixes"
 ```
 
-The `--format text` flag provides clean, LLM-optimized output that works with any AI assistant.
+The `--format llm` provides compact, token-optimized output designed specifically for AI agents.
 
 <Tip>See [AI Agent Integration](/agents) for advanced workflows including plan mode, subagents, and continuous monitoring.</Tip>
 

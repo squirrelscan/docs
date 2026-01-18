@@ -17,7 +17,7 @@ path = ""
 
 ### `format`
 
-**Type:** `"console"` | `"json"` | `"html"`
+**Type:** `"console"` | `"text"` | `"json"` | `"html"` | `"markdown"` | `"llm"` | `"xml"`
 **Default:** `"console"`
 
 Output format for audit reports.
@@ -25,8 +25,14 @@ Output format for audit reports.
 **Available Formats:**
 
 - `"console"` - Rich terminal output with colors and formatting
+- `"text"` - Plain text output without colors
 - `"json"` - Machine-readable JSON for automation
 - `"html"` - Interactive HTML report in browser
+- `"markdown"` - Markdown format for documentation
+- `"llm"` - Compact token-optimized XML/text for AI agents (40% smaller than xml)
+- `"xml"` - Verbose structured XML for enterprise integration
+
+**Note:** The `llm`, `xml`, and `markdown` formats are only available via the `report` command, not during `audit`. See [Reports documentation](/reports) for details.
 
 ---
 
@@ -218,6 +224,165 @@ squirrel audit https://example.com --format html
 
 # Save to custom location
 squirrel audit https://example.com --format html --output reports/my-audit.html
+```
+
+---
+
+### `"llm"`
+
+**Compact token-optimized format for AI agents** - hybrid XML/text structure designed to minimize tokens while maintaining structured data.
+
+**Features:**
+
+- 40-70% smaller than verbose XML format
+- 1-space indentation for token efficiency
+- Inline attributes instead of nested elements
+- Text prefixes (`Desc:`, `Fix:`, `Pages:`, `Items:`)
+- Comma-separated lists for pages and URLs
+- Hybrid XML/text structure for easy parsing
+
+**Size Comparison:**
+
+For a 51-page audit:
+- XML format: 209KB
+- LLM format: 125KB (40% reduction)
+
+**Format Structure:**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<audit version="0.0.13">
+<site url="https://example.com" crawled="42" date="2025-01-18T10:30:00Z"/>
+<score overall="87" grade="B">
+ <cat name="Core SEO" score="100"/>
+ <cat name="Links" score="85"/>
+</score>
+<summary passed="83" warnings="13" failed="9"/>
+<issues>
+ <category name="Content" errors="2" warnings="3">
+  <rule id="content/word-count" severity="warning" status="warn">
+   Low word count detected
+   Desc: Pages should have sufficient content for good SEO
+   Fix: Add more relevant content to improve page depth
+   Pages (3): /blog/post-1, /blog/post-2, /about
+  </rule>
+ </category>
+</issues>
+</audit>
+```
+
+**Use Cases:**
+
+- Piping to Claude Code, Cursor, GPT, or other AI assistants
+- Token-limited API contexts (cost optimization)
+- Agent-based workflows requiring structured output
+- AI code review and analysis
+
+**CLI usage:**
+
+<Note>
+LLM format is only available via the `report` command:
+</Note>
+
+```bash
+# Run audit first
+squirrel audit https://example.com
+
+# Export in LLM format
+squirrel report <audit-id> --format llm
+
+# Pipe directly to AI agent
+squirrel report <audit-id> --format llm | claude "analyze and prioritize fixes"
+```
+
+See [OUTPUT-FORMAT.md](https://github.com/squirrelscan/skills/blob/main/audit-website/references/OUTPUT-FORMAT.md) for complete format specification.
+
+---
+
+### `"xml"`
+
+**Verbose structured XML format** for enterprise integration, archival, and strict schema validation.
+
+**Features:**
+
+- 2-space indentation for readability
+- Fully nested elements (all metadata in dedicated tags)
+- Explicit structure with strict schema compliance
+- All information preserved without abbreviation
+- Enterprise-ready for XML parsers and validators
+
+**Format Structure:**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<audit version="0.0.13">
+  <site>
+    <url>https://example.com</url>
+    <crawled>42</crawled>
+    <date>2025-01-18T10:30:00Z</date>
+  </site>
+  <score>
+    <overall>87</overall>
+    <grade>B</grade>
+    <categories>
+      <category>
+        <name>Core SEO</name>
+        <score>100</score>
+      </category>
+    </categories>
+  </score>
+  <issues>
+    <category>
+      <name>Content</name>
+      <rules>
+        <rule>
+          <id>content/word-count</id>
+          <description>Pages should have sufficient content</description>
+          <solution>Add more relevant content</solution>
+          <pages>
+            <page>/blog/post-1</page>
+            <page>/blog/post-2</page>
+          </pages>
+        </rule>
+      </rules>
+    </category>
+  </issues>
+</audit>
+```
+
+**Comparison: LLM vs XML**
+
+| Aspect | LLM Format | XML Format |
+|--------|-----------|------------|
+| Size (51 pages) | 125KB | 209KB |
+| Indentation | 1 space | 2 spaces |
+| Structure | Hybrid XML/text | Pure XML |
+| Metadata | Inline attributes | Nested elements |
+| Best For | AI agents, tokens | Enterprise, archival |
+
+**Use Cases:**
+
+- Enterprise data integration and ETL pipelines
+- Long-term audit archival with full metadata
+- Schema validation and compliance requirements
+- XML processing tools and libraries
+- Integration with enterprise systems (SAP, Oracle, etc.)
+
+**CLI usage:**
+
+<Note>
+XML format is only available via the `report` command:
+</Note>
+
+```bash
+# Run audit first
+squirrel audit https://example.com
+
+# Export in XML format
+squirrel report <audit-id> --format xml --output audit.xml
+
+# Validate with xmllint
+squirrel report <audit-id> --format xml | xmllint --format -
 ```
 
 ---

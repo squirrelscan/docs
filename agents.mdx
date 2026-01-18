@@ -12,7 +12,7 @@ squirrelscan is built for autonomous AI workflows. This guide shows you how to i
     Run audits directly from your terminal with human-readable output.
   </Card>
   <Card title="Pipe to Agent" icon="arrow-right">
-    Pipe audit results to Claude or other AI assistants using `--format text`.
+    Pipe audit reports to Claude or other AI assistants using `squirrel report --format llm`.
   </Card>
   <Card title="Skill Integration" icon="sparkles">
     Install the squirrelscan skill so agents can run audits autonomously.
@@ -141,41 +141,49 @@ This parallelizes work across independent issue categories.
 
 If you prefer not to use skills, pipe audit output directly to Claude:
 
-### Using --format text
+### Using Report Formats
 
-The `--format text` flag outputs clean, LLM-optimized text:
+After running an audit, export results in LLM-optimized formats:
 
 ```bash
-squirrel audit example.com --format text | claude
+# Step 1: Run audit
+squirrel audit example.com
+
+# Step 2: Export and pipe to Claude
+squirrel report <audit-id> --format llm | claude
 ```
 
-This format:
-- Strips terminal colors and formatting
-- Uses clear hierarchical structure
+**LLM Format Benefits:**
+- Compact structured XML/text hybrid (40% smaller than verbose XML)
+- Token-optimized for API costs and context limits
 - Includes actionable fix suggestions
-- Works with any LLM (not just Claude)
+- Works with any LLM (Claude, GPT, etc.)
 
-### Example Workflow
+### Example Workflows
 
 ```bash
 # Audit and ask Claude to prioritize fixes
-squirrel audit example.com --format text | claude "Prioritize these issues and create a fix plan"
+AUDIT_ID=$(squirrel audit example.com | tail -1)
+squirrel report $AUDIT_ID --format llm | claude "Prioritize these issues and create a fix plan"
 
 # Audit and implement high-severity fixes
-squirrel audit example.com --format text | claude "Fix all high-severity issues"
+squirrel report <audit-id> --format llm | claude "Fix all high-severity issues"
 
 # Audit and explain issues to non-technical stakeholder
-squirrel audit example.com --format text | claude "Explain these issues in simple terms"
+squirrel report <audit-id> --format text | claude "Explain these issues in simple terms"
 ```
 
 ### Other Formats for AI
 
 | Format | Flag | Best For |
 |--------|------|----------|
-| `text` | `--format text` | Piping to any LLM |
+| `llm` | `--format llm` | Compact structured XML for AI agents (40% smaller, token-optimized) |
+| `text` | `--format text` | Plain text output for simple piping |
 | `json` | `--format json` | Custom AI processing scripts |
 | `markdown` | `--format markdown` | AI agents that prefer markdown |
-| `llm` | `--format llm` | Generic LLM-friendly output (deprecated, use `text`) |
+| `xml` | `--format xml` | Verbose structured XML for enterprise integration |
+
+**Note:** These formats are only available via `squirrel report <audit-id> --format <format>`, not the `audit` command directly.
 
 ## Using with Other AI Coding Assistants
 
@@ -204,14 +212,14 @@ For agents without skill support, use piping:
 
 ```bash
 # Windsurf (Cascade)
-squirrel audit example.com --format text | windsurf
+squirrel report <audit-id> --format llm | windsurf
 
 # Aider
-squirrel audit example.com --format text | aider
+squirrel report <audit-id> --format llm | aider
 
-# Generic LLM API
-squirrel audit example.com --format text > audit.txt
-# Then send audit.txt content to your LLM
+# Generic LLM API - save to file then send
+squirrel report <audit-id> --format llm > audit.xml
+# Then send audit.xml content to your LLM
 ```
 
 ## Advanced Agent Patterns
@@ -325,12 +333,12 @@ For large sites, configure agents to audit specific sections:
   </Accordion>
 
   <Accordion title="Piping produces no output">
-    Check the format flag:
+    Check the export format:
     ```bash
-    squirrel audit example.com --format text
+    squirrel report <audit-id> --format llm
     ```
 
-    Ensure you're using `--format text` for clean LLM output.
+    Ensure you're using the `report` command with `--format llm` for LLM-optimized output.
   </Accordion>
 </AccordionGroup>
 

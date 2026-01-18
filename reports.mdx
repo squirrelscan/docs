@@ -239,10 +239,10 @@ squirrel report -f text > report.txt
 
 ### llm
 
-Optimized format for LLM consumption with structured context.
+**Compact token-optimized format for AI agents** - hybrid XML/text structure designed for LLM consumption.
 
 ```bash
-squirrel report -f llm -o report.txt
+squirrel report -f llm -o report.xml
 ```
 
 or pipe directly:
@@ -251,38 +251,133 @@ or pipe directly:
 squirrel report -f llm | claude "analyze this audit and prioritize fixes"
 ```
 
-**Format:**
+**Format Structure:**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<audit version="0.0.13">
+<site url="https://example.com" crawled="42" date="2025-01-18T10:30:00Z"/>
+<score overall="87" grade="B">
+ <cat name="Core SEO" score="100"/>
+ <cat name="Links" score="85"/>
+ <cat name="Images" score="72"/>
+</score>
+<summary passed="83" warnings="13" failed="9"/>
+<issues>
+ <category name="Content" errors="2" warnings="3">
+  <rule id="content/word-count" severity="warning" status="warn">
+   Low word count: 150 words (min: 300)
+   Desc: Pages should have sufficient content for good SEO
+   Fix: Add more relevant content to improve page depth
+   Pages (3): /blog/post-1, /blog/post-2, /about
+  </rule>
+ </category>
+ <category name="Images" errors="6" warnings="0">
+  <rule id="images/alt-text" severity="error" status="fail">
+   Desc: All images must have descriptive alt text
+   Fix: Add alt attributes to img tags
+   Items (6):
+    - /products/widget.png (from: /products)
+    - /hero.jpg (from: /)
+  </rule>
+ </category>
+</issues>
+</audit>
 ```
-AUDIT REPORT
-Site: https://example.com
-Pages: 42
-Health Score: 87/100 (B)
 
-CATEGORY SCORES
-- Core SEO: 100% (45 passed)
-- Links: 85% (23 passed, 5 warnings, 3 errors)
-- Images: 72% (15 passed, 8 warnings, 6 errors)
+**Key Features:**
+- **40-70% smaller** than verbose XML (125KB vs 209KB for 51-page audit)
+- **1-space indentation** for token efficiency
+- **Inline attributes** - metadata as XML attributes, not nested elements
+- **Text prefixes** - `Desc:`, `Fix:`, `Pages (n):`, `Items (n):`
+- **Comma-separated lists** - pages and URLs formatted inline
+- **Hybrid structure** - XML tags for parsing, text for readability
 
-ISSUES BY PRIORITY
+**Token Efficiency:**
+The LLM format achieves significant size reduction through:
+- Minimal indentation (1 space vs 2-4)
+- Flattened hierarchy (fewer nesting levels)
+- Inline attributes instead of nested elements
+- Comma-separated lists instead of multiple elements
+- Text prefixes instead of wrapping tags
 
-HIGH PRIORITY (9 errors)
-1. [images/alt-text] Missing alt text on 6 images
-   - /products/widget.png on /products
-   - /hero.jpg on /
+**Use Cases:**
+- Piping to Claude Code, Cursor, or other AI assistants
+- Token-limited API contexts (Claude API, GPT)
+- Cost optimization for LLM processing
+- Agent-based workflows requiring structured output
 
-2. [links/broken-links] 3 broken internal links detected
-   - /old-page on /blog/post
+See [OUTPUT-FORMAT.md](https://github.com/squirrelscan/skills/blob/main/audit-website/references/OUTPUT-FORMAT.md) for complete format specification.
 
-MEDIUM PRIORITY (13 warnings)
-...
+### xml
+
+**Verbose structured XML format** for enterprise integration and detailed archival.
+
+```bash
+squirrel report -f xml -o report.xml
 ```
 
-**Features:**
-- Concise, structured format
-- Issues sorted by priority
-- Includes context for each issue
-- Optimized for LLM reasoning
-- No formatting or color codes
+**Format Structure:**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<audit version="0.0.13">
+  <site>
+    <url>https://example.com</url>
+    <crawled>42</crawled>
+    <date>2025-01-18T10:30:00Z</date>
+  </site>
+  <score>
+    <overall>87</overall>
+    <grade>B</grade>
+    <categories>
+      <category>
+        <name>Core SEO</name>
+        <score>100</score>
+      </category>
+    </categories>
+  </score>
+  <issues>
+    <category>
+      <name>Content</name>
+      <rules>
+        <rule>
+          <id>content/word-count</id>
+          <description>Pages should have sufficient content</description>
+          <solution>Add more relevant content to improve page depth</solution>
+          <pages>
+            <page>/blog/post-1</page>
+            <page>/blog/post-2</page>
+          </pages>
+        </rule>
+      </rules>
+    </category>
+  </issues>
+</audit>
+```
+
+**Key Features:**
+- **2-space indentation** for readability
+- **Fully nested elements** - all metadata in dedicated tags
+- **Explicit structure** - strict schema compliance
+- **Detailed metadata** - all information preserved
+- **Enterprise-ready** - suitable for XML parsers and validators
+
+**Comparison: LLM vs XML**
+
+| Aspect | LLM Format | XML Format |
+|--------|-----------|------------|
+| Size (51 pages) | 125KB | 209KB |
+| Indentation | 1 space | 2 spaces |
+| Structure | Hybrid XML/text | Pure XML |
+| Metadata | Inline attributes | Nested elements |
+| Lists | Comma-separated | Multiple elements |
+| Best For | AI agents, tokens | Enterprise, archival |
+
+**Use Cases:**
+- Enterprise data integration
+- Detailed audit archival
+- Schema validation requirements
+- XML processing pipelines
+- Long-term storage with full metadata
 
 ## Filtering Reports
 
