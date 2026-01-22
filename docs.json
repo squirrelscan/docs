@@ -10,13 +10,12 @@
   },
   "favicon": "/favicon.svg",
   "fonts": {
-    "family": "JetBrains Mono",
     "heading": {
       "family": "JetBrains Mono",
       "weight": 600
     },
     "body": {
-      "family": "JetBrains Mono",
+      "family": "Inter",
       "weight": 400
     }
   },
