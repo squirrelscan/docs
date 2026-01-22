@@ -19,7 +19,6 @@
     }
   },
   "background": {
-    "decoration": "none",
     "color": {
       "light": "#FFFFFF",
       "dark": "#0D1117"
