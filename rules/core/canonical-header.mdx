@@ -17,8 +17,8 @@ Detects mismatch between HTML canonical tag and Link header
 
 When both HTML canonical tag and HTTP Link header are present, they must match. Search engines may get confused by conflicting signals.
 
-HTML: <link rel="canonical" href="https://example.com/page">
-HTTP: Link: <https://example.com/page>; rel="canonical"
+HTML: `<link rel="canonical" href="https://example.com/page">`
+HTTP: `Link: <https://example.com/page>; rel="canonical"`
 
 Best practice: Use HTML canonical tag only. Only add Link header if unable to modify HTML (e.g., PDF files).
 

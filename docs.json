@@ -1,25 +1,14 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "aspen",
+  "theme": "mint",
   "name": "squirrelscan",
   "description": "CLI Website Audits for Agents & LLMs",
   "colors": {
-    "primary": "#157123",
-    "light": "#F7F5F1",
-    "dark": "#0F1216"
+    "primary": "#22863a",
+    "light": "#FFFFFF",
+    "dark": "#0D1117"
   },
   "favicon": "/favicon.svg",
-  "fonts": {
-    "family": "JetBrains Mono",
-    "heading": {
-      "family": "JetBrains Mono",
-      "weight": 600
-    },
-    "body": {
-      "family": "JetBrains Mono",
-      "weight": 400
-    }
-  },
   "styling": {
     "eyebrows": "breadcrumbs",
     "codeblocks": {
@@ -30,13 +19,13 @@
     }
   },
   "background": {
-    "decoration": "grid",
+    "decoration": "none",
     "color": {
-      "light": "#F7F5F1",
-      "dark": "#0F1216"
+      "light": "#FFFFFF",
+      "dark": "#0D1117"
     }
   },
-  "rounded": "none",
+  "rounded": "default",
   "navigation": {
     "groups": [
       {
