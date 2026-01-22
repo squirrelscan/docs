@@ -21,8 +21,8 @@ squirrel audit <url> [options]
 
 | Option | Alias | Description | Default |
 |--------|-------|-------------|---------|
-| `--maxPages` | `-m` | Maximum pages to crawl | `500` |
-| `--format` | `-f` | Output format: `console`, `text`, `json`, `html` | `console` |
+| `--max-pages` | `-m` | Maximum pages to crawl | `500` |
+| `--format` | `-f` | Output format: `console`, `text`, `json`, `html`, `markdown`, `llm` | `console` |
 | `--output` | `-o` | Output file path | auto |
 | `--refresh` | `-r` | Ignore cache, fetch all pages fresh | `false` |
 | `--verbose` | `-v` | Show progress during crawl | `false` |
@@ -30,10 +30,10 @@ squirrel audit <url> [options]
 | `--all` | `-a` | Run all rules including LLM-based | `false` |
 
 <Note>
-The `audit` command supports 4 formats: `console`, `text`, `json`, `html`. For additional formats (`xml`, `llm`, `markdown`), use the `report` command after running an audit:
+The `audit` command supports 6 formats: `console`, `text`, `json`, `html`, `markdown`, `llm`. For additional formats (`xml`, `sarif`), use the `report` command after running an audit:
 ```bash
 squirrel audit https://example.com
-squirrel report <audit-id> --format llm
+squirrel report <audit-id> --format xml
 ```
 See the [report command docs](/cli/report) for details on all available formats.
 </Note>
