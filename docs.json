@@ -4,7 +4,7 @@
   "name": "squirrelscan",
   "description": "CLI Website Audits for Agents & LLMs",
   "colors": {
-    "primary": "#157123",
+    "primary": "#C4530F",
     "light": "#F7F5F1",
     "dark": "#0F1216"
   },
