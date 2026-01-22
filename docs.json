@@ -44,7 +44,7 @@
       },
       {
         "group": "Concepts",
-        "pages": ["crawl", "reports"]
+        "pages": ["projects", "crawl", "reports"]
       },
       {
         "group": "CLI Reference",
