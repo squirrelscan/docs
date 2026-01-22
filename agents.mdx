@@ -36,6 +36,8 @@ This installs the `audit-website` skill for:
 
 <Tip>The skill is a thin wrapper that calls the squirrelscan CLI. Install both the CLI and skill for full functionality.</Tip>
 
+<Info>For best results, use the skill in **plan mode** if your agent supports it. This lets the agent analyze all issues and create a comprehensive implementation plan before making changes to your codebase.</Info>
+
 ### Verify Installation
 
 After installing, verify the skill is available:
@@ -50,7 +52,21 @@ You should see `audit-website` in the output.
 
 ### Basic Audit Workflow
 
-Simply prompt Claude to audit a website:
+The easiest way to run an audit is with a slash command:
+
+```
+/audit-website
+```
+
+This triggers the skill directly. Claude will detect your project's website (from config, environment, or code) and run an audit.
+
+You can also specify a URL explicitly:
+
+```
+/audit-website https://example.com
+```
+
+Or use natural language:
 
 ```
 Use the audit-website skill to audit squirrelscan.com
@@ -64,35 +80,25 @@ Claude will:
 
 ### Example Prompts
 
-<AccordionGroup>
-  <Accordion title="Audit and summarize issues">
-    ```
-    Use the audit-website skill to audit example.com and summarize
-    the top 5 most critical issues
-    ```
-  </Accordion>
+**Audit and summarize issues:**
+```
+/audit-website example.com and summarize the top 5 most critical issues
+```
 
-  <Accordion title="Audit with specific focus">
-    ```
-    Use the audit-website skill to audit mysite.com focusing on
-    accessibility and performance issues
-    ```
-  </Accordion>
+**Audit with specific focus:**
+```
+/audit-website mysite.com focusing on accessibility and performance issues
+```
 
-  <Accordion title="Audit and fix all issues">
-    ```
-    Use the audit-website skill to audit this website and fix
-    all errors and warnings
-    ```
-  </Accordion>
+**Audit and fix all issues:**
+```
+/audit-website this site and fix all errors and warnings
+```
 
-  <Accordion title="Audit local development site">
-    ```
-    Use the audit-website skill to audit http://localhost:3000
-    and create a prioritized fix list
-    ```
-  </Accordion>
-</AccordionGroup>
+**Audit local development site:**
+```
+/audit-website http://localhost:3000 and create a prioritized fix list
+```
 
 ### Plan Mode for Comprehensive Fixes
 
@@ -143,13 +149,19 @@ If you prefer not to use skills, pipe audit output directly to Claude:
 
 ### Using Report Formats
 
-After running an audit, export results in LLM-optimized formats:
+Pipe audit results directly to Claude in LLM-optimized format:
 
 ```bash
-# Step 1: Run audit
+squirrel audit example.com --format llm | claude
+```
+
+Or run separately and export later:
+
+```bash
+# Run audit (stores in database)
 squirrel audit example.com
 
-# Step 2: Export and pipe to Claude
+# Export and pipe to Claude
 squirrel report <audit-id> --format llm | claude
 ```
 
@@ -183,7 +195,7 @@ squirrel report <audit-id> --format text | claude "Explain these issues in simpl
 | `markdown` | `--format markdown` | AI agents that prefer markdown |
 | `xml` | `--format xml` | Verbose structured XML for enterprise integration |
 
-**Note:** These formats are only available via `squirrel report <audit-id> --format <format>`, not the `audit` command directly.
+**Note:** All formats except `xml` work with both `squirrel audit --format` and `squirrel report --format`.
 
 ## Using with Other AI Coding Assistants
 
@@ -196,14 +208,14 @@ Cursor supports Claude Code skills natively:
    npx skills install squirrelscan/skills
    ```
 
-2. Use in Cursor chat:
+2. Run with slash command:
    ```
-   @audit-website example.com
+   /audit-website
    ```
 
 3. Or use composer mode for multi-file fixes:
    ```
-   Use audit-website skill to audit this site, then fix all issues across the codebase
+   /audit-website then fix all issues across the codebase
    ```
 
 ### Windsurf / Aider / Other Agents
@@ -223,16 +235,6 @@ squirrel report <audit-id> --format llm > audit.xml
 ```
 
 ## Advanced Agent Patterns
-
-### Continuous Monitoring
-
-Set up Claude to run periodic audits:
-
-```
-Every week, use audit-website skill to audit example.com,
-compare results to last week's audit, and report any new
-issues or regressions.
-```
 
 ### Pre-Deploy Audits
 
@@ -286,55 +288,49 @@ exclude = ["/admin/*", "/api/*"]
 
 ## Skill vs Piping: Which to Use?
 
-<AccordionGroup>
-  <Accordion title="Use the skill when...">
-    - Working in Claude Code, Cursor, or skill-compatible editors
-    - You want agents to discover and use squirrelscan autonomously
-    - Building multi-step workflows where the agent decides when to audit
-    - The agent needs to run audits as part of a larger task
-  </Accordion>
+**Use the skill when:**
+- Working in Claude Code, Cursor, or skill-compatible editors
+- You want agents to discover and use squirrelscan autonomously
+- Building multi-step workflows where the agent decides when to audit
+- The agent needs to run audits as part of a larger task
 
-  <Accordion title="Use piping when...">
-    - Working with agents that don't support skills
-    - You want explicit control over when audits run
-    - Integrating into shell scripts or automation
-    - Using squirrelscan with non-coding LLMs
-  </Accordion>
-</AccordionGroup>
+**Use piping when:**
+- Working with agents that don't support skills
+- You want explicit control over when audits run
+- Integrating into shell scripts or automation
+- Using squirrelscan with non-coding LLMs
 
 ## Troubleshooting
 
-<AccordionGroup>
-  <Accordion title="Skill not found">
-    Verify installation:
-    ```bash
-    npx skills list | grep audit-website
-    ```
+### Skill not found
 
-    Reinstall if missing:
-    ```bash
-    npx skills install squirrelscan/skills --force
-    ```
-  </Accordion>
+Verify installation:
+```bash
+npx skills list | grep audit-website
+```
 
-  <Accordion title="Agent can't run audits">
-    Ensure squirrelscan CLI is installed:
-    ```bash
-    squirrel --version
-    ```
+Reinstall if missing:
+```bash
+npx skills install squirrelscan/skills --force
+```
 
-    The skill requires the CLI to be in PATH.
-  </Accordion>
+### Agent can't run audits
 
-  <Accordion title="Piping produces no output">
-    Check the export format:
-    ```bash
-    squirrel report <audit-id> --format llm
-    ```
+Ensure squirrelscan CLI is installed:
+```bash
+squirrel --version
+```
 
-    Ensure you're using the `report` command with `--format llm` for LLM-optimized output.
-  </Accordion>
-</AccordionGroup>
+The skill requires the CLI to be in PATH.
+
+### Piping produces no output
+
+Check the export format:
+```bash
+squirrel report <audit-id> --format llm
+```
+
+Ensure you're using the `report` command with `--format llm` for LLM-optimized output.
 
 ## Next Steps
 

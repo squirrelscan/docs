@@ -31,21 +31,21 @@ This downloads the binary to `~/.local/bin/squirrel` and adds it to your PATH.
     squirrel audit example.com
     ```
   </Tab>
-  <Tab title="Pipe to AI">
-    Export reports to Claude or other AI assistants:
-    ```bash
-    squirrel audit example.com
-    squirrel report <audit-id> --format llm | claude
-    ```
-  </Tab>
   <Tab title="AI Agent Skill">
     Install the skill for autonomous AI workflows:
     ```bash
     npx skills install squirrelscan/skills
     ```
-    Then prompt your AI agent:
+    Then run `/audit-website` or prompt your AI agent:
     ```
     Use the audit-website skill to audit this site and fix all issues
+    ```
+    <Info>For best results, use the skill in **plan mode** if your agent supports it. This lets the agent analyze issues and create an implementation plan before making changes.</Info>
+  </Tab>
+  <Tab title="Pipe to AI">
+    Export reports to Claude or other AI assistants:
+    ```bash
+    squirrel audit example.com --format llm | claude
     ```
   </Tab>
 </Tabs>
@@ -63,24 +63,49 @@ squirrel audit https://example.com
 You'll see output like:
 
 ```
-SquirrelScan v2.0
-========================================
-Auditing: https://example.com
-Max pages: 50
+ ▄█▀ ▄▀█ █ █ █ █▀▄ █▀▄ █▀▀ █   ▄█▀ ▄▀▀ ▄▀█ █▄ █
+ ▀▄  █ █ █ █ █ ██▀ ██▀ █▀  █   ▀▄  █   █▀█ █ ▀█
+ █▄▀ ▀▀█ ▀▄▀ █ █ █ █ █ █▄▄ █▄▄ █▄▀ ▀▄▄ █ █ █  █
 
-Crawled 12 pages
+  v0.0.16 (beta)  •  https://squirrelscan.com
+────────────────────────────────────────────
+Auditing: https://example.com
+Max pages: 500
+
+✓ Audited 12 pages in 2.1s
+
+──────────────────────────────────────────────────
+SQUIRRELSCAN REPORT
+https://example.com • 12 pages • 72/100 (C)
+──────────────────────────────────────────────────
+
+Category Breakdown:
+--------------------------------------------------
+Core SEO             ███████░░░ 75%
+Content              ████████░░ 82%
+Links                █████████░ 91%
+...
 
 ISSUES
 
-[high] Missing meta description
-  → /about
-  → /contact
+Core SEO (1 error, 3 warnings)
+  core/meta-description Meta Description (error)
+    ✗ meta-description: Missing meta description
+      → /about
+      → /contact
 
-[medium] Image missing alt text
-  → /images/hero.png on /
+  core/og-tags Open Graph Tags (warning)
+    ⚠ og-image: Missing og:image
+      → /
 
-[low] Non-HTTPS link
-  → http://oldsite.com on /links
+Content (2 warnings)
+  content/word-count Word Count (warning)
+    ⚠ word-count: Thin content: 150 words (min 300)
+      → /landing
+
+──────────────────────────────────────────────────
+87 passed • 12 warnings • 3 failed
+──────────────────────────────────────────────────
 ```
 
 ## Common Options
@@ -128,7 +153,7 @@ ISSUES
 | `xml` | `-f xml` | Verbose structured XML for enterprise |
 
 <Note>
-The `llm`, `xml`, and `markdown` formats are only available via `squirrel report <audit-id> --format <format>`, not directly during audit.
+All formats work with both `squirrel audit --format` and `squirrel report --format`. The `xml` format is only available via `squirrel report`.
 </Note>
 
 ## Using with AI Agents
@@ -150,11 +175,8 @@ Use the audit-website skill to audit example.com and fix all issues
 ### 2. Pipe Output to AI
 
 ```bash
-# Run audit first
-squirrel audit example.com
-
-# Export in LLM-optimized format and pipe to Claude
-squirrel report <audit-id> --format llm | claude "analyze and prioritize fixes"
+# Audit and pipe directly to Claude
+squirrel audit example.com --format llm | claude "analyze and prioritize fixes"
 ```
 
 The `--format llm` provides compact, token-optimized output designed specifically for AI agents.
