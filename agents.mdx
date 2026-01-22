@@ -258,18 +258,15 @@ regressions.
 
 ### Project-Scoped Config
 
-Create `.squirrel/config.json` in your project so agents use consistent settings:
+Create `squirrel.toml` in your project so agents use consistent settings:
 
-```json
-{
-  "crawl": {
-    "maxPages": 50,
-    "respectRobotsTxt": true
-  },
-  "rules": {
-    "disabled": ["word-count", "reading-level"]
-  }
-}
+```toml squirrel.toml
+[crawler]
+max_pages = 50
+respect_robots = true
+
+[rules]
+disable = ["content/word-count", "content/reading-level"]
 ```
 
 Now when agents run audits, they'll use these settings automatically.
@@ -280,14 +277,11 @@ See [Configuration Reference](/configuration) for all options.
 
 For large sites, configure agents to audit specific sections:
 
-```json
-{
-  "crawl": {
-    "maxPages": 20,
-    "allowedDomains": ["example.com"],
-    "urlPatterns": ["^/blog/.*"]
-  }
-}
+```toml squirrel.toml
+[crawler]
+max_pages = 20
+include = ["/blog/*"]
+exclude = ["/admin/*", "/api/*"]
 ```
 
 ## Skill vs Piping: Which to Use?
