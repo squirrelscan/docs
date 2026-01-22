@@ -25,9 +25,11 @@ squirrel audit <url> [options]
 | `--format` | `-f` | Output format: `console`, `text`, `json`, `html`, `markdown`, `llm` | `console` |
 | `--output` | `-o` | Output file path | auto |
 | `--refresh` | `-r` | Ignore cache, fetch all pages fresh | `false` |
-| `--verbose` | `-v` | Show progress during crawl | `false` |
+| `--resume` | | Resume interrupted crawl for this domain | `false` |
+| `--verbose` | `-v` | Verbose output | `false` |
 | `--debug` | | Enable debug logging | `false` |
-| `--all` | `-a` | Run all rules including LLM-based | `false` |
+| `--trace` | | Enable performance tracing | `false` |
+| `--project-name` | `-n` | Project name (overrides config and prompts) | auto |
 
 <Note>
 The `audit` command supports 6 formats: `console`, `text`, `json`, `html`, `markdown`, `llm`. For additional formats (`xml`, `sarif`), use the `report` command after running an audit:
@@ -74,12 +76,6 @@ squirrel audit https://example.com --refresh
 
 ```bash
 squirrel audit https://example.com -v
-```
-
-### Run All Rules
-
-```bash
-squirrel audit https://example.com --all
 ```
 
 ## Output Formats
