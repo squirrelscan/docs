@@ -152,6 +152,7 @@
             "pages": [
               "rules/security/index",
               "rules/security/https",
+              "rules/security/http-to-https",
               "rules/security/hsts",
               "rules/security/csp",
               "rules/security/x-frame-options",
@@ -160,7 +161,8 @@
               "rules/security/permissions-policy",
               "rules/security/mixed-content",
               "rules/security/form-https",
-              "rules/security/new-tab"
+              "rules/security/new-tab",
+              "rules/security/env-vars"
             ]
           },
           {

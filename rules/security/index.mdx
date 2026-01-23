@@ -1,9 +1,9 @@
 ---
 title: "Security"
-description: "HTTPS, headers, and safe link practices"
+description: "HTTPS, headers, leaked secrets, and safe link practices"
 ---
 
-HTTPS, headers, and safe link practices
+HTTPS, headers, leaked secrets, and safe link practices
 
 ## Rules
 
@@ -13,6 +13,9 @@ HTTPS, headers, and safe link practices
   </Card>
   <Card title="External Link Security" icon="triangle-exclamation" href="/rules/security/new-tab">
     Checks external target=_blank links for noopener (security) and noreferrer (privacy)
+  </Card>
+  <Card title="Leaked Secrets" icon="circle-exclamation" href="/rules/security/env-vars">
+    Detects 96 patterns of exposed API keys, credentials, and secrets in HTML/JS
   </Card>
   <Card title="Form HTTPS" icon="triangle-exclamation" href="/rules/security/form-https">
     Checks that form actions use HTTPS

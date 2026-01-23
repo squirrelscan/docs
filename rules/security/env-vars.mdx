@@ -1,0 +1,123 @@
+---
+title: "Leaked Secrets"
+description: "Detects exposed API keys, credentials, and secrets in HTML and JavaScript"
+---
+
+Detects exposed API keys, credentials, and secrets in HTML and JavaScript
+
+| | |
+|---|---|
+| **Rule ID** | `security/env-vars` |
+| **Category** | [Security](/rules/security) |
+| **Scope** | Per-page |
+| **Severity** | error |
+| **Weight** | 10/10 |
+
+## What It Detects
+
+This rule scans page HTML and inline JavaScript for **96 patterns** of leaked credentials across major services:
+
+### AI & LLM Services
+- OpenAI API keys (`sk-...`, `sk-proj-...`)
+- Anthropic API keys (`sk-ant-...`)
+- Groq, xAI (Grok), HuggingFace, Cohere, Replicate, Together AI, Mistral, Perplexity
+
+### Databases & Backend
+- Supabase (anon keys, service role keys)
+- Firebase (API keys, database URLs)
+- MongoDB, PostgreSQL, MySQL, Redis connection strings
+- Pinecone, PlanetScale, Neon
+
+### Payment Services
+- Stripe (live and test keys)
+- PayPal, Square
+
+### Cloud Providers
+- AWS (access key IDs, secret keys)
+- Google Cloud (API keys, OAuth tokens)
+- Azure, DigitalOcean
+
+### Hosting & Deployment
+- Vercel, Netlify, Cloudflare
+- Heroku, Render, Railway
+
+### Version Control
+- GitHub (personal access tokens, OAuth, app tokens)
+- GitLab, Bitbucket
+
+### Communication
+- Slack (tokens, webhooks)
+- Discord (webhooks, bot tokens)
+- Telegram bot tokens
+
+### Email & SMS
+- Twilio (account SID, auth token)
+- SendGrid, Mailgun, Mailchimp, Postmark, Resend
+
+### Analytics & Monitoring
+- Sentry DSN
+- Datadog, New Relic, Segment, Mixpanel, Amplitude
+
+### Auth Services
+- Auth0, Clerk, Okta
+
+### Other
+- Mapbox tokens
+- Private keys (RSA, DSA, EC, OpenSSH, PGP)
+- Generic API key/secret patterns
+
+## Why It Matters
+
+API keys exposed in client-side code are a critical security vulnerability:
+
+- **Financial loss**: Attackers can use your keys to incur charges on your accounts
+- **Data breach**: Exposed database credentials can lead to data theft
+- **Account takeover**: OAuth tokens can grant access to third-party accounts
+- **Service abuse**: Your API quotas can be exhausted by malicious actors
+
+Frontend JavaScript is visible to anyone who views your page source. Secrets embedded at build time (common with React, Next.js, Vue) end up in the browser bundle.
+
+## Solution
+
+1. **Never hardcode secrets** in frontend code
+2. **Use environment variables** that are NOT exposed to the browser
+3. **Create a backend proxy** for API calls that require authentication
+4. **Rotate compromised keys immediately** if detected
+5. **Add secret scanning** to your CI/CD pipeline (Gitleaks, TruffleHog)
+
+```javascript
+// ❌ Bad - exposed in browser
+const apiKey = "sk-proj-abc123...";
+
+// ✅ Good - call your backend instead
+const response = await fetch('/api/openai', { body: prompt });
+```
+
+## Confidence Levels
+
+- **High confidence** (error): Distinctive patterns like `sk-ant-...`, `ghp_...`, AWS key IDs
+- **Medium confidence** (warning): Generic patterns that may need manual verification
+
+## Enable / Disable
+
+### Disable this rule
+
+```toml squirrel.toml
+[rules]
+disable = ["security/env-vars"]
+```
+
+### Disable all Security rules
+
+```toml squirrel.toml
+[rules]
+disable = ["security/*"]
+```
+
+### Enable only this rule
+
+```toml squirrel.toml
+[rules]
+enable = ["security/env-vars"]
+disable = ["*"]
+```
