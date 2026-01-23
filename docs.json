@@ -162,7 +162,7 @@
               "rules/security/mixed-content",
               "rules/security/form-https",
               "rules/security/new-tab",
-              "rules/security/env-vars"
+              "rules/security/leaked-secrets"
             ]
           },
           {
