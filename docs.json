@@ -161,6 +161,7 @@
               "rules/security/permissions-policy",
               "rules/security/mixed-content",
               "rules/security/form-https",
+              "rules/security/form-captcha",
               "rules/security/new-tab",
               "rules/security/leaked-secrets"
             ]
