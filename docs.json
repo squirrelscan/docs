@@ -163,7 +163,8 @@
               "rules/security/form-https",
               "rules/security/form-captcha",
               "rules/security/new-tab",
-              "rules/security/leaked-secrets"
+              "rules/security/leaked-secrets",
+              "rules/security/form-captcha"
             ]
           },
           {
