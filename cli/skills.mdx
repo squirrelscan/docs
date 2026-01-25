@@ -1,0 +1,87 @@
+---
+title: "skills"
+description: "Install squirrelscan skills for coding agents"
+---
+
+The `skills` command installs squirrelscan capabilities into coding agents that support the [Agent Skills](https://agentskills.io/home) standard.
+
+## What are Agent Skills?
+
+Agent Skills are folders of instructions, scripts, and resources that coding agents can discover and use to perform tasks more accurately. Skills give agents access to procedural knowledge they can load on demand.
+
+The Agent Skills format is an open standard supported by many coding agents including:
+
+- **Claude Code** - Anthropic's CLI coding agent
+- **Cursor** - AI-first code editor
+- **VS Code** - With GitHub Copilot
+- **Gemini CLI** - Google's coding agent
+- **OpenAI Codex** - OpenAI's coding agent
+- **Goose** - Block's open source agent
+- **Amp** - Sourcegraph's coding agent
+- **Roo Code** - AI coding assistant
+
+For the full list of supported agents, see [agentskills.io](https://agentskills.io/home).
+
+---
+
+## install
+
+Install the squirrelscan skill for your coding agent.
+
+### Usage
+
+```bash
+squirrel skills install
+```
+
+### What it Does
+
+The command runs `npx skills add` to install the `audit-website` skill from the [squirrelscan skills repository](https://github.com/squirrelscan/skills).
+
+Once installed, you can invoke the skill in your coding agent using:
+
+```
+/audit-website
+```
+
+### Example
+
+```bash
+$ squirrel skills install
+Installing squirrelscan skill for Claude Code...
+
+Skill installed! Use /audit-website in Claude Code.
+```
+
+### Requirements
+
+- Node.js and npm/npx must be available in your PATH
+- A coding agent that supports the Agent Skills standard
+
+---
+
+## The audit-website Skill
+
+The `audit-website` skill gives your coding agent the ability to run comprehensive website audits using squirrelscan. When invoked, the agent will:
+
+1. Run `squirrel audit` on the target URL
+2. Analyze the results
+3. Provide actionable recommendations
+
+### Invoking the Skill
+
+In Claude Code or other compatible agents:
+
+```
+/audit-website https://example.com
+```
+
+The agent will handle running the audit and interpreting results for you.
+
+---
+
+## Related
+
+- [Agent Skills Standard](https://agentskills.io/home) - Learn more about Agent Skills
+- [squirrelscan Skills Repository](https://github.com/squirrelscan/skills) - View our skills source
+- [Using with Agents](/agents) - Full guide to using squirrelscan with coding agents

@@ -57,7 +57,8 @@
           "cli/init",
           "cli/config",
           "cli/feedback",
-          "cli/self"
+          "cli/self",
+          "cli/skills"
         ]
       },
       {
