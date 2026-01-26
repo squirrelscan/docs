@@ -111,6 +111,8 @@
               "rules/links/redirect-chains",
               "rules/links/nofollow-internal",
               "rules/links/orphan-pages",
+              "rules/links/weak-internal-links",
+              "rules/links/dead-end-pages",
               "rules/links/anchor-text",
               "rules/links/https-downgrade",
               "rules/links/tel-mailto"
@@ -206,7 +208,8 @@
               "rules/perf/render-blocking",
               "rules/perf/lazy-above-fold",
               "rules/perf/dom-size",
-              "rules/perf/ttfb"
+              "rules/perf/ttfb",
+              "rules/perf/js-redirects"
             ]
           },
           {
@@ -229,7 +232,8 @@
               "rules/crawl/robots-meta-conflict",
               "rules/crawl/noindex-in-sitemap",
               "rules/crawl/canonical-chain",
-              "rules/crawl/pagination"
+              "rules/crawl/pagination",
+              "rules/crawl/redirect-chain"
             ]
           },
           {
