@@ -16,8 +16,48 @@ When you run `squirrel audit https://example.com`, the crawler:
 5. **Stores everything** in a local SQLite database
 
 ```
-squirrel audit https://example.com -m 100
+squirrel audit https://example.com
 ```
+
+## Coverage Modes
+
+SquirrelScan supports three coverage modes to balance thoroughness with speed:
+
+| Mode | Default Pages | Behavior | Use Case |
+|------|---------------|----------|----------|
+| `quick` | 25 | Seed + sitemaps only, no link discovery | CI checks, fast health check |
+| `surface` | 100 | One sample per URL pattern | General audits (default) |
+| `full` | 500 | Crawl everything up to limit | Deep analysis |
+
+```bash
+# Quick health check (25 pages, no link discovery)
+squirrel audit https://example.com -C quick
+
+# Default surface crawl (100 pages, pattern sampling)
+squirrel audit https://example.com
+
+# Full comprehensive audit (500 pages)
+squirrel audit https://example.com -C full
+
+# Override page limit for any mode
+squirrel audit https://example.com -C surface -m 200
+```
+
+### Surface Mode Pattern Detection
+
+Surface mode is smart about detecting URL patterns. When it sees `/blog/my-first-post`, `/blog/another-post`, and `/blog/third-post`, it recognizes these as the same pattern (`/blog/{slug}`) and only crawls one sample.
+
+**Detected Patterns:**
+- Numeric IDs: `/products/12345` → `/products/{id}`
+- UUIDs: `/doc/a1b2c3d4-e5f6-...` → `/doc/{id}`
+- Dates: `/blog/2024/01/15` → `/blog/{date}/{date}/{date}`
+- Slugs: `/blog/my-awesome-post` → `/blog/{slug}`
+
+This means a blog with 10,000 posts gets sampled efficiently without wasting crawl budget on duplicate templates.
+
+<Tip>
+Surface mode is the default and recommended for most audits. It gives you comprehensive coverage of unique page templates while avoiding over-crawling repetitive content like blog archives or product listings.
+</Tip>
 
 ## Redirect Following
 

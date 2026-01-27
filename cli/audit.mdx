@@ -21,7 +21,8 @@ squirrel audit <url> [options]
 
 | Option | Alias | Description | Default |
 |--------|-------|-------------|---------|
-| `--max-pages` | `-m` | Maximum pages to crawl | `500` |
+| `--max-pages` | `-m` | Maximum pages to crawl | varies by coverage mode |
+| `--coverage` | `-C` | Coverage mode: `quick`, `surface`, `full` | `surface` |
 | `--format` | `-f` | Output format: `console`, `text`, `json`, `html`, `markdown`, `llm` | `console` |
 | `--output` | `-o` | Output file path | auto |
 | `--refresh` | `-r` | Ignore cache, fetch all pages fresh | `false` |
@@ -30,6 +31,14 @@ squirrel audit <url> [options]
 | `--debug` | | Enable debug logging | `false` |
 | `--trace` | | Enable performance tracing | `false` |
 | `--project-name` | `-n` | Project name (overrides config and prompts) | auto |
+
+### Coverage Modes
+
+| Mode | Default Pages | Description |
+|------|---------------|-------------|
+| `quick` | 25 | Fast scan - seed URL + sitemaps only, no link discovery |
+| `surface` | 100 | Smart sampling - one page per URL pattern (default) |
+| `full` | 500 | Comprehensive - crawl everything up to limit |
 
 <Note>
 The `audit` command supports 6 formats: `console`, `text`, `json`, `html`, `markdown`, `llm`. For additional formats (`xml`, `sarif`), use the `report` command after running an audit:
@@ -46,6 +55,18 @@ See the [report command docs](/cli/report) for details on all available formats.
 
 ```bash
 squirrel audit https://example.com
+```
+
+### Quick Health Check
+
+```bash
+squirrel audit https://example.com -C quick
+```
+
+### Full Comprehensive Audit
+
+```bash
+squirrel audit https://example.com -C full
 ```
 
 ### Crawl More Pages
