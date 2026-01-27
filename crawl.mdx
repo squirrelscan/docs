@@ -276,3 +276,51 @@ Each page records timing information:
 - **downloadTime** - Body download time
 
 This data feeds into performance rules like `perf/ttfb`.
+
+## Performance Optimizations
+
+SquirrelScan uses several techniques to crawl efficiently:
+
+### Parallel URL Fetching
+
+URLs are fetched in parallel batches respecting concurrency limits:
+
+```toml
+[crawler]
+concurrency = 5              # Total concurrent requests
+per_host_concurrency = 2     # Max concurrent per host
+```
+
+The crawler pops multiple URLs from the frontier and processes them concurrently, significantly speeding up crawls compared to sequential fetching.
+
+### Content Caching
+
+HTML and JavaScript content is stored in a global content cache (`~/.squirrel/content-store.db`) with:
+
+- **Gzip compression** - Typically 80-90% space savings
+- **Content deduplication** - Identical content stored once
+- **LRU eviction** - Old entries pruned when cache is full
+
+This means:
+- Repeated crawls of unchanged pages are instant
+- CDN scripts shared across sites are cached once
+- Large crawl sessions use less disk space
+
+### Smart Resource Limits
+
+Script scanning automatically scales with site size:
+
+| Site Size | Scripts Scanned |
+|-----------|-----------------|
+| < 100 pages | 10 scripts |
+| 100-500 pages | 10-50 scripts |
+| > 500 pages | 50 scripts (cap) |
+
+This ensures small sites get thorough scanning while large sites don't waste time on excessive script analysis.
+
+### Database Optimizations
+
+SQLite databases use WAL mode and optimized indexes for:
+- Fast frontier operations (URL queue)
+- Efficient link counting
+- Quick page lookups
