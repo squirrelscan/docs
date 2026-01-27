@@ -51,12 +51,62 @@ $ squirrel skills install
 Installing squirrelscan skill for Claude Code...
 
 Skill installed! Use /audit-website in Claude Code.
+View skill: https://skills.sh/squirrelscan/skills/audit-website
 ```
 
-### Requirements
+### Without npm/npx
 
-- Node.js and npm/npx must be available in your PATH
-- A coding agent that supports the Agent Skills standard
+If npm/npx is not available, the command displays manual installation instructions:
+
+```bash
+$ squirrel skills install
+npx not found. Install Node.js or run manually:
+
+To run manually:
+  npx skills add https://github.com/squirrelscan/skills --skill audit-website -g
+
+View skill: https://skills.sh/squirrelscan/skills/audit-website
+```
+
+---
+
+## update
+
+Update the squirrelscan skill to the latest version.
+
+### Usage
+
+```bash
+squirrel skills update
+```
+
+### What it Does
+
+The command runs `npx skills update` to fetch the latest version of the `audit-website` skill from the [squirrelscan skills repository](https://github.com/squirrelscan/skills).
+
+### Example
+
+```bash
+$ squirrel skills update
+Updating squirrelscan skill for Claude Code...
+
+Skill updated!
+View skill: https://skills.sh/squirrelscan/skills/audit-website
+```
+
+### Without npm/npx
+
+If npm/npx is not available, the command displays manual update instructions:
+
+```bash
+$ squirrel skills update
+npx not found. Install Node.js or run manually:
+
+To run manually:
+  npx skills update https://github.com/squirrelscan/skills --skill audit-website -g
+
+View skill: https://skills.sh/squirrelscan/skills/audit-website
+```
 
 ---
 
