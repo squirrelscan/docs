@@ -96,7 +96,9 @@
               "rules/content/freshness",
               "rules/content/author-info",
               "rules/content/meta-in-body",
-              "rules/content/mime-type"
+              "rules/content/mime-type",
+              "rules/content/article-links",
+              "rules/content/quality"
             ]
           },
           {
@@ -166,8 +168,7 @@
               "rules/security/form-https",
               "rules/security/form-captcha",
               "rules/security/new-tab",
-              "rules/security/leaked-secrets",
-              "rules/security/form-captcha"
+              "rules/security/leaked-secrets"
             ]
           },
           {
@@ -208,6 +209,7 @@
               "rules/perf/render-blocking",
               "rules/perf/lazy-above-fold",
               "rules/perf/dom-size",
+              "rules/perf/css-file-size",
               "rules/perf/ttfb",
               "rules/perf/js-redirects"
             ]
@@ -233,7 +235,14 @@
               "rules/crawl/noindex-in-sitemap",
               "rules/crawl/canonical-chain",
               "rules/crawl/pagination",
-              "rules/crawl/redirect-chain"
+              "rules/crawl/redirect-chain",
+              "rules/crawl/all-noindex-pages",
+              "rules/crawl/indexability",
+              "rules/crawl/indexability-conflicts",
+              "rules/crawl/schema-noindex-conflict",
+              "rules/crawl/sitemap-4xx",
+              "rules/crawl/sitemap-coverage",
+              "rules/crawl/sitemap-domain"
             ]
           },
           {
