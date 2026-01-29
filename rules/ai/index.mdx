@@ -1,0 +1,43 @@
+---
+title: "AI"
+description: "LLM parsability and AI content detection"
+---
+
+<Warning>**Beta Category** - These rules are experimental and may change significantly in future releases. They are disabled by default and require `OPENROUTER_API_KEY` to be set.</Warning>
+
+LLM parsability and AI content detection
+
+## Prerequisites
+
+AI rules require an OpenRouter API key to function. Set the environment variable:
+
+```bash
+export OPENROUTER_API_KEY=your_key_here
+```
+
+## Rules
+
+<CardGroup cols={2}>
+  <Card title="LLM Parsability" icon="circle-info" href="/rules/ai/llm-parsability">
+    Analyzes how well LLMs can parse and understand the content
+  </Card>
+  <Card title="AI Content Detection" icon="circle-info" href="/rules/ai/ai-content">
+    Detects if content appears to be AI-generated
+  </Card>
+</CardGroup>
+
+## Enable AI Rules
+
+AI rules are disabled by default. To enable them:
+
+```toml squirrel.toml
+[rules]
+enable = ["ai/*"]
+```
+
+## Disable All AI Rules
+
+```toml squirrel.toml
+[rules]
+disable = ["ai/*"]
+```
