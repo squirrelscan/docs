@@ -79,7 +79,9 @@
               "rules/core/og-tags",
               "rules/core/twitter-cards",
               "rules/core/favicon",
-              "rules/core/title-unique"
+              "rules/core/title-unique",
+              "rules/core/doctype",
+              "rules/core/charset"
             ]
           },
           {
@@ -133,7 +135,11 @@
               "rules/images/svg-inline",
               "rules/images/broken-images",
               "rules/images/figure-figcaption",
-              "rules/images/picture-element"
+              "rules/images/picture-element",
+              "rules/images/image-file-size",
+              "rules/images/responsive-size",
+              "rules/images/offscreen-lazy",
+              "rules/images/optimized"
             ]
           },
           {
@@ -168,7 +174,8 @@
               "rules/security/form-https",
               "rules/security/form-captcha",
               "rules/security/new-tab",
-              "rules/security/leaked-secrets"
+              "rules/security/leaked-secrets",
+              "rules/security/third-party-cookies"
             ]
           },
           {
@@ -186,7 +193,50 @@
               "rules/a11y/link-text",
               "rules/a11y/table-headers",
               "rules/a11y/video-captions",
-              "rules/a11y/zoom-disabled"
+              "rules/a11y/zoom-disabled",
+              "rules/a11y/paste-inputs",
+              "rules/a11y/aria-valid-attr",
+              "rules/a11y/aria-valid-attr-value",
+              "rules/a11y/aria-roles",
+              "rules/a11y/aria-required-attr",
+              "rules/a11y/aria-required-parent",
+              "rules/a11y/aria-required-children",
+              "rules/a11y/aria-allowed-attr",
+              "rules/a11y/aria-hidden-body",
+              "rules/a11y/aria-hidden-focus",
+              "rules/a11y/aria-command-name",
+              "rules/a11y/aria-input-field-name",
+              "rules/a11y/aria-meter-name",
+              "rules/a11y/aria-progressbar-name",
+              "rules/a11y/aria-toggle-field-name",
+              "rules/a11y/aria-tooltip-name",
+              "rules/a11y/aria-treeitem-name",
+              "rules/a11y/button-name",
+              "rules/a11y/input-image-alt",
+              "rules/a11y/select-name",
+              "rules/a11y/frame-title",
+              "rules/a11y/object-alt",
+              "rules/a11y/definition-list",
+              "rules/a11y/dlitem",
+              "rules/a11y/list-structure",
+              "rules/a11y/listitem",
+              "rules/a11y/tabindex",
+              "rules/a11y/td-headers-attr",
+              "rules/a11y/duplicate-id-aria",
+              "rules/a11y/accesskeys",
+              "rules/a11y/empty-heading",
+              "rules/a11y/html-lang-valid",
+              "rules/a11y/valid-lang",
+              "rules/a11y/meta-refresh",
+              "rules/a11y/link-in-text-block",
+              "rules/a11y/form-field-multiple-labels",
+              "rules/a11y/landmark-one-main",
+              "rules/a11y/html-xml-lang-mismatch",
+              "rules/a11y/aria-deprecated-role",
+              "rules/a11y/image-redundant-alt",
+              "rules/a11y/identical-links-same-purpose",
+              "rules/a11y/table-duplicate-name",
+              "rules/a11y/label-content-name-mismatch"
             ]
           },
           {
@@ -211,7 +261,19 @@
               "rules/perf/dom-size",
               "rules/perf/css-file-size",
               "rules/perf/ttfb",
-              "rules/perf/js-redirects"
+              "rules/perf/js-redirects",
+              "rules/perf/js-libraries",
+              "rules/perf/source-maps",
+              "rules/perf/unminified-css",
+              "rules/perf/unminified-js",
+              "rules/perf/total-byte-weight",
+              "rules/perf/cache-headers",
+              "rules/perf/compression",
+              "rules/perf/http2",
+              "rules/perf/animated-content",
+              "rules/perf/legacy-js",
+              "rules/perf/duplicate-js",
+              "rules/perf/browser-required"
             ]
           },
           {
