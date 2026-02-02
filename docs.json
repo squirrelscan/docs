@@ -47,6 +47,10 @@
         "pages": ["projects", "crawl", "reports"]
       },
       {
+        "group": "Dashboard",
+        "pages": ["dashboard/index"]
+      },
+      {
         "group": "CLI Reference",
         "pages": [
           "cli/index",
@@ -57,6 +61,7 @@
           "cli/init",
           "cli/config",
           "cli/feedback",
+          "cli/auth",
           "cli/self",
           "cli/skills"
         ]

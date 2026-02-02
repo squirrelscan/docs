@@ -1,0 +1,116 @@
+---
+title: "auth"
+description: "Authenticate with squirrelscan for publishing reports"
+---
+
+The `auth` command manages authentication for publishing reports to [reports.squirrelscan.com](https://reports.squirrelscan.com).
+
+## Subcommands
+
+- [login](#login) - Sign in to squirrelscan
+- [logout](#logout) - Sign out and revoke token
+- [status](#status) - Check authentication status
+
+---
+
+## login
+
+Authenticate with squirrelscan using device authorization flow.
+
+### Usage
+
+```bash
+squirrel auth login [options]
+```
+
+### Options
+
+| Option | Alias | Description | Default |
+|--------|-------|-------------|---------|
+| `--device-name` | `-d` | Name for this device | hostname |
+
+### Example
+
+```bash
+squirrel auth login
+```
+
+Opens browser for authentication. After completing login:
+```
+✓ Authenticated as you@example.com
+  Device: macbook-pro
+  Expires: Feb 2, 2027
+```
+
+---
+
+## logout
+
+Sign out and revoke the current authentication token.
+
+### Usage
+
+```bash
+squirrel auth logout
+```
+
+### Example
+
+```bash
+squirrel auth logout
+```
+
+```
+✓ Signed out successfully
+```
+
+---
+
+## status
+
+Check current authentication status.
+
+### Usage
+
+```bash
+squirrel auth status [options]
+```
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `--json` | Output as JSON |
+
+### Example
+
+```bash
+squirrel auth status
+```
+
+```
+Authenticated as: you@example.com
+Device: macbook-pro
+Expires: Feb 2, 2027
+```
+
+JSON output:
+```bash
+squirrel auth status --json
+```
+
+```json
+{
+  "authenticated": true,
+  "email": "you@example.com",
+  "deviceName": "macbook-pro",
+  "expiresAt": "2027-02-02T00:00:00Z"
+}
+```
+
+---
+
+## Related
+
+- [Dashboard](/dashboard) - Manage reports online
+- [report --publish](/cli/report#publishing) - Publish reports

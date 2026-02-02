@@ -27,6 +27,51 @@ squirrel report [id] [options]
 | `--input` | `-i` | Load from JSON file (fallback mode) | - |
 | `--severity` | | Filter by severity: `error`, `warning`, `all` | `all` |
 | `--category` | | Filter by categories (comma-separated) | all |
+| `--publish` | `-p` | Publish report to reports.squirrelscan.com | `false` |
+| `--visibility` | | Visibility: `public`, `unlisted`, `private` | `public` |
+
+## Publishing
+
+Share reports online by publishing to `reports.squirrelscan.com`.
+
+<Note>
+Publishing requires authentication. Run `squirrel auth login` first.
+</Note>
+
+### Visibility Levels
+
+| Level | Description |
+|-------|-------------|
+| `public` | Listed and searchable (default) |
+| `unlisted` | Accessible via link only, not listed |
+| `private` | Only visible to you when logged in |
+
+### Publish Report
+
+```bash
+squirrel report --publish
+```
+
+Output:
+```
+Report published successfully!
+URL: https://reports.squirrelscan.com/XVv4NO7aPr
+Visibility: public
+
+Manage your reports: https://squirrelscan.com/dashboard/reports
+```
+
+### Publish with Visibility
+
+```bash
+squirrel report --publish --visibility unlisted
+```
+
+### Publish Specific Audit
+
+```bash
+squirrel report a7b3c2d1 --publish --visibility private
+```
 
 ## Examples
 
@@ -245,6 +290,8 @@ Filter reports by these categories:
 
 ## Related
 
+- [auth](/cli/auth) - Authentication for publishing
 - [audit](/cli/audit) - Run new audit
 - [analyze](/cli/analyze) - Re-analyze crawl
+- [Dashboard](/dashboard) - Manage published reports
 - [Configuration](/configuration) - Config file options
