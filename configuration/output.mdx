@@ -32,7 +32,7 @@ Output format for audit reports.
 - `"llm"` - Compact token-optimized XML/text for AI agents (40% smaller than xml)
 - `"xml"` - Verbose structured XML for enterprise integration
 
-**Note:** The `llm`, `xml`, and `markdown` formats are only available via the `report` command, not during `audit`. See [Reports documentation](/reports) for details.
+**Note:** The `sarif` format is only available via the `report` command, not during `audit`. See [Reports documentation](/reports) for details.
 
 ---
 
@@ -280,19 +280,15 @@ For a 51-page audit:
 
 **CLI usage:**
 
-<Note>
-LLM format is only available via the `report` command:
-</Note>
-
 ```bash
-# Run audit first
-squirrel audit https://example.com
+# Direct output during audit
+squirrel audit https://example.com --format llm
 
-# Export in LLM format
+# Or export from stored audit
 squirrel report <audit-id> --format llm
 
 # Pipe directly to AI agent
-squirrel report <audit-id> --format llm | claude "analyze and prioritize fixes"
+squirrel audit https://example.com --format llm | claude "analyze and prioritize fixes"
 ```
 
 See [OUTPUT-FORMAT.md](https://github.com/squirrelscan/skills/blob/main/audit-website/references/OUTPUT-FORMAT.md) for complete format specification.
@@ -370,19 +366,15 @@ See [OUTPUT-FORMAT.md](https://github.com/squirrelscan/skills/blob/main/audit-we
 
 **CLI usage:**
 
-<Note>
-XML format is only available via the `report` command:
-</Note>
-
 ```bash
-# Run audit first
-squirrel audit https://example.com
+# Direct output during audit
+squirrel audit https://example.com --format xml --output audit.xml
 
-# Export in XML format
+# Or export from stored audit
 squirrel report <audit-id> --format xml --output audit.xml
 
 # Validate with xmllint
-squirrel report <audit-id> --format xml | xmllint --format -
+squirrel audit https://example.com --format xml | xmllint --format -
 ```
 
 ---

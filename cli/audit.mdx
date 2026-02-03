@@ -23,7 +23,7 @@ squirrel audit <url> [options]
 |--------|-------|-------------|---------|
 | `--max-pages` | `-m` | Maximum pages to crawl | varies by coverage mode |
 | `--coverage` | `-C` | Coverage mode: `quick`, `surface`, `full` | `surface` |
-| `--format` | `-f` | Output format: `console`, `text`, `json`, `html`, `markdown`, `llm` | `console` |
+| `--format` | `-f` | Output format: `console`, `text`, `json`, `html`, `markdown`, `xml`, `llm` | `console` |
 | `--output` | `-o` | Output file path | auto |
 | `--refresh` | `-r` | Ignore cache, fetch all pages fresh | `false` |
 | `--resume` | | Resume interrupted crawl for this domain | `false` |
@@ -41,12 +41,12 @@ squirrel audit <url> [options]
 | `full` | 500 | Comprehensive - crawl everything up to limit |
 
 <Note>
-The `audit` command supports 6 formats: `console`, `text`, `json`, `html`, `markdown`, `llm`. For additional formats (`xml`, `sarif`), use the `report` command after running an audit:
+For SARIF format (IDE integration), use the `report` command after running an audit:
 ```bash
 squirrel audit https://example.com
-squirrel report <audit-id> --format xml
+squirrel report <audit-id> --format sarif
 ```
-See the [report command docs](/cli/report) for details on all available formats.
+See the [report command docs](/cli/report) for details.
 </Note>
 
 ## Examples
