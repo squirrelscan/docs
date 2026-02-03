@@ -433,6 +433,24 @@ Combine severity and category filters:
 squirrel report --severity error --category links,images
 ```
 
+## Diff Reports
+
+Compare a baseline audit to the current report:
+
+```bash
+squirrel report --diff a7b3c2d1 --format json
+```
+
+Compare the latest report for a domain against a baseline audit:
+
+```bash
+squirrel report --regression-since example.com --format llm
+```
+
+<Note>
+Diff mode supports `console`, `text`, `json`, `llm`, and `markdown`. `html` and `xml` are not supported in diff mode. Diff reports cannot be published with `--publish`.
+</Note>
+
 ## CI/CD Integration
 
 ### Fail Build on Low Score

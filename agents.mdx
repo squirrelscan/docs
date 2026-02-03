@@ -185,6 +185,22 @@ squirrel report <audit-id> --format llm | claude "Fix all high-severity issues"
 squirrel report <audit-id> --format text | claude "Explain these issues in simple terms"
 ```
 
+### Regression Diffs for Agents
+
+Use diff reports to let agents focus on regressions and improvements:
+
+```bash
+# Compare current audit against a baseline ID
+squirrel report --diff a7b3c2d1 --format llm | claude "Summarize regressions and suggest fixes"
+
+# Compare latest domain report against a baseline domain
+squirrel report --regression-since example.com --format llm | claude "List regressions only and propose fixes"
+```
+
+<Note>
+Diff mode supports `console`, `text`, `json`, `llm`, and `markdown`. `html` and `xml` are not supported in diff mode.
+</Note>
+
 ### Other Formats for AI
 
 | Format | Flag | Best For |

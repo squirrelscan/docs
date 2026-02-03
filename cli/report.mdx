@@ -27,6 +27,9 @@ squirrel report [id] [options]
 | `--input` | `-i` | Load from JSON file (fallback mode) | - |
 | `--severity` | | Filter by severity: `error`, `warning`, `all` | `all` |
 | `--category` | | Filter by categories (comma-separated) | all |
+| `--diff` | | Compare current report against baseline (audit ID or domain) | - |
+| `--regression-since` | | Compare against baseline and show regressions | - |
+| `--allow-cross-site` | | Allow diff across different base URLs | `false` |
 | `--publish` | `-p` | Publish report to reports.squirrelscan.com | `false` |
 | `--visibility` | | Visibility: `public`, `unlisted`, `private` | `public` |
 
@@ -165,6 +168,27 @@ Show multiple categories:
 ```bash
 squirrel report --category core,links,images
 ```
+
+### Diff Reports
+
+Compare the latest report against a baseline audit:
+
+```bash
+squirrel report --diff a7b3c2d1 --format json
+```
+
+Compare the latest report for a domain against a baseline audit:
+
+```bash
+squirrel report --regression-since example.com --format llm
+```
+
+<Note>
+Diff mode supports `console`, `text`, `json`, `llm`, and `markdown`. `html` and `xml` are not supported in diff mode.
+</Note>
+<Note>
+Diff mode cannot be published with `--publish`.
+</Note>
 
 ### LLM-Optimized Format
 
