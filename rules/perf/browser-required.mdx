@@ -7,7 +7,7 @@ Lists performance audits that require browser execution
 
 | | |
 |---|---|
-| **Rule ID** | `performance/browser-required` |
+| **Rule ID** | `perf/browser-required` |
 | **Category** | [Performance](/rules/perf) |
 | **Scope** | Per-page |
 | **Severity** | info |
@@ -17,21 +17,13 @@ Lists performance audits that require browser execution
 
 For complete performance analysis, run browser-based tools like Lighthouse, WebPageTest, or Chrome DevTools. These tools measure actual runtime metrics that cannot be determined through static HTML analysis alone.
 
-### Browser-only metrics include:
-
-- Core Web Vitals (FCP, LCP, CLS, INP)
-- JavaScript execution time
-- Main-thread work breakdown
-- Network waterfall timing
-- Long tasks detection
-
 ## Enable / Disable
 
 ### Disable this rule
 
 ```toml squirrel.toml
 [rules]
-disable = ["performance/browser-required"]
+disable = ["perf/browser-required"]
 ```
 
 ### Disable all Performance rules
@@ -45,6 +37,6 @@ disable = ["perf/*"]
 
 ```toml squirrel.toml
 [rules]
-enable = ["performance/browser-required"]
+enable = ["perf/browser-required"]
 disable = ["*"]
 ```

@@ -7,7 +7,7 @@ Detects JavaScript libraries and checks for known vulnerabilities
 
 | | |
 |---|---|
-| **Rule ID** | `performance/js-libraries` |
+| **Rule ID** | `perf/js-libraries` |
 | **Category** | [Performance](/rules/perf) |
 | **Scope** | Per-page |
 | **Severity** | warning |
@@ -15,11 +15,7 @@ Detects JavaScript libraries and checks for known vulnerabilities
 
 ## Solution
 
-Keep JavaScript libraries updated to their latest versions. Outdated libraries may contain security vulnerabilities that attackers can exploit.
-
-- Consider replacing large libraries like jQuery with modern vanilla JavaScript or smaller alternatives
-- Use `npm audit` or Snyk to monitor dependencies for vulnerabilities
-- Set up automated dependency updates with tools like Dependabot
+Keep JavaScript libraries updated to their latest versions. Outdated libraries may contain security vulnerabilities that attackers can exploit. Consider replacing large libraries like jQuery with modern vanilla JavaScript or smaller alternatives. Use npm audit or Snyk to monitor dependencies for vulnerabilities.
 
 ## Enable / Disable
 
@@ -27,7 +23,7 @@ Keep JavaScript libraries updated to their latest versions. Outdated libraries m
 
 ```toml squirrel.toml
 [rules]
-disable = ["performance/js-libraries"]
+disable = ["perf/js-libraries"]
 ```
 
 ### Disable all Performance rules
@@ -41,6 +37,6 @@ disable = ["perf/*"]
 
 ```toml squirrel.toml
 [rules]
-enable = ["performance/js-libraries"]
+enable = ["perf/js-libraries"]
 disable = ["*"]
 ```

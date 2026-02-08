@@ -7,21 +7,15 @@ Checks the total byte weight of the page
 
 | | |
 |---|---|
-| **Rule ID** | `performance/total-byte-weight` |
+| **Rule ID** | `perf/total-byte-weight` |
 | **Category** | [Performance](/rules/perf) |
-| **Scope** | Per-site |
+| **Scope** | Site-wide |
 | **Severity** | warning |
 | **Weight** | 6/10 |
 
 ## Solution
 
-Reduce total page weight for faster loads on slow connections:
-
-- Optimize images (use modern formats, compress, serve appropriate sizes)
-- Minify and compress CSS/JS
-- Remove unused code via tree-shaking
-- Lazy-load non-critical resources
-- Target under 1.6MB for mobile users
+Reduce total page weight for faster loads on slow connections. Optimize images (use modern formats, compress, serve appropriate sizes). Minify and compress CSS/JS. Remove unused code via tree-shaking. Lazy-load non-critical resources. Target under 1.6MB for mobile users.
 
 ## Options
 
@@ -29,15 +23,15 @@ This rule supports the following configuration options:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `warn_threshold_kb` | number | `1600` | Warning threshold for total page weight in KB |
-| `error_threshold_kb` | number | `5000` | Error threshold for total page weight in KB |
+| `warn_threshold_kb` | unknown | `undefined` | Warning threshold for total page weight in KB |
+| `error_threshold_kb` | unknown | `undefined` | Error threshold for total page weight in KB |
 
 ### Configuration Example
 
 ```toml squirrel.toml
-[rules."performance/total-byte-weight"]
-warn_threshold_kb = 1600
-error_threshold_kb = 5000
+[rules."perf/total-byte-weight"]
+warn_threshold_kb = undefined
+error_threshold_kb = undefined
 ```
 
 ## Enable / Disable
@@ -46,7 +40,7 @@ error_threshold_kb = 5000
 
 ```toml squirrel.toml
 [rules]
-disable = ["performance/total-byte-weight"]
+disable = ["perf/total-byte-weight"]
 ```
 
 ### Disable all Performance rules
@@ -60,6 +54,6 @@ disable = ["perf/*"]
 
 ```toml squirrel.toml
 [rules]
-enable = ["performance/total-byte-weight"]
+enable = ["perf/total-byte-weight"]
 disable = ["*"]
 ```

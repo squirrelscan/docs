@@ -10,21 +10,12 @@ Checks that progressbar elements have accessible names
 | **Rule ID** | `a11y/aria-progressbar-name` |
 | **Category** | [Accessibility](/rules/a11y) |
 | **Scope** | Per-page |
-| **Severity** | Error |
+| **Severity** | error |
 | **Weight** | 7/10 |
 
 ## Solution
 
-Progressbar elements must have accessible names to describe what process is being tracked. Add one of the following:
-
-- `aria-label` attribute
-- `aria-labelledby` referencing a visible label
-- An associated `<label>` element
-
-**Example:**
-```html
-<progress aria-label="Upload progress" value="50" max="100">50%</progress>
-```
+Progressbar elements must have accessible names to describe what process is being tracked. Add aria-label, aria-labelledby, or an associated `<label>`. Example: `<progress aria-label='Upload progress' value='50' max='100'>`50%`</progress>`
 
 ## Enable / Disable
 

@@ -10,15 +10,12 @@ Checks for appropriate tabindex values
 | **Rule ID** | `a11y/tabindex` |
 | **Category** | [Accessibility](/rules/a11y) |
 | **Scope** | Per-page |
-| **Severity** | Warning |
+| **Severity** | warning |
 | **Weight** | 5/10 |
 
 ## Solution
 
-- Avoid positive tabindex values (1, 2, 3...) as they override natural tab order and confuse keyboard users
-- Use `tabindex="0"` to add elements to tab order
-- Use `tabindex="-1"` to make elements focusable via JavaScript only
-- Rely on natural document order for tab sequence
+Avoid positive tabindex values (1, 2, 3...) as they override natural tab order and confuse keyboard users. Use tabindex='0' to add elements to tab order, tabindex='-1' to make elements focusable via JavaScript only. Rely on natural document order for tab sequence.
 
 ## Enable / Disable
 

@@ -1,21 +1,18 @@
 ---
 title: "Security"
-description: "HTTPS, headers, leaked secrets, and safe link practices"
+description: "HTTPS, headers, and safe link practices"
 ---
 
-HTTPS, headers, leaked secrets, and safe link practices
+HTTPS, headers, and safe link practices
 
 ## Rules
 
 <CardGroup cols={2}>
-  <Card title="Content Security Policy" icon="circle-info" href="/rules/security/csp">
-    Checks for Content-Security-Policy header
+  <Card title="Content Security Policy" icon="triangle-exclamation" href="/rules/security/csp">
+    Checks for Content-Security-Policy header and validates directives
   </Card>
   <Card title="External Link Security" icon="triangle-exclamation" href="/rules/security/new-tab">
     Checks external target=_blank links for noopener (security) and noreferrer (privacy)
-  </Card>
-  <Card title="Leaked Secrets" icon="circle-exclamation" href="/rules/security/leaked-secrets">
-    Detects 96 patterns of exposed API keys, credentials, and secrets in HTML/JS
   </Card>
   <Card title="Form CAPTCHA" icon="triangle-exclamation" href="/rules/security/form-captcha">
     Checks for CAPTCHA protection on public forms
@@ -32,6 +29,9 @@ HTTPS, headers, leaked secrets, and safe link practices
   <Card title="HTTPS" icon="circle-exclamation" href="/rules/security/https">
     Checks for HTTPS usage
   </Card>
+  <Card title="Leaked Environment Variables" icon="circle-exclamation" href="/rules/security/leaked-secrets">
+    Checks for exposed API keys, secrets, and credentials in HTML/JS
+  </Card>
   <Card title="Mixed Content" icon="circle-exclamation" href="/rules/security/mixed-content">
     Checks for HTTP resources on HTTPS pages
   </Card>
@@ -41,14 +41,14 @@ HTTPS, headers, leaked secrets, and safe link practices
   <Card title="Referrer-Policy" icon="circle-info" href="/rules/security/referrer-policy">
     Checks for Referrer-Policy header
   </Card>
+  <Card title="Third-Party Cookies" icon="circle-info" href="/rules/security/third-party-cookies">
+    Detects third-party resources that may set cookies
+  </Card>
   <Card title="X-Content-Type-Options" icon="circle-info" href="/rules/security/x-content-type">
     Checks for MIME type sniffing protection
   </Card>
   <Card title="X-Frame-Options" icon="triangle-exclamation" href="/rules/security/x-frame-options">
     Checks for clickjacking protection header
-  </Card>
-  <Card title="Third-Party Cookies" icon="circle-info" href="/rules/security/third-party-cookies">
-    Detects third-party resources that may set cookies
   </Card>
 </CardGroup>
 

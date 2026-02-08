@@ -10,15 +10,12 @@ Checks that tooltip elements have accessible names
 | **Rule ID** | `a11y/aria-tooltip-name` |
 | **Category** | [Accessibility](/rules/a11y) |
 | **Scope** | Per-page |
-| **Severity** | Error |
+| **Severity** | error |
 | **Weight** | 7/10 |
 
 ## Solution
 
-Tooltip elements with `role="tooltip"` must have accessible content. The tooltip content serves as its accessible name.
-
-- Ensure tooltips have text content
-- Use `aria-label` for icon-based tooltips
+Tooltip elements with role='tooltip' must have accessible content. The tooltip content serves as its accessible name. Ensure tooltips have text content or use aria-label for icon-based tooltips.
 
 ## Enable / Disable
 

@@ -13,50 +13,9 @@ Checks for CAPTCHA protection on public forms
 | **Severity** | warning |
 | **Weight** | 4/10 |
 
-## What It Detects
-
-This rule identifies public-facing forms (contact, comment, newsletter, registration) that lack CAPTCHA or anti-bot protection.
-
-### Supported CAPTCHA Providers
-
-| Provider | Script Pattern | Widget Class |
-|----------|---------------|--------------|
-| reCAPTCHA | `google.com/recaptcha` | `.g-recaptcha` |
-| Cloudflare Turnstile | `challenges.cloudflare.com/turnstile` | `.cf-turnstile` |
-| hCaptcha | `hcaptcha.com` | `.h-captcha` |
-| FriendlyCaptcha | `friendlycaptcha` | `.frc-captcha` |
-
-### Form Classification
-
-**Public forms** (checked for CAPTCHA):
-- Forms with keywords: contact, comment, feedback, newsletter, subscribe, register, inquiry
-- Forms containing `<textarea>`
-- Forms with email input but no password field
-
-**Excluded forms** (not checked):
-- Search forms
-- Login forms (have password field)
-- Admin/checkout forms
-
 ## Solution
 
 Add CAPTCHA protection (reCAPTCHA, Cloudflare Turnstile, hCaptcha, etc.) to public-facing forms to prevent spam and bot submissions. Contact forms, comment forms, newsletter signups, and registration forms are common targets for automated abuse. Modern CAPTCHA solutions like Turnstile offer invisible protection with minimal user friction.
-
-### Example: Adding Cloudflare Turnstile
-
-```html
-<form action="/contact" method="POST">
-  <input type="email" name="email" required />
-  <textarea name="message" required></textarea>
-
-  <!-- Turnstile widget -->
-  <div class="cf-turnstile" data-sitekey="YOUR_SITE_KEY"></div>
-
-  <button type="submit">Send</button>
-</form>
-
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-```
 
 ## Enable / Disable
 

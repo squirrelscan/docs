@@ -10,15 +10,12 @@ Checks that lang and xml:lang attributes match on html element
 | **Rule ID** | `a11y/html-xml-lang-mismatch` |
 | **Category** | [Accessibility](/rules/a11y) |
 | **Scope** | Per-page |
-| **Severity** | Error |
+| **Severity** | error |
 | **Weight** | 6/10 |
 
 ## Solution
 
-If both `lang` and `xml:lang` are present on the `<html>` element, they must have the same base language:
-
-- Mismatches can cause screen readers to announce content in the wrong language
-- Typically, you only need `lang` for HTML5 documents
+If both lang and xml:lang are present on the `<html>` element, they must have the same base language. Mismatches can cause screen readers to announce content in the wrong language. Typically, you only need lang for HTML5 documents.
 
 ## Enable / Disable
 

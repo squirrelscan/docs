@@ -8,7 +8,7 @@ Detects multi-hop redirect chains that waste crawl budget
 | | |
 |---|---|
 | **Rule ID** | `crawl/redirect-chain` |
-| **Category** | [Crawl](/rules/crawl) |
+| **Category** | [Crawlability](/rules/crawl) |
 | **Scope** | Site-wide |
 | **Severity** | warning |
 | **Weight** | 5/10 |
@@ -23,13 +23,13 @@ This rule supports the following configuration options:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `maxHops` | number | `2` | Flag redirect chains exceeding this many hops |
+| `maxHops` | unknown | `undefined` | Flag redirect chains exceeding this many hops |
 
 ### Configuration Example
 
 ```toml squirrel.toml
-[rule_options."crawl/redirect-chain"]
-maxHops = 3  # Allow up to 3 hops before flagging
+[rules."crawl/redirect-chain"]
+maxHops = undefined
 ```
 
 ## Enable / Disable
@@ -41,7 +41,7 @@ maxHops = 3  # Allow up to 3 hops before flagging
 disable = ["crawl/redirect-chain"]
 ```
 
-### Disable all Crawl rules
+### Disable all Crawlability rules
 
 ```toml squirrel.toml
 [rules]

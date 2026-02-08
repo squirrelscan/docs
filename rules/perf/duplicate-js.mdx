@@ -7,7 +7,7 @@ Detects duplicate JavaScript libraries loaded multiple times
 
 | | |
 |---|---|
-| **Rule ID** | `performance/duplicate-js` |
+| **Rule ID** | `perf/duplicate-js` |
 | **Category** | [Performance](/rules/perf) |
 | **Scope** | Per-page |
 | **Severity** | warning |
@@ -15,12 +15,7 @@ Detects duplicate JavaScript libraries loaded multiple times
 
 ## Solution
 
-Remove duplicate JavaScript library loads to reduce page weight and avoid conflicts:
-
-- Check for the same library loaded from different CDNs or versions
-- Use a single source for each dependency
-- Consider using a module bundler to deduplicate shared dependencies
-- Different versions of the same library may cause runtime conflicts
+Remove duplicate JavaScript library loads to reduce page weight and avoid conflicts. Check for the same library loaded from different CDNs or versions. Use a single source for each dependency. Consider using a module bundler to deduplicate shared dependencies.
 
 ## Enable / Disable
 
@@ -28,7 +23,7 @@ Remove duplicate JavaScript library loads to reduce page weight and avoid confli
 
 ```toml squirrel.toml
 [rules]
-disable = ["performance/duplicate-js"]
+disable = ["perf/duplicate-js"]
 ```
 
 ### Disable all Performance rules
@@ -42,6 +37,6 @@ disable = ["perf/*"]
 
 ```toml squirrel.toml
 [rules]
-enable = ["performance/duplicate-js"]
+enable = ["perf/duplicate-js"]
 disable = ["*"]
 ```

@@ -314,7 +314,9 @@
               "rules/crawl/schema-noindex-conflict",
               "rules/crawl/sitemap-4xx",
               "rules/crawl/sitemap-coverage",
-              "rules/crawl/sitemap-domain"
+              "rules/crawl/sitemap-domain",
+              "rules/crawl/html-size",
+              "rules/crawl/pdf-size"
             ]
           },
           {

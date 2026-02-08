@@ -7,7 +7,7 @@ Checks for HTTP/2 protocol support
 
 | | |
 |---|---|
-| **Rule ID** | `performance/http2` |
+| **Rule ID** | `perf/http2` |
 | **Category** | [Performance](/rules/perf) |
 | **Scope** | Per-page |
 | **Severity** | info |
@@ -15,12 +15,7 @@ Checks for HTTP/2 protocol support
 
 ## Solution
 
-HTTP/2 enables multiplexing, header compression, and server push for faster page loads:
-
-- Most modern web servers and CDNs support HTTP/2 out of the box
-- Requires HTTPS
-- Check your server/CDN documentation to enable it
-- HTTP/3 (QUIC) provides even better performance
+HTTP/2 enables multiplexing, header compression, and server push for faster page loads. Most modern web servers and CDNs support HTTP/2 out of the box. Requires HTTPS. Check your server/CDN documentation to enable it. HTTP/3 (QUIC) provides even better performance.
 
 ## Enable / Disable
 
@@ -28,7 +23,7 @@ HTTP/2 enables multiplexing, header compression, and server push for faster page
 
 ```toml squirrel.toml
 [rules]
-disable = ["performance/http2"]
+disable = ["perf/http2"]
 ```
 
 ### Disable all Performance rules
@@ -42,6 +37,6 @@ disable = ["perf/*"]
 
 ```toml squirrel.toml
 [rules]
-enable = ["performance/http2"]
+enable = ["perf/http2"]
 disable = ["*"]
 ```

@@ -7,7 +7,7 @@ Checks for source map availability and configuration
 
 | | |
 |---|---|
-| **Rule ID** | `performance/source-maps` |
+| **Rule ID** | `perf/source-maps` |
 | **Category** | [Performance](/rules/perf) |
 | **Scope** | Per-page |
 | **Severity** | info |
@@ -15,13 +15,7 @@ Checks for source map availability and configuration
 
 ## Solution
 
-Source maps help debug minified code but can expose source code if publicly accessible. For production:
-
-1. Remove source maps entirely, or
-2. Restrict access via server config, or
-3. Use "hidden" source maps uploaded only to error tracking services
-
-Exposed source maps can reveal business logic and security implementations to attackers.
+Source maps help debug minified code but can expose source code if publicly accessible. For production: 1) Either remove source maps entirely, 2) Restrict access via server config, or 3) Use 'hidden' source maps uploaded only to error tracking services. Exposed source maps can reveal business logic and security implementations to attackers.
 
 ## Enable / Disable
 
@@ -29,7 +23,7 @@ Exposed source maps can reveal business logic and security implementations to at
 
 ```toml squirrel.toml
 [rules]
-disable = ["performance/source-maps"]
+disable = ["perf/source-maps"]
 ```
 
 ### Disable all Performance rules
@@ -43,6 +37,6 @@ disable = ["perf/*"]
 
 ```toml squirrel.toml
 [rules]
-enable = ["performance/source-maps"]
+enable = ["perf/source-maps"]
 disable = ["*"]
 ```

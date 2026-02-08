@@ -7,7 +7,7 @@ Detects unminified CSS that could be optimized
 
 | | |
 |---|---|
-| **Rule ID** | `performance/unminified-css` |
+| **Rule ID** | `perf/unminified-css` |
 | **Category** | [Performance](/rules/perf) |
 | **Scope** | Per-page |
 | **Severity** | warning |
@@ -15,11 +15,7 @@ Detects unminified CSS that could be optimized
 
 ## Solution
 
-Minify CSS to reduce file size and improve load times:
-
-- Use build tools like cssnano, clean-css, or PostCSS with cssnano plugin
-- Most bundlers (Webpack, Vite, esbuild) can minify CSS automatically in production mode
-- Minification removes whitespace, comments, and optimizes syntax
+Minify CSS to reduce file size and improve load times. Use build tools like cssnano, clean-css, or PostCSS with cssnano plugin. Most bundlers (Webpack, Vite, esbuild) can minify CSS automatically in production mode. Minification removes whitespace, comments, and optimizes syntax.
 
 ## Options
 
@@ -27,15 +23,15 @@ This rule supports the following configuration options:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `min_size_kb` | number | `5` | Minimum CSS size in KB to check for minification |
-| `newline_ratio_threshold` | number | `0.01` | Newlines per character ratio threshold for unminified detection |
+| `min_size_bytes` | unknown | `undefined` | Minimum CSS size in bytes to check for minification |
+| `newline_ratio_threshold` | unknown | `undefined` | Newlines per character ratio threshold for unminified detection |
 
 ### Configuration Example
 
 ```toml squirrel.toml
-[rules."performance/unminified-css"]
-min_size_kb = 5
-newline_ratio_threshold = 0.01
+[rules."perf/unminified-css"]
+min_size_bytes = undefined
+newline_ratio_threshold = undefined
 ```
 
 ## Enable / Disable
@@ -44,7 +40,7 @@ newline_ratio_threshold = 0.01
 
 ```toml squirrel.toml
 [rules]
-disable = ["performance/unminified-css"]
+disable = ["perf/unminified-css"]
 ```
 
 ### Disable all Performance rules
@@ -58,6 +54,6 @@ disable = ["perf/*"]
 
 ```toml squirrel.toml
 [rules]
-enable = ["performance/unminified-css"]
+enable = ["perf/unminified-css"]
 disable = ["*"]
 ```

@@ -10,22 +10,12 @@ Checks that toggle fields (checkbox, radio, switch) have accessible names
 | **Rule ID** | `a11y/aria-toggle-field-name` |
 | **Category** | [Accessibility](/rules/a11y) |
 | **Scope** | Per-page |
-| **Severity** | Error |
+| **Severity** | error |
 | **Weight** | 7/10 |
 
 ## Solution
 
-Toggle fields need accessible names to describe what they control. Use one of the following:
-
-- `<label for="id">` with matching id
-- `aria-label` attribute
-- `aria-labelledby` referencing a visible label
-- Wrap the input in a `<label>` element
-
-**Example:**
-```html
-<label><input type="checkbox"> Subscribe to newsletter</label>
-```
+Toggle fields need accessible names to describe what they control. Use `<label for='id'>`, aria-label, aria-labelledby, or wrap in `<label>`. Example: `<label>``<input type='checkbox'>` Subscribe to newsletter`</label>`
 
 ## Enable / Disable
 

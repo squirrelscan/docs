@@ -15,15 +15,7 @@ Checks if offscreen images use lazy loading
 
 ## Solution
 
-Add `loading="lazy"` to images below the fold to defer loading until needed:
-
-- This reduces initial page load time and saves bandwidth
-- Exception: Don't lazy-load the LCP image or above-the-fold content
-- Use `loading="eager"` for critical images
-
-```html
-<img src="below-fold.jpg" loading="lazy" alt="...">
-```
+Add loading='lazy' to images below the fold to defer loading until needed. This reduces initial page load time and saves bandwidth. Exception: Don't lazy-load LCP image or above-the-fold content. Use loading='eager' for critical images.
 
 ## Options
 
@@ -31,13 +23,13 @@ This rule supports the following configuration options:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `above_fold_count` | number | `3` | Number of images considered above the fold |
+| `above_fold_count` | unknown | `undefined` | Number of images considered above the fold |
 
 ### Configuration Example
 
 ```toml squirrel.toml
 [rules."images/offscreen-lazy"]
-above_fold_count = 3
+above_fold_count = undefined
 ```
 
 ## Enable / Disable

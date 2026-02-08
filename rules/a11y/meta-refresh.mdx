@@ -10,16 +10,12 @@ Checks for meta refresh redirects that can disorient users
 | **Rule ID** | `a11y/meta-refresh` |
 | **Category** | [Accessibility](/rules/a11y) |
 | **Scope** | Per-page |
-| **Severity** | Error |
+| **Severity** | error |
 | **Weight** | 7/10 |
 
 ## Solution
 
-Avoid using `<meta http-equiv='refresh'>` for redirects or auto-refresh:
-
-- They can disorient users, especially those using screen readers
-- Use server-side redirects (301/302) instead
-- If content must refresh, provide a user control and warn users beforehand
+Avoid using `<meta http-equiv='refresh'>` for redirects or auto-refresh. They can disorient users, especially those using screen readers. Use server-side redirects (301/302) instead. If content must refresh, provide a user control and warn users beforehand.
 
 ## Enable / Disable
 

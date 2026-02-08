@@ -10,16 +10,12 @@ Checks that the html lang attribute has a valid language code
 | **Rule ID** | `a11y/html-lang-valid` |
 | **Category** | [Accessibility](/rules/a11y) |
 | **Scope** | Per-page |
-| **Severity** | Error |
+| **Severity** | error |
 | **Weight** | 7/10 |
 
 ## Solution
 
-The lang attribute on `<html>` should be a valid BCP 47 language tag:
-
-- Use two-letter ISO 639-1 codes like `en` for English, `es` for Spanish, `fr` for French
-- You can add region subtags like `en-US` or `en-GB`
-- This helps screen readers use correct pronunciation
+The lang attribute on `<html>` should be a valid BCP 47 language tag. Use two-letter ISO 639-1 codes like 'en' for English, 'es' for Spanish, 'fr' for French. You can add region subtags like 'en-US' or 'en-GB'. This helps screen readers use correct pronunciation.
 
 ## Enable / Disable
 

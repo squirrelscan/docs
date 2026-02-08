@@ -1,6 +1,6 @@
 ---
 title: "Picture Element Validation"
-description: "Validates picture elements have required img fallback"
+description: "Validates <picture> elements have required <img> fallback"
 ---
 
 Validates `<picture>` elements have required `<img>` fallback
@@ -18,14 +18,11 @@ Validates `<picture>` elements have required `<img>` fallback
 Every `<picture>` element MUST contain an `<img>` child element as fallback.
 
 Correct structure:
-
-```html
-<picture>
-  <source srcset="image.webp" type="image/webp">
-  <source srcset="image.jpg" type="image/jpeg">
-  <img src="image.jpg" alt="Description">
-</picture>
-```
+`<picture>`
+  `<source srcset="image.webp" type="image/webp">`
+  `<source srcset="image.jpg" type="image/jpeg">`
+  `<img src="image.jpg" alt="Description">`
+`</picture>`
 
 The `<img>` provides fallback for:
 - Browsers without `<picture>` support

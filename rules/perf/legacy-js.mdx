@@ -7,7 +7,7 @@ Detects ES5 polyfills and legacy JavaScript code
 
 | | |
 |---|---|
-| **Rule ID** | `performance/legacy-js` |
+| **Rule ID** | `perf/legacy-js` |
 | **Category** | [Performance](/rules/perf) |
 | **Scope** | Per-page |
 | **Severity** | info |
@@ -15,12 +15,7 @@ Detects ES5 polyfills and legacy JavaScript code
 
 ## Solution
 
-Consider removing legacy polyfills if you don't need to support old browsers:
-
-- Use differential serving (module/nomodule) to send modern code to modern browsers
-- Update Babel/TypeScript target to ES2020+ if your audience uses modern browsers
-- Check your browserslist configuration
-- Remove unused polyfills like core-js, regenerator-runtime
+Consider removing legacy polyfills if you don't need to support old browsers. Use differential serving (module/nomodule) to send modern code to modern browsers. Update Babel/TypeScript target to ES2020+ if your audience uses modern browsers. Check browserslist configuration.
 
 ## Enable / Disable
 
@@ -28,7 +23,7 @@ Consider removing legacy polyfills if you don't need to support old browsers:
 
 ```toml squirrel.toml
 [rules]
-disable = ["performance/legacy-js"]
+disable = ["perf/legacy-js"]
 ```
 
 ### Disable all Performance rules
@@ -42,6 +37,6 @@ disable = ["perf/*"]
 
 ```toml squirrel.toml
 [rules]
-enable = ["performance/legacy-js"]
+enable = ["perf/legacy-js"]
 disable = ["*"]
 ```

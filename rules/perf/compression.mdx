@@ -7,7 +7,7 @@ Checks for Gzip or Brotli compression
 
 | | |
 |---|---|
-| **Rule ID** | `performance/compression` |
+| **Rule ID** | `perf/compression` |
 | **Category** | [Performance](/rules/perf) |
 | **Scope** | Per-page |
 | **Severity** | warning |
@@ -15,11 +15,7 @@ Checks for Gzip or Brotli compression
 
 ## Solution
 
-Enable Gzip or Brotli compression on your server to reduce transfer sizes by 60-90%. Most web servers support this via configuration:
-
-- **nginx**: `gzip on;`
-- **Apache**: `AddOutputFilterByType DEFLATE text/html`
-- Brotli provides better compression than Gzip for text content
+Enable Gzip or Brotli compression on your server to reduce transfer sizes by 60-90%. Most web servers support this via configuration. For nginx: 'gzip on;' For Apache: 'AddOutputFilterByType DEFLATE text/html'. Brotli provides better compression than Gzip for text content.
 
 ## Enable / Disable
 
@@ -27,7 +23,7 @@ Enable Gzip or Brotli compression on your server to reduce transfer sizes by 60-
 
 ```toml squirrel.toml
 [rules]
-disable = ["performance/compression"]
+disable = ["perf/compression"]
 ```
 
 ### Disable all Performance rules
@@ -41,6 +37,6 @@ disable = ["perf/*"]
 
 ```toml squirrel.toml
 [rules]
-enable = ["performance/compression"]
+enable = ["perf/compression"]
 disable = ["*"]
 ```

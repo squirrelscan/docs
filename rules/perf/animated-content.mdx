@@ -7,7 +7,7 @@ Checks for large GIFs that could be converted to video
 
 | | |
 |---|---|
-| **Rule ID** | `performance/animated-content` |
+| **Rule ID** | `perf/animated-content` |
 | **Category** | [Performance](/rules/perf) |
 | **Scope** | Per-page |
 | **Severity** | warning |
@@ -15,11 +15,7 @@ Checks for large GIFs that could be converted to video
 
 ## Solution
 
-Convert large animated GIFs to video formats (MP4, WebM) for 50-90% smaller files:
-
-- Use `<video autoplay loop muted playsinline>` for GIF-like behavior
-- Tools: ffmpeg, gif2webm, or Cloudinary can automate conversion
-- Modern video codecs are far more efficient than GIF for animation
+Convert large animated GIFs to video formats (MP4, WebM) for 50-90% smaller files. Use `<video autoplay loop muted playsinline>` for GIF-like behavior. Tools: ffmpeg, gif2webm, or Cloudinary can automate conversion. Modern video codecs are far more efficient than GIF for animation.
 
 ## Options
 
@@ -27,13 +23,13 @@ This rule supports the following configuration options:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `gif_size_threshold_kb` | number | `100` | GIF size threshold in KB above which to suggest video conversion |
+| `gif_size_threshold_kb` | unknown | `undefined` | GIF size threshold in KB above which to suggest video conversion |
 
 ### Configuration Example
 
 ```toml squirrel.toml
-[rules."performance/animated-content"]
-gif_size_threshold_kb = 100
+[rules."perf/animated-content"]
+gif_size_threshold_kb = undefined
 ```
 
 ## Enable / Disable
@@ -42,7 +38,7 @@ gif_size_threshold_kb = 100
 
 ```toml squirrel.toml
 [rules]
-disable = ["performance/animated-content"]
+disable = ["perf/animated-content"]
 ```
 
 ### Disable all Performance rules
@@ -56,6 +52,6 @@ disable = ["perf/*"]
 
 ```toml squirrel.toml
 [rules]
-enable = ["performance/animated-content"]
+enable = ["perf/animated-content"]
 disable = ["*"]
 ```

@@ -23,13 +23,13 @@ This rule supports the following configuration options:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `excludePatterns` | string[] | `[]` | URL patterns to exclude from weak link detection |
+| `excludePatterns` | unknown | `undefined` | URL patterns to exclude from weak link detection |
 
 ### Configuration Example
 
 ```toml squirrel.toml
-[rule_options."links/weak-internal-links"]
-excludePatterns = ["/landing/*", "/promo/*"]  # Exclude intentionally single-linked pages
+[rules."links/weak-internal-links"]
+excludePatterns = undefined
 ```
 
 ## Enable / Disable

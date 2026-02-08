@@ -7,7 +7,7 @@ Checks Cache-Control header configuration
 
 | | |
 |---|---|
-| **Rule ID** | `performance/cache-headers` |
+| **Rule ID** | `perf/cache-headers` |
 | **Category** | [Performance](/rules/perf) |
 | **Scope** | Per-page |
 | **Severity** | warning |
@@ -15,11 +15,7 @@ Checks Cache-Control header configuration
 
 ## Solution
 
-Use Cache-Control headers to enable browser caching:
-
-- For static assets (CSS, JS, images): set long max-age (1 year) with `immutable` when using hashed filenames
-- For HTML: use shorter max-age or `no-cache` with revalidation
-- Example: `Cache-Control: public, max-age=31536000, immutable` for versioned assets
+Use Cache-Control headers to enable browser caching. For static assets (CSS, JS, images), set long max-age (1 year) with immutable when using hashed filenames. For HTML, use shorter max-age or no-cache with revalidation. Example: 'Cache-Control: public, max-age=31536000, immutable' for versioned assets.
 
 ## Options
 
@@ -27,13 +23,13 @@ This rule supports the following configuration options:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `min_static_max_age` | number | `86400` | Minimum max-age for static assets in seconds (1 day) |
+| `min_static_max_age` | unknown | `undefined` | Minimum max-age for static assets in seconds (1 day) |
 
 ### Configuration Example
 
 ```toml squirrel.toml
-[rules."performance/cache-headers"]
-min_static_max_age = 86400
+[rules."perf/cache-headers"]
+min_static_max_age = undefined
 ```
 
 ## Enable / Disable
@@ -42,7 +38,7 @@ min_static_max_age = 86400
 
 ```toml squirrel.toml
 [rules]
-disable = ["performance/cache-headers"]
+disable = ["perf/cache-headers"]
 ```
 
 ### Disable all Performance rules
@@ -56,6 +52,6 @@ disable = ["perf/*"]
 
 ```toml squirrel.toml
 [rules]
-enable = ["performance/cache-headers"]
+enable = ["perf/cache-headers"]
 disable = ["*"]
 ```
