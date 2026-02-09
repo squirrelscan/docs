@@ -17,6 +17,23 @@ Checks for image files that exceed recommended size limits
 
 Large images slow down page loads and impact Core Web Vitals. Compress oversized images, use modern formats (WebP/AVIF), and resize images to the display dimensions. Consider responsive images with srcset to serve smaller files on mobile.
 
+## Options
+
+This rule supports the following configuration options:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `warn_bytes` | number | `204800` (200KB) | Byte size to trigger warning |
+| `error_bytes` | number | `1048576` (1MB) | Byte size to trigger error |
+
+### Configuration Example
+
+```toml squirrel.toml
+[rules."images/image-file-size"]
+warn_bytes = 204800
+error_bytes = 1048576
+```
+
 ## Enable / Disable
 
 ### Disable this rule

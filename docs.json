@@ -269,6 +269,7 @@
               "rules/perf/lazy-above-fold",
               "rules/perf/dom-size",
               "rules/perf/css-file-size",
+              "rules/perf/js-file-size",
               "rules/perf/ttfb",
               "rules/perf/js-redirects",
               "rules/perf/js-libraries",

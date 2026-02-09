@@ -10,12 +10,29 @@ Checks for CSS files that exceed recommended size limits
 | **Rule ID** | `perf/css-file-size` |
 | **Category** | [Performance](/rules/perf) |
 | **Scope** | Site-wide |
-| **Severity** | warning |
+| **Severity** | error |
 | **Weight** | 6/10 |
 
 ## Solution
 
 Large CSS files slow down rendering and increase bandwidth. Split large stylesheets into smaller chunks, remove unused selectors, and minify CSS. Consider critical CSS inlining for above-the-fold styles and lazy-loading non-critical CSS.
+
+## Options
+
+This rule supports the following configuration options:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `warn_bytes` | number | `153600` (150KB) | Byte size to trigger warning |
+| `error_bytes` | number | `512000` (500KB) | Byte size to trigger error |
+
+### Configuration Example
+
+```toml squirrel.toml
+[rules."perf/css-file-size"]
+warn_bytes = 153600
+error_bytes = 512000
+```
 
 ## Enable / Disable
 
