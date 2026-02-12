@@ -548,9 +548,87 @@ rm -rf ~/.local/share/squirrel/audits.db
 # This will be regenerated on next audit
 ```
 
+## Publishing Reports
+
+Share audit reports online by publishing to `reports.squirrelscan.com`. Published reports can be shared with clients, included in documentation, or consumed programmatically by LLMs and CI pipelines.
+
+<Note>
+Publishing requires authentication. Run `squirrel auth login` first.
+</Note>
+
+### Publish from CLI
+
+Publish directly during an audit:
+
+```bash
+squirrel audit example.com --publish
+```
+
+Or publish from a stored audit:
+
+```bash
+squirrel report --publish
+squirrel report a7b3c2d1 --publish --visibility unlisted
+```
+
+The CLI prints the published URL:
+
+```
+https://reports.squirrelscan.com/SJEItpldwW
+```
+
+### Visibility
+
+| Level | Description |
+|-------|-------------|
+| `public` | Listed and searchable (default) |
+| `unlisted` | Accessible via direct link only |
+| `private` | Only visible to you when logged in |
+
+```bash
+squirrel report --publish --visibility private
+```
+
+### Output Formats via URL
+
+Published reports support multiple output formats. Append a file extension to the report URL to get a specific format:
+
+| Format | URL | Use Case |
+|--------|-----|----------|
+| HTML | [/SJEItpldwW](https://reports.squirrelscan.com/SJEItpldwW) | Browser viewing (default) |
+| JSON | [/SJEItpldwW.json](https://reports.squirrelscan.com/SJEItpldwW.json) | CI/CD, programmatic access |
+| Markdown | [/SJEItpldwW.md](https://reports.squirrelscan.com/SJEItpldwW.md) | Documentation, READMEs |
+| Plain Text | [/SJEItpldwW.txt](https://reports.squirrelscan.com/SJEItpldwW.txt) | Email, logs |
+| XML | [/SJEItpldwW.xml](https://reports.squirrelscan.com/SJEItpldwW.xml) | Enterprise integration |
+| LLM | [/SJEItpldwW.llm](https://reports.squirrelscan.com/SJEItpldwW.llm) | AI agents, token-efficient |
+
+Without an extension, the format is determined by the `Accept` header. Browsers receive HTML, while tools like `curl` can request specific formats:
+
+```bash
+# Get JSON via Accept header
+curl -H "Accept: application/json" https://reports.squirrelscan.com/SJEItpldwW
+
+# Get JSON via extension (simpler)
+curl https://reports.squirrelscan.com/SJEItpldwW.json
+
+# Pipe LLM format to Claude
+curl -s https://reports.squirrelscan.com/SJEItpldwW.llm | claude "prioritize fixes"
+```
+
+### Managing Published Reports
+
+Visit the [dashboard](https://squirrelscan.com/dashboard) to manage published reports:
+
+- Change visibility (public/unlisted/private)
+- Delete published reports
+- View report analytics (view count, last viewed)
+
+See [Dashboard](/dashboard) for full documentation.
+
 ## Related
 
 - [audit](/cli/audit) - Run new audit
 - [report](/cli/report) - Report command reference
+- [Dashboard](/dashboard) - Manage published reports
 - [Rules Reference](/rules) - All audit rules
 - [Configuration](/configuration) - Config file options

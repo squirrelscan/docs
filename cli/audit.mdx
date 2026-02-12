@@ -31,6 +31,8 @@ squirrel audit <url> [options]
 | `--debug` | | Enable debug logging | `false` |
 | `--trace` | | Enable performance tracing | `false` |
 | `--project-name` | `-n` | Project name (overrides config and prompts) | auto |
+| `--publish` | `-p` | Publish report to reports.squirrelscan.com | `false` |
+| `--visibility` | | Visibility: `public`, `unlisted`, `private` | `public` |
 
 ### Coverage Modes
 
@@ -92,6 +94,22 @@ squirrel audit https://example.com -f html -o report.html
 ```bash
 squirrel audit https://example.com --refresh
 ```
+
+### Audit and Publish
+
+```bash
+squirrel audit https://example.com --publish
+```
+
+Publish with unlisted visibility:
+
+```bash
+squirrel audit https://example.com --publish --visibility unlisted
+```
+
+<Note>
+Publishing requires authentication. Run `squirrel auth login` first.
+</Note>
 
 ### Verbose Output
 
