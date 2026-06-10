@@ -3,15 +3,15 @@ title: "Adblock Element Hiding"
 description: "Checks for elements that would be hidden by common adblockers"
 ---
 
-<Warning>**Beta Rule** - This rule is experimental and may change significantly in future releases.</Warning>
+<Note>**Cloud rule** - requires login (`squirrel auth login`). All three [adblock rules](/rules/adblock) share a single **5-credit** blocklist check per audit. Skipped when not logged in. See [Cloud rules](/cloud/rules).</Note>
 
-Checks for elements that would be hidden by common adblockers
+Checks for elements that would be hidden by common adblockers (matched server-side against the full EasyList cosmetic rules)
 
 | | |
 |---|---|
 | **Rule ID** | `adblock/element-hiding` |
 | **Category** | [Adblock Detection](/rules/adblock) |
-| **Scope** | Per-page |
+| **Scope** | Site-wide |
 | **Severity** | warning |
 | **Weight** | 3/10 |
 
@@ -32,8 +32,7 @@ This rule supports the following configuration options:
 
 ```toml squirrel.toml
 [rules."adblock/element-hiding"]
-maxMatchesToReport = undefined
-lists = undefined
+maxMatchesToReport = 20
 ```
 
 ## Enable / Disable

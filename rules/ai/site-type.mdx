@@ -1,0 +1,41 @@
+---
+title: "Site Type"
+description: "Classifies the overall site type (blog, ecommerce, saas, docs, ...)"
+---
+
+<Note>**Cloud rule** - requires login (`squirrel auth login`) and costs **5 credits per audit**. Skipped when not logged in. See [Cloud rules](/cloud/rules).</Note>
+
+Classifies the overall site type (blog, ecommerce, saas, docs, ...) using AI analysis of the crawled pages.
+
+| | |
+|---|---|
+| **Rule ID** | `ai/site-type` |
+| **Category** | [AI](/rules/ai) |
+| **Scope** | Site-wide |
+| **Severity** | info |
+| **Weight** | 1/10 |
+| **Default** | Enabled |
+
+## What it checks
+
+The cloud service classifies the site's overall type from a sample of crawled pages and reports the classification with a confidence score. This is informational - it never fails - but the detected type anchors other audit analyses: expected pages, content depth, and schema choices.
+
+## Solution
+
+If the classification looks wrong, the site's purpose may not be coming through to readers, search engines, or AI assistants. Sharpen the homepage value proposition, titles, and meta descriptions so the site's primary purpose is unambiguous.
+
+## Enable / Disable
+
+### Disable this rule
+
+```toml squirrel.toml
+[rules]
+disable = ["ai/site-type"]
+```
+
+### Disable all AI rules
+
+```toml squirrel.toml
+[rules]
+disable = ["ai/*"]
+```

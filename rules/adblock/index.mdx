@@ -1,11 +1,11 @@
 ---
 title: "Adblock Detection"
-description: "Detection of content blocked by ad blockers"
+description: "Detection of content blocked by ad blockers and privacy filters"
 ---
 
-<Warning>**Beta Category** - These rules are experimental and may change significantly in future releases.</Warning>
+<Note>**Cloud rules** - requires login (`squirrel auth login`). All three rules share a single **5-credit** blocklist check per audit, matched server-side against the full EasyList and EasyPrivacy filter lists. Skipped when not logged in. See [Cloud rules](/cloud/rules).</Note>
 
-Detection of content blocked by ad blockers
+Detection of content blocked by ad blockers and privacy filters.
 
 ## Rules
 
@@ -15,6 +15,9 @@ Detection of content blocked by ad blockers
   </Card>
   <Card title="Blocked Tracking Links" icon="circle-info" href="/rules/adblock/blocked-links">
     Checks for links and resources pointing to blocked tracking domains
+  </Card>
+  <Card title="Privacy Filter Matches" icon="circle-info" href="/rules/adblock/privacy-blocked">
+    Checks for trackers and analytics that EasyPrivacy would block
   </Card>
 </CardGroup>
 

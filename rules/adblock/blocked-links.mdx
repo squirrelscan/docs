@@ -3,15 +3,15 @@ title: "Blocked Tracking Links"
 description: "Checks for links and resources pointing to blocked tracking domains"
 ---
 
-<Warning>**Beta Rule** - This rule is experimental and may change significantly in future releases.</Warning>
+<Note>**Cloud rule** - requires login (`squirrel auth login`). All three [adblock rules](/rules/adblock) share a single **5-credit** blocklist check per audit. Skipped when not logged in. See [Cloud rules](/cloud/rules).</Note>
 
-Checks for links and resources pointing to blocked tracking domains
+Checks for links and resources pointing to blocked tracking domains (matched server-side against the full EasyList filter rules)
 
 | | |
 |---|---|
 | **Rule ID** | `adblock/blocked-links` |
 | **Category** | [Adblock Detection](/rules/adblock) |
-| **Scope** | Per-page |
+| **Scope** | Site-wide |
 | **Severity** | info |
 | **Weight** | 2/10 |
 
@@ -31,7 +31,7 @@ This rule supports the following configuration options:
 
 ```toml squirrel.toml
 [rules."adblock/blocked-links"]
-maxMatchesToReport = undefined
+maxMatchesToReport = 20
 ```
 
 ## Enable / Disable

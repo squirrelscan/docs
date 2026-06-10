@@ -1,0 +1,63 @@
+---
+title: "credits"
+description: "Show cloud credit balance and feature pricing"
+---
+
+The `credits` command shows your [cloud credit](/cloud/credits) balance, plan, and current feature pricing.
+
+## Usage
+
+```bash
+squirrel credits [options]
+```
+
+Requires login - run [`squirrel auth login`](/cli/auth) first.
+
+## Options
+
+| Option | Description |
+|--------|-------------|
+| `--json` | Output as JSON |
+
+## Example
+
+```bash
+squirrel credits
+```
+
+```
+Plan:    starter
+Balance: 2340 credits (2000 monthly + 340 purchased)
+         monthly credits reset 2026-07-08
+
+Pricing:
+  adblock_detect         5 per run
+  ai_parse               1 per page
+  authority_signals      1 per page
+  dead_links             1 per 100 urls
+  render                 2 per page
+  report_publish         2 per report
+  site_type              5 per run
+  ...
+
+Top up: https://squirrelscan.com/account/credits
+```
+
+JSON output:
+
+```bash
+squirrel credits --json
+```
+
+```json
+{
+  "balance": { "total": 2340, "monthly": 2000, "pack": 340, "periodEnd": "2026-07-08T00:00:00Z" },
+  "plan": { "id": "starter", "name": "starter" },
+  "pricing": { "ai_parse": { "cost": 1, "per": 1, "unit": "page" } }
+}
+```
+
+## Related
+
+- [Credits & Pricing](/cloud/credits) - how credits work and what features cost
+- [auth](/cli/auth) - log in to enable cloud features
