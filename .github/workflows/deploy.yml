@@ -45,8 +45,12 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
+          [ -n "$CLOUDFLARE_API_TOKEN" ] || { echo "::error::CLOUDFLARE_API_TOKEN is empty — grant this repo access to the org secret"; exit 1; }
+          set +e
           OUT=$(bun x wrangler versions upload 2>&1)
+          STATUS=$?
           echo "$OUT"
+          [ $STATUS -eq 0 ] || exit $STATUS
           URL=$(echo "$OUT" | grep -o 'https://[a-z0-9-]*-squirrelscan-docs[^ ]*\.workers\.dev' | head -1)
           [ -n "$URL" ] || { echo "no preview URL in wrangler output"; exit 1; }
           echo "url=$URL" >> "$GITHUB_OUTPUT"
