@@ -38,50 +38,40 @@
   },
   "rounded": "none",
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart",
-          "agents"
+        "tab": "Guides",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "index",
+              "quickstart",
+              "agents"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "projects",
+              "crawl",
+              "reports",
+              "guides/browser-rendering"
+            ]
+          }
         ]
       },
       {
-        "group": "Concepts",
-        "pages": [
-          "projects",
-          "crawl",
-          "reports"
-        ]
-      },
-      {
-        "group": "Dashboard",
-        "pages": [
-          "dashboard/index"
-        ]
-      },
-      {
-        "group": "CLI Reference",
-        "pages": [
-          "cli/index",
-          "cli/audit",
-          "cli/crawl",
-          "cli/analyze",
-          "cli/report",
-          "cli/init",
-          "cli/config",
-          "cli/feedback",
-          "cli/auth",
-          "cli/self",
-          "cli/skills",
-          "cli/debug"
-        ]
-      },
-      {
-        "group": "Rules Reference",
-        "pages": [
-          "rules/index",
+        "tab": "Rules",
+        "icon": "list-checks",
+        "groups": [
+          {
+            "group": "Rules Reference",
+            "pages": [
+              "rules/index"
+            ]
+          },
           {
             "group": "Core SEO",
             "pages": [
@@ -129,6 +119,7 @@
               "rules/links/invalid-links",
               "rules/links/broken-links",
               "rules/links/broken-external-links",
+              "rules/links/dead-links",
               "rules/links/redirect-chains",
               "rules/links/nofollow-internal",
               "rules/links/orphan-pages",
@@ -401,6 +392,7 @@
               "rules/eeat/content-dates",
               "rules/eeat/author-expertise",
               "rules/eeat/citations",
+              "rules/eeat/authority-signals",
               "rules/eeat/about-page",
               "rules/eeat/editorial-policy",
               "rules/eeat/contact-page",
@@ -418,7 +410,8 @@
             "pages": [
               "rules/adblock/index",
               "rules/adblock/element-hiding",
-              "rules/adblock/blocked-links"
+              "rules/adblock/blocked-links",
+              "rules/adblock/privacy-blocked"
             ]
           },
           {
@@ -426,22 +419,78 @@
             "pages": [
               "rules/ai/index",
               "rules/ai/llm-parsability",
+              "rules/ai/page-type-match",
+              "rules/ai/site-type",
               "rules/ai/ai-content"
+            ]
+          },
+          {
+            "group": "Gap Analysis",
+            "pages": [
+              "rules/gaps/index",
+              "rules/gaps/keywords",
+              "rules/gaps/content"
             ]
           }
         ]
       },
       {
-        "group": "Configuration",
-        "pages": [
-          "configuration/index",
-          "configuration/project",
-          "configuration/crawler",
-          "configuration/rules",
-          "configuration/external-links",
-          "configuration/output",
-          "configuration/rule-options",
-          "configuration/examples"
+        "tab": "Reference",
+        "icon": "terminal",
+        "groups": [
+          {
+            "group": "CLI Reference",
+            "pages": [
+              "cli/index",
+              "cli/audit",
+              "cli/crawl",
+              "cli/analyze",
+              "cli/report",
+              "cli/init",
+              "cli/config",
+              "cli/feedback",
+              "cli/auth",
+              "cli/credits",
+              "cli/self",
+              "cli/skills",
+              "cli/debug"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/index",
+              "configuration/project",
+              "configuration/crawler",
+              "configuration/rules",
+              "configuration/external-links",
+              "configuration/output",
+              "configuration/cloud",
+              "configuration/rule-options",
+              "configuration/examples"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Cloud",
+        "icon": "cloud",
+        "groups": [
+          {
+            "group": "Cloud",
+            "pages": [
+              "cloud/index",
+              "cloud/credits",
+              "cloud/rules",
+              "cloud/rendering"
+            ]
+          },
+          {
+            "group": "Dashboard",
+            "pages": [
+              "dashboard/index"
+            ]
+          }
         ]
       }
     ]

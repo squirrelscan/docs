@@ -14,7 +14,8 @@ squirrelscan works out of the box with sensible defaults. You only need configur
 - 100ms delay between requests
 - Respects robots.txt
 - Checks external links (cached 7 days)
-- Runs all rules except AI-powered ones
+- Runs all rules (gap-analysis rules are opt-in)
+- Cloud rules run when logged in, capped at 200 credits per audit
 - Console output format
 
 ## Configuration System
@@ -144,6 +145,7 @@ Project configuration is stored in `squirrel.toml` using TOML format.
 | `[rules]` | Enable/disable audit rules | [Rules Configuration](/configuration/rules) |
 | `[external_links]` | External link checking | [External Links](/configuration/external-links) |
 | `[output]` | Default output format | [Output Settings](/configuration/output) |
+| `[cloud]` | Cloud features, spend limits, rendering | [Cloud Settings](/configuration/cloud) |
 | `[rule_options.*]` | Per-rule configuration | [Rule Options](/configuration/rule-options) |
 
 ### Quick Start

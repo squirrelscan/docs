@@ -1,0 +1,76 @@
+---
+title: "Credits & Pricing"
+description: "How cloud credits work, what each feature costs, and how to control spend"
+icon: "coins"
+---
+
+Cloud features are priced in **credits** - small integers, not dollars. Local audits never cost credits.
+
+## Getting credits
+
+| Source | Credits | Notes |
+|--------|---------|-------|
+| Free plan | 500/month | Every account, no card required; resets each calendar month |
+| Starter plan ($19/mo) | 5,000/month | Resets each billing period; unused monthly credits expire |
+| Credit top-up (min $10) | 100 per $1 | Paid plan only; pick any amount; never expire |
+
+Monthly credits are spent before purchased top-up credits. Subscribe and top up from the **Billing & Credits** page in the [dashboard](/dashboard).
+
+## Checking your balance
+
+```bash
+squirrel credits
+```
+
+```
+Plan:    starter
+Balance: 2340 credits (2000 monthly + 340 purchased)
+         monthly credits reset 2026-07-08
+
+Pricing:
+  ai_parse               1 per page
+  site_type              5 per run
+  ...
+
+Top up: https://squirrelscan.com/account/credits
+```
+
+`squirrel auth status` also shows your balance, and the start banner of every audit shows the estimated spend against it.
+
+## Pricing
+
+| Feature | Cost | Used by |
+|---------|------|---------|
+| Report publishing | 2 per report | `squirrel audit --publish` |
+| AI page analysis | 1 per page | [`ai/llm-parsability`](/rules/ai/llm-parsability), [`ai/page-type-match`](/rules/ai/page-type-match) |
+| Site type detection | 5 per audit | [`ai/site-type`](/rules/ai/site-type) |
+| Authority signals | 1 per page | [`eeat/authority-signals`](/rules/eeat/authority-signals) |
+| Adblock/privacy check | 5 per audit | All three [adblock rules](/rules/adblock) share one check |
+| Dead link checking | 1 per 100 URLs | [`links/dead-links`](/rules/links/dead-links) |
+| Browser rendering | 2 per page | [Cloud rendering](/cloud/rendering) |
+| Keyword gaps | 25 per audit | [`gaps/keywords`](/rules/gaps/keywords) (opt-in) |
+| Content gaps | 25 per audit | [`gaps/content`](/rules/gaps/content) (opt-in) |
+| Issue enrichment | 1 per issue | AI recommendations in the dashboard |
+
+A typical 50-page audit with the default cloud rules costs around **60-110 credits** depending on how many pages the per-page rules analyze.
+
+## Spend controls
+
+Three guardrails keep an audit from spending more than you expect:
+
+```toml squirrel.toml
+[cloud]
+max_credits_per_audit = 200   # hard cap per audit; 0 = unlimited
+confirm_threshold = 50        # estimates above this prompt before spending
+enabled = true                # master switch for all cloud features
+```
+
+- **Per-audit cap** - if the estimate exceeds `max_credits_per_audit`, work is truncated deterministically at the cap and remaining rules report `skipped` with reason `credit-cap-reached`.
+- **Confirmation prompt** - in a terminal, an estimate above `confirm_threshold` asks before proceeding. Use `--yes` to skip prompts (e.g. in CI or agent workflows). Non-interactive runs proceed without prompting, bounded by the cap.
+- **Master switch** - `enabled = false` turns off all cloud calls for the project.
+
+See the [cloud configuration reference](/configuration/cloud) for all options.
+
+## When credits run out
+
+Nothing breaks. Cloud rules report `skipped` with reason `insufficient-credits`, the audit completes with all local rules, and you see a single warning with a top-up link. If a cloud service fails entirely after you were charged, the charge is automatically refunded.

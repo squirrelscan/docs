@@ -1,0 +1,65 @@
+---
+title: "Cloud Overview"
+description: "What squirrelscan cloud adds on top of free local audits"
+icon: "cloud"
+---
+
+Local audits are **free and unlimited, forever**. The cloud exists to do only what your machine can't:
+
+- **AI analysis** - page classification, site-type detection, parsability scoring, authority assessment
+- **Browser rendering** - audit JavaScript-heavy sites with a real headless browser
+- **Shared data** - full adblock/privacy filter lists, a global dead-link cache, search demand data
+- **Publishing & teams** - publish reports, track issues over time, share with your team in the [dashboard](/dashboard)
+
+Cloud features are priced in [credits](/cloud/credits). Every new account gets **1,000 free credits** - no card required.
+
+## Getting started
+
+```bash
+squirrel auth login
+```
+
+That's it. Your next `squirrel audit` automatically includes the [cloud rules](/cloud/rules) - results merge into the same report alongside the local rules.
+
+```bash
+squirrel credits   # check your balance and pricing
+```
+
+## How cloud rules behave
+
+- **Logged in** - cloud rules run as part of the audit. Calls are batched during a dedicated cloud phase, and spend is shown in the audit summary.
+- **Logged out** - cloud rules report `skipped` with a hint to log in. Your audit still completes; nothing fails.
+- **Out of credits or service down** - same thing: rules skip, the audit completes, you see a one-line warning.
+
+You stay in control of spend with a per-audit credit cap and a confirmation prompt for larger runs. See [Credits & Pricing](/cloud/credits#spend-controls).
+
+## What's in the cloud
+
+<CardGroup cols={2}>
+  <Card title="Cloud Rules" icon="list-checks" href="/cloud/rules">
+    The audit rules powered by cloud services, and what each costs
+  </Card>
+  <Card title="Credits & Pricing" icon="coins" href="/cloud/credits">
+    How credits work, full pricing, and spend controls
+  </Card>
+  <Card title="Browser Rendering" icon="globe" href="/cloud/rendering">
+    Render JavaScript-heavy sites with a cloud headless browser
+  </Card>
+  <Card title="Dashboard" icon="layout-dashboard" href="/dashboard">
+    Published reports, issue tracking, and billing at app.squirrelscan.com
+  </Card>
+</CardGroup>
+
+## Publishing reports
+
+Publishing a report to the dashboard costs **2 credits** and gives you a shareable URL plus issue history for the site:
+
+```bash
+squirrel audit https://example.com --publish
+```
+
+See [Reports](/reports) for publishing details.
+
+## Privacy
+
+Cloud analysis works on slim page summaries - URL, title, and a short text excerpt - never your full raw HTML. Third-party data providers are proxied through our API; your pages are never sent to them directly.

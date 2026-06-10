@@ -3,7 +3,7 @@ title: "LLM Parsability"
 description: "Analyzes how well LLMs can parse and understand the content"
 ---
 
-<Warning>**Beta Rule** - This rule is experimental and may change significantly in future releases.</Warning>
+<Note>**Cloud rule** - requires login (`squirrel auth login`) and costs **1 credit per page** (shared with [Page Type Match](/rules/ai/page-type-match) - both read the same analysis). Skipped when not logged in. See [Cloud rules](/cloud/rules).</Note>
 
 Analyzes how well LLMs can parse and understand the content
 
@@ -14,15 +14,7 @@ Analyzes how well LLMs can parse and understand the content
 | **Scope** | Per-page |
 | **Severity** | info |
 | **Weight** | 3/10 |
-| **Default** | Disabled |
-
-## Prerequisites
-
-This rule requires an OpenRouter API key:
-
-```bash
-export OPENROUTER_API_KEY=your_key_here
-```
+| **Default** | Enabled |
 
 ## Solution
 
@@ -47,13 +39,6 @@ The rule scores content from 0-100 based on:
 
 ## Enable / Disable
 
-### Enable this rule
-
-```toml squirrel.toml
-[rules]
-enable = ["ai/llm-parsability"]
-```
-
 ### Disable this rule
 
 ```toml squirrel.toml
@@ -61,9 +46,9 @@ enable = ["ai/llm-parsability"]
 disable = ["ai/llm-parsability"]
 ```
 
-### Enable all AI rules
+### Disable all AI rules
 
 ```toml squirrel.toml
 [rules]
-enable = ["ai/*"]
+disable = ["ai/*"]
 ```

@@ -1,0 +1,55 @@
+---
+title: "Cloud Settings"
+description: "Configure cloud features, spend limits, and browser rendering"
+---
+
+The `[cloud]` section of `squirrel.toml` controls [cloud features](/cloud): whether they run, how much an audit may spend, and whether pages are rendered with a cloud browser.
+
+All cloud settings are no-ops when you're not logged in - cloud rules simply report `skipped`.
+
+## Options
+
+```toml squirrel.toml
+[cloud]
+enabled = true                # master switch for all cloud features
+max_credits_per_audit = 200   # hard spend cap per audit; 0 = unlimited
+confirm_threshold = 50        # estimates above this prompt for confirmation
+batch_size = 20               # pages per cloud service request
+rendering = "http"            # "http" (default) or "browser"
+```
+
+### `enabled`
+
+**Default:** `true`
+
+Master switch. Set to `false` to disable all cloud calls for this project - cloud rules report `skipped`, publishing and rendering are unaffected by other settings.
+
+### `max_credits_per_audit`
+
+**Default:** `200`
+
+Hard cap on credits a single audit may spend. When the estimate exceeds the cap, cloud work is truncated deterministically and the rules that didn't run report `skipped` with reason `credit-cap-reached`. Set to `0` for unlimited.
+
+### `confirm_threshold`
+
+**Default:** `50`
+
+In an interactive terminal, an estimated spend above this value prompts for confirmation before the cloud phase runs. Set to `0` to always confirm. Non-interactive runs (CI, agents, pipes) never prompt - they proceed bounded by `max_credits_per_audit`. Pass `--yes` to skip the prompt explicitly.
+
+### `batch_size`
+
+**Default:** `20` (also the maximum)
+
+Pages per request to per-page cloud services. Lower it only if you hit request-size limits with very heavy pages.
+
+### `rendering`
+
+**Default:** `"http"`
+
+Crawl fetch mode. `"browser"` renders every page with a cloud headless browser at **2 credits per page** - see the [browser rendering guide](/guides/browser-rendering). The `--render` flag on `squirrel audit` enables it for a single run without changing config.
+
+## Related
+
+- [Cloud overview](/cloud) - what cloud features add
+- [Credits & Pricing](/cloud/credits) - pricing and spend controls in depth
+- [Cloud rules](/cloud/rules) - which rules use cloud services
