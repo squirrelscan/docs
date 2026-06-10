@@ -3,6 +3,7 @@
   "name": "squirrelscan-docs",
   "compatibility_date": "2026-06-01",
   "account_id": "fe8c09050e3a4f5758a97d28a93c2a63",
+  "preview_urls": true,
   "assets": {
     "directory": "./dist",
     "html_handling": "drop-trailing-slash",
