@@ -1,7 +1,8 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "theme": "aspen",
+  "$schema": "https://tangly.dev/schema/docs.json",
+  "theme": "tang",
   "name": "squirrelscan",
+  "siteUrl": "https://docs.squirrelscan.com",
   "description": "CLI Website Audits for Agents & LLMs",
   "colors": {
     "primary": "#C4530F",
@@ -40,15 +41,25 @@
     "groups": [
       {
         "group": "Getting Started",
-        "pages": ["index", "quickstart", "agents"]
+        "pages": [
+          "index",
+          "quickstart",
+          "agents"
+        ]
       },
       {
         "group": "Concepts",
-        "pages": ["projects", "crawl", "reports"]
+        "pages": [
+          "projects",
+          "crawl",
+          "reports"
+        ]
       },
       {
         "group": "Dashboard",
-        "pages": ["dashboard/index"]
+        "pages": [
+          "dashboard/index"
+        ]
       },
       {
         "group": "CLI Reference",
@@ -63,7 +74,8 @@
           "cli/feedback",
           "cli/auth",
           "cli/self",
-          "cli/skills"
+          "cli/skills",
+          "cli/debug"
         ]
       },
       {
@@ -452,7 +464,13 @@
     }
   },
   "contextual": {
-    "options": ["copy", "view", "claude", "mcp", "cursor"]
+    "options": [
+      "copy",
+      "view",
+      "claude",
+      "mcp",
+      "cursor"
+    ]
   },
   "footer": {
     "socials": {
