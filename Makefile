@@ -1,5 +1,13 @@
-.PHONY: validate
+.PHONY: validate dev build deploy
 
 validate:
-	mint validate
-	mint broken-links
+	bun x tangly check --strict
+
+dev:
+	bun x tangly dev
+
+build:
+	bun x tangly build
+
+deploy:
+	bun x tangly build && bun x wrangler deploy

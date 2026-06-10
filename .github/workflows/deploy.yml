@@ -1,0 +1,75 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # fork PRs have no CLOUDFLARE_API_TOKEN
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork == false
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Check
+        run: bun x tangly check --strict
+
+      - name: Build (preview)
+        if: github.event_name == 'pull_request'
+        run: bun x tangly build --env preview
+
+      - name: Build (production)
+        if: github.event_name == 'push'
+        run: bun x tangly build
+
+      - name: Upload preview version
+        if: github.event_name == 'pull_request'
+        id: preview
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          [ -n "$CLOUDFLARE_API_TOKEN" ] || { echo "::error::CLOUDFLARE_API_TOKEN is empty — grant this repo access to the org secret"; exit 1; }
+          set +e
+          OUT=$(bun x wrangler versions upload 2>&1)
+          STATUS=$?
+          echo "$OUT"
+          [ $STATUS -eq 0 ] || exit $STATUS
+          URL=$(echo "$OUT" | grep -o 'https://[a-z0-9-]*-squirrelscan-docs[^ ]*\.workers\.dev' | head -1)
+          [ -n "$URL" ] || { echo "no preview URL in wrangler output"; exit 1; }
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: Comment preview URL
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_URL: ${{ steps.preview.outputs.url }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          BODY="📝 Docs preview: $PREVIEW_URL (commit $HEAD_SHA)"
+          gh pr comment "$PR_NUMBER" --repo "$REPO" --edit-last --body "$BODY" \
+            || gh pr comment "$PR_NUMBER" --repo "$REPO" --body "$BODY"
+
+      - name: Deploy production
+        if: github.event_name == 'push'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: bun x wrangler deploy
