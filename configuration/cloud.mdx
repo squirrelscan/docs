@@ -16,6 +16,7 @@ max_credits_per_audit = 200   # hard spend cap per audit; 0 = unlimited
 confirm_threshold = 50        # estimates above this prompt for confirmation
 batch_size = 20               # pages per cloud service request
 rendering = "http"            # "http" (default) or "browser"
+render_concurrency = 4        # concurrent browser-render jobs (1-8)
 ```
 
 ### `enabled`
@@ -47,6 +48,12 @@ Pages per request to per-page cloud services. Lower it only if you hit request-s
 **Default:** `"http"`
 
 Crawl fetch mode. `"browser"` renders every page with a cloud headless browser at **2 credits per page** - see the [browser rendering guide](/guides/browser-rendering). The `--render` flag on `squirrel audit` enables it for a single run without changing config.
+
+### `render_concurrency`
+
+**Default:** `4` (max `8`)
+
+How many cloud browser-render jobs run at once during a rendered crawl. Render jobs run in squirrelscan's cloud, so the usual per-host politeness delay doesn't apply to job submission - but the render workers do fetch your site, hence the cap. Raise it to speed up large rendered audits; lower it if your origin is sensitive to parallel traffic.
 
 ## Related
 
