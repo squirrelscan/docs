@@ -35,6 +35,7 @@ squirrel audit <url> [options]
 | `--visibility` | | Visibility: `public`, `unlisted`, `private` | `public` |
 | `--yes` | `-y` | Skip confirmation prompts (e.g. cloud credit spend) | `false` |
 | `--render` | | Render pages with a cloud browser for this run ([uses credits](/guides/browser-rendering); requires login) | `false` |
+| `--offline` | | Run fully offline: skip cloud features, publishing, and telemetry | `false` |
 
 ### Coverage Modes
 
@@ -112,6 +113,19 @@ squirrel audit https://example.com --publish --visibility unlisted
 <Note>
 Publishing requires authentication. Run `squirrel auth login` first.
 </Note>
+
+### Fully Offline Audit
+
+Run an audit with zero network calls beyond the site being audited — no cloud
+analysis, no publishing, no update checks, no telemetry. Results are stored in
+the local database as usual:
+
+```bash
+squirrel audit https://example.com --offline
+```
+
+`--offline` cannot be combined with `--publish` or `--render` (both require
+cloud access and login).
 
 ### Verbose Output
 
