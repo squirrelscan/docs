@@ -9,7 +9,7 @@ The `[crawler]` section controls how squirrelscan discovers and fetches pages.
 
 ```toml
 [crawler]
-max_pages = 500
+max_pages = 100
 delay_ms = 100
 timeout_ms = 30000
 concurrency = 5
@@ -31,10 +31,10 @@ follow_redirects = true
 ### `max_pages`
 
 **Type:** `number`
-**Default:** `500`
+**Default:** `100` (surface mode)
 **Range:** `1` to `5000` (capped by CLI)
 
-Maximum number of pages to crawl per audit.
+Maximum number of pages to crawl per audit. When `max_pages` isn't set, the default depends on the [coverage mode](/crawl): `quick` = 25, `surface` = 100 (the default mode), `full` = 500.
 
 **Examples:**
 

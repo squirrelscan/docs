@@ -16,7 +16,7 @@ max_credits_per_audit = 200   # hard spend cap per audit; 0 = unlimited
 confirm_threshold = 50        # estimates above this prompt for confirmation
 batch_size = 20               # pages per cloud service request
 rendering = "http"            # "http" (default) or "browser"
-render_concurrency = 4        # concurrent browser-render jobs (1-8)
+render_concurrency = 6        # concurrent browser-render jobs (1-8)
 ```
 
 ### `enabled`
@@ -51,7 +51,7 @@ Crawl fetch mode. `"browser"` renders every page with a cloud headless browser a
 
 ### `render_concurrency`
 
-**Default:** `4` (max `8`)
+**Default:** `6` (max `8`)
 
 How many cloud browser-render jobs run at once during a rendered crawl. Render jobs run in squirrelscan's cloud, so the usual per-host politeness delay doesn't apply to job submission - but the render workers do fetch your site, hence the cap. Raise it to speed up large rendered audits; lower it if your origin is sensitive to parallel traffic.
 
