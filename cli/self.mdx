@@ -61,6 +61,24 @@ Add to your shell profile:
 
 Check for and apply updates to the CLI.
 
+### Automatic updates
+
+You usually don't need this command. With `auto_update` enabled (the default), squirrel updates itself: any CLI run checks for a new release in the background (at most hourly), and when one is found a detached background process downloads it, verifies its SHA-256 checksum, and switches over silently. Your next run prints a one-line notice:
+
+```
+✓ squirrel auto-updated v0.0.42 → v0.0.43
+```
+
+The running process is never interrupted - the new version takes effect on the next run. Turn this off with:
+
+```bash
+squirrel self settings set auto_update false
+```
+
+With auto-update off you still get an update notification box (unless `notifications` is also off), and `squirrel self update` applies updates manually.
+
+Automatic updates only run for managed installs (installed via the install script, npm, or `self install`). If you copied the binary somewhere yourself, squirrel tells you how to update instead of touching your setup.
+
 ### Usage
 
 ```bash
@@ -73,6 +91,7 @@ squirrel self update [options]
 |--------|-------------|
 | `--check` | Only check for updates, don't install |
 | `--dismiss` | Dismiss update notification for current version |
+| `--force` | Update even if this binary isn't a managed install |
 
 ### Examples
 
@@ -111,7 +130,7 @@ See release notes: https://github.com/squirrelscan/repo/releases/tag/v0.2.0
 squirrel self update --dismiss
 ```
 
-This dismisses the update notification until the next version is released.
+This dismisses the update notification until the next version is released. A dismissed version is also skipped by automatic updates.
 
 ### Update Channels
 
@@ -382,7 +401,7 @@ squirrel self settings set <key> <value> [options]
 | Key | Type | Description | Values |
 |-----|------|-------------|--------|
 | `channel` | string | Update channel | `stable`, `beta` |
-| `auto_update` | boolean | Auto-check for updates | `true`, `false` |
+| `auto_update` | boolean | Automatic background updates | `true`, `false` |
 | `notifications` | boolean | Show update notifications | `true`, `false` |
 
 #### Examples
