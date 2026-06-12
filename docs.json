@@ -482,7 +482,8 @@
               "cloud/index",
               "cloud/credits",
               "cloud/rules",
-              "cloud/rendering"
+              "cloud/rendering",
+              "cloud/scheduled-audits"
             ]
           },
           {
