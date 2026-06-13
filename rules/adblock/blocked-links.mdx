@@ -10,9 +10,9 @@ Checks for links and resources pointing to blocked tracking domains (matched ser
 | | |
 |---|---|
 | **Rule ID** | `adblock/blocked-links` |
-| **Category** | [Adblock Detection](/rules/adblock) |
+| **Category** | [Blocking](/rules/adblock) → Ad blocking |
 | **Scope** | Site-wide |
-| **Severity** | info |
+| **Severity** | warning |
 | **Weight** | 2/10 |
 
 ## Solution
@@ -43,7 +43,7 @@ maxMatchesToReport = 20
 disable = ["adblock/blocked-links"]
 ```
 
-### Disable all Adblock Detection rules
+### Disable all Blocking rules
 
 ```toml squirrel.toml
 [rules]

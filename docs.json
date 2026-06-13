@@ -406,7 +406,7 @@
             ]
           },
           {
-            "group": "Adblock Detection",
+            "group": "Blocking",
             "pages": [
               "rules/adblock/index",
               "rules/adblock/element-hiding",

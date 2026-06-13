@@ -4,15 +4,33 @@ description: "How cloud browser rendering works under the hood"
 icon: "globe"
 ---
 
-By default the crawler fetches pages with plain HTTP - fast, free, and accurate for server-rendered sites. Sites that build their content with JavaScript (SPAs, client-side frameworks) can look nearly empty to a plain fetch, which skews every content rule.
+A plain HTTP fetch is fast, free, and accurate for server-rendered sites - but sites that build their content with JavaScript (SPAs, client-side frameworks) can look nearly empty to it, which skews every content rule.
 
 Cloud browser rendering fixes that: each page is loaded in a **real headless browser** in the cloud, and the fully rendered DOM is returned to your local crawler. Everything downstream - parsing, rules, reports - works exactly as it does with plain HTTP, just on the post-JavaScript HTML.
 
 <Note>Looking for setup instructions? See the [browser rendering guide](/guides/browser-rendering). This page explains how the service behaves.</Note>
 
+## When it runs
+
+Rendering follows your login state by default:
+
+- **Logged in** - audits render every page in the cloud automatically. The first time this would spend credits, the CLI asks once (`Render pages in the cloud? [Y/n]`) and remembers your choice in `squirrel self settings` - it never asks again.
+- **Logged out, `--offline`, or you declined the prompt** - plain HTTP, no credits.
+
+Override the default any time:
+
+| Want | How |
+|------|-----|
+| Plain HTTP for one run | `squirrel audit <url> --http` |
+| Render for one run | `squirrel audit <url> --render` |
+| Always plain HTTP for a project | `rendering = "http"` in `[cloud]` |
+| Always render for a project | `rendering = "browser"` in `[cloud]` |
+
+Flags win over config, and config wins over the auto default. Non-interactive runs (CI, agents, pipes) never prompt - they render only if you've already consented or set `rendering = "browser"`, otherwise they use plain HTTP.
+
 ## Cost
 
-**2 credits per page rendered.** A 100-page crawl with rendering costs 200 credits, so mind your [per-audit cap](/cloud/credits#spend-controls) - the default cap of 200 covers rendering for about 100 pages and nothing else. The crawl progress line shows the running spend:
+**2 credits per page rendered.** A 100-page crawl with rendering costs 200 credits, so mind your [per-audit cap](/cloud/credits#spend-controls) - the default cap of 1000 covers rendering for about 500 pages. The crawl progress line shows the running spend:
 
 ```
 Crawling (cloud-rendered) 34/100 · ~68 credits
