@@ -482,6 +482,7 @@
               "cloud/index",
               "cloud/credits",
               "cloud/rules",
+              "cloud/technologies",
               "cloud/rendering",
               "cloud/scheduled-audits"
             ]
