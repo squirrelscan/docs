@@ -34,7 +34,8 @@ squirrel audit <url> [options]
 | `--publish` | `-p` | Publish report to reports.squirrelscan.com (costs 2 credits) | `false` |
 | `--visibility` | | Visibility: `public`, `unlisted`, `private` | `public` |
 | `--yes` | `-y` | Skip confirmation prompts (e.g. cloud credit spend) | `false` |
-| `--render` | | Render pages with a cloud browser for this run ([uses credits](/guides/browser-rendering); requires login) | `false` |
+| `--render` | | Force cloud browser rendering for this run ([uses credits](/guides/browser-rendering); requires login) | auto |
+| `--http` | | Force plain HTTP for this run - never render, never spend render credits | auto |
 | `--offline` | | Run fully offline: skip cloud features, publishing, and telemetry | `false` |
 
 ### Coverage Modes
@@ -113,6 +114,24 @@ squirrel audit https://example.com --publish --visibility unlisted
 <Note>
 Publishing requires authentication. Run `squirrel auth login` first.
 </Note>
+
+### Browser Rendering
+
+When you're **logged in, audits render every page in a cloud browser by default** (2 credits/page) - so JavaScript-heavy sites are audited against their fully rendered HTML. The first time this would spend credits the CLI asks once and remembers your answer.
+
+Force plain HTTP for a run (no rendering, no render credits):
+
+```bash
+squirrel audit https://example.com --http
+```
+
+Force rendering for a run even if your config disables it:
+
+```bash
+squirrel audit https://example.com --render
+```
+
+`--render` and `--http` are mutually exclusive. To set the behavior permanently, use `rendering` in `[cloud]` - see the [browser rendering guide](/guides/browser-rendering).
 
 ### Fully Offline Audit
 

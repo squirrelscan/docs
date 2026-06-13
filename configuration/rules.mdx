@@ -511,13 +511,13 @@ disable = []  # Remove ai/* from disable list
 
 ---
 
-### Adblock Detection
+### Blocking
 
 **ID:** `adblock/*`
-**Rules:** 2
-**Description:** Adblock filter impact
+**Rules:** 3
+**Description:** Ad-blocker & privacy-filter impact (ad blocking + privacy blocking)
 
-Element hiding, blocked tracking domains.
+Element hiding, blocked tracking links, and privacy-filter matches. Reported as warnings in their own report section.
 
 **Enable:**
 ```toml
@@ -526,8 +526,9 @@ enable = ["adblock/*"]
 ```
 
 **Rules:**
-- `adblock/element-hiding` - Elements hidden by adblockers
-- `adblock/blocked-links` - Links to blocked domains
+- `adblock/element-hiding` - Elements hidden by adblockers (ad blocking)
+- `adblock/blocked-links` - Links to blocked domains (ad blocking)
+- `adblock/privacy-blocked` - Trackers EasyPrivacy would block (privacy blocking)
 
 ---
 

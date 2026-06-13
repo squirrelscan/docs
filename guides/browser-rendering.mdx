@@ -9,36 +9,48 @@ Browser rendering solves this: pages are loaded in a real headless browser in th
 
 <Note>Browser rendering is a [cloud feature](/cloud) - it requires login and costs **2 credits per page**. See [how it works under the hood](/cloud/rendering).</Note>
 
-## Try it on one run
+## It's automatic when you're logged in
 
 ```bash
 squirrel auth login          # once
-squirrel audit https://example.com --render
+squirrel audit https://example.com
 ```
 
-`--render` uses the cloud browser for this run only. The crawl progress shows the running credit spend:
+Once you're logged in, audits render every page in the cloud by default. The first time this would spend credits, the CLI asks once and remembers your answer - so you opt in knowingly and never get prompted again. The crawl progress shows the running credit spend:
 
 ```
 Crawling (cloud-rendered) 34/100 · ~68 credits
 ```
 
-## Make it permanent for a project
+Logged-out runs (and `--offline`) always use plain HTTP and cost nothing.
 
-If a site always needs rendering, set it in `squirrel.toml`:
+## Turn it off for one run
+
+If a site is server-rendered and you don't want to spend render credits:
+
+```bash
+squirrel audit https://example.com --http
+```
+
+`--http` forces plain HTTP for that run. The opposite, `--render`, forces rendering even when your config disables it. The two are mutually exclusive.
+
+## Make the choice permanent for a project
+
+Pin the behavior in `squirrel.toml` so it never depends on login state or the prompt:
 
 ```toml squirrel.toml
 [cloud]
-rendering = "browser"   # default: "http"
+rendering = "browser"   # always render; use "http" to always skip
 ```
 
-Every audit of this project now renders pages, no flag needed.
+Setting `rendering` explicitly overrides the auto default - no prompt, every audit of this project behaves the same.
 
 ## Watch your page count
 
 At 2 credits per page, rendering is the most spend-sensitive cloud feature. Two settings to keep in mind:
 
 - `--max-pages` / `[crawler] max_pages` - fewer pages, fewer credits.
-- `[cloud] max_credits_per_audit` (default **200**) - the hard cap. A 100-page rendered crawl alone hits it; raise it or cap your pages.
+- `[cloud] max_credits_per_audit` (default **1000**) - the hard cap. It covers rendering for about 500 pages; raise it or cap your pages for larger rendered crawls.
 
 ```toml squirrel.toml
 [cloud]

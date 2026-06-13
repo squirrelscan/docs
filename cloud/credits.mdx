@@ -45,7 +45,7 @@ Top up: https://squirrelscan.com/account/credits
 | AI page analysis | 1 per page | [`ai/llm-parsability`](/rules/ai/llm-parsability), [`ai/page-type-match`](/rules/ai/page-type-match) |
 | Site type detection | 5 per audit | [`ai/site-type`](/rules/ai/site-type) |
 | Authority signals | 1 per page | [`eeat/authority-signals`](/rules/eeat/authority-signals) |
-| Adblock/privacy check | 5 per audit | All three [adblock rules](/rules/adblock) share one check |
+| Blocking check (ad + privacy) | 5 per audit | All three [Blocking rules](/rules/adblock) share one check |
 | Dead link checking | 1 per 100 URLs | [`links/dead-links`](/rules/links/dead-links) |
 | Browser rendering | 2 per page | [Cloud rendering](/cloud/rendering) |
 | Keyword gaps | 25 per audit | [`gaps/keywords`](/rules/gaps/keywords) (opt-in) |
@@ -60,7 +60,7 @@ Three guardrails keep an audit from spending more than you expect:
 
 ```toml squirrel.toml
 [cloud]
-max_credits_per_audit = 200   # hard cap per audit; 0 = unlimited
+max_credits_per_audit = 1000  # hard cap per audit; 0 = unlimited
 confirm_threshold = 50        # estimates above this prompt before spending
 enabled = true                # master switch for all cloud features
 ```

@@ -12,10 +12,10 @@ All cloud settings are no-ops when you're not logged in - cloud rules simply rep
 ```toml squirrel.toml
 [cloud]
 enabled = true                # master switch for all cloud features
-max_credits_per_audit = 200   # hard spend cap per audit; 0 = unlimited
+max_credits_per_audit = 1000  # hard spend cap per audit; 0 = unlimited
 confirm_threshold = 50        # estimates above this prompt for confirmation
 batch_size = 20               # pages per cloud service request
-rendering = "http"            # "http" (default) or "browser"
+# rendering                   # omit = auto (render when logged in); set "http" or "browser" to force
 render_concurrency = 6        # concurrent browser-render jobs (1-8)
 ```
 
@@ -27,7 +27,7 @@ Master switch. Set to `false` to disable all cloud calls for this project - clou
 
 ### `max_credits_per_audit`
 
-**Default:** `200`
+**Default:** `1000`
 
 Hard cap on credits a single audit may spend. When the estimate exceeds the cap, cloud work is truncated deterministically and the rules that didn't run report `skipped` with reason `credit-cap-reached`. Set to `0` for unlimited.
 
@@ -45,9 +45,14 @@ Pages per request to per-page cloud services. Lower it only if you hit request-s
 
 ### `rendering`
 
-**Default:** `"http"`
+**Default:** unset (auto)
 
-Crawl fetch mode. `"browser"` renders every page with a cloud headless browser at **2 credits per page** - see the [browser rendering guide](/guides/browser-rendering). The `--render` flag on `squirrel audit` enables it for a single run without changing config.
+Crawl fetch mode. Leave it unset and squirrelscan decides: **logged-in users render every page in a cloud browser; logged-out runs use plain HTTP**. The first time an auto-render would spend credits, the CLI asks once and remembers your answer (`squirrel self settings`). Set it explicitly to override the auto behavior:
+
+- `"http"` - always plain HTTP; never render, never prompt (no credits)
+- `"browser"` - always render every page at **2 credits per page**
+
+The `--render` and `--http` flags on `squirrel audit` force rendering on or off for a single run and always win over config. See the [browser rendering guide](/guides/browser-rendering).
 
 ### `render_concurrency`
 
