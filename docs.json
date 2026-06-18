@@ -490,7 +490,8 @@
           {
             "group": "Dashboard",
             "pages": [
-              "dashboard/index"
+              "dashboard/index",
+              "dashboard/support"
             ]
           }
         ]
